@@ -1,5 +1,4 @@
-require "coupler/version"
+require "coupler/api"
 
 module Coupler
-  # Your code goes here...
 end
