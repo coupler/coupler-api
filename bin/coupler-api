@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'coupler/api'
+
+Coupler::API::CLI.start(ARGV)

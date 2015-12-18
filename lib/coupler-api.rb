@@ -1,0 +1,1 @@
+require 'coupler/api'
