@@ -18,6 +18,9 @@ module Coupler
           case path
           when '', '/'
             action = @controller.method(:index)
+          when %r{/(\d+)$}
+            req['dataset_id'] = $1.to_i
+            action = @controller.method(:show)
           end
         when 'POST'
           case path
@@ -26,8 +29,12 @@ module Coupler
           end
         end
 
+        result = nil
         if action
           result = action.call(req, res)
+        end
+
+        if !result.nil?
           res.write(result)
           res.status = 200
         else

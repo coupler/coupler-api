@@ -13,6 +13,10 @@ module Coupler
         @adapter.find(@name)
       end
 
+      def first(conditions)
+        @adapter.first(@name, conditions)
+      end
+
       def create(data)
         @adapter.create(@name, data)
       end

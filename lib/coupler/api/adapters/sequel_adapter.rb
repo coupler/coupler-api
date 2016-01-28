@@ -16,6 +16,10 @@ module Coupler
         db[name].all
       end
 
+      def first(name, conditions)
+        db[name].where(conditions).first
+      end
+
       def create(name, data)
         db[name].insert(data)
       end

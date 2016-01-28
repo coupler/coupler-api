@@ -27,5 +27,6 @@ module Coupler
 
     # params
     autoload :DatasetParams, "coupler/api/params/dataset_params"
+    autoload :ShowParams, "coupler/api/params/show_params"
   end
 end
