@@ -12,6 +12,7 @@ module Coupler
       def route(req, res)
         path = req.path_info
         action = nil
+        result = nil
 
         case req.request_method
         when 'GET'
@@ -27,9 +28,10 @@ module Coupler
           when '', '/'
             action = @controller.method(:create)
           end
+        when 'OPTIONS'
+          result = ''
         end
 
-        result = nil
         if action
           result = action.call(req, res)
         end
