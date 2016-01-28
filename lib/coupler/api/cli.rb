@@ -18,7 +18,15 @@ module Coupler
         app = Application.new([
           { path: %r{^/datasets(?=/)?}, router: injector.get('DatasetRouter') }
         ])
-        Rack::Handler::WEBrick.run(app, { Port: options[:port] })
+        builder = Rack::Builder.new(app) do
+          use Rack::Cors do
+            allow do
+              origins 'localhost:12345'
+              resource '*'
+            end
+          end
+        end
+        Rack::Handler::WEBrick.run(builder, { Port: options[:port] })
       end
 
       private

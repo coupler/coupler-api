@@ -31,7 +31,7 @@ module Coupler
           res.write(result)
           res.status = 200
         else
-          req.status = 404
+          res.status = 404
         end
       end
     end

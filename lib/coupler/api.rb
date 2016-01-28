@@ -1,6 +1,7 @@
 require "thor"
 require "rack"
 require "json"
+require "rack/cors"
 
 module Coupler
   module API
