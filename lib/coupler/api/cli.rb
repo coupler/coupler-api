@@ -22,7 +22,7 @@ module Coupler
           use Rack::Cors do
             allow do
               origins 'localhost:12345'
-              resource '*'
+              resource '*', :methods => :any, :headers => :any
             end
           end
         end
