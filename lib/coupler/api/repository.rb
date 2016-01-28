@@ -20,6 +20,10 @@ module Coupler
       def create(data)
         @adapter.create(@name, data)
       end
+
+      def delete(conditions)
+        @adapter.delete(@name, conditions)
+      end
     end
   end
 end

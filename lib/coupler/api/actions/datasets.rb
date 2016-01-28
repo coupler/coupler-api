@@ -4,6 +4,7 @@ module Coupler
       autoload :Index, "coupler/api/actions/datasets/index"
       autoload :Create, "coupler/api/actions/datasets/create"
       autoload :Show, "coupler/api/actions/datasets/show"
+      autoload :Delete, "coupler/api/actions/datasets/delete"
     end
   end
 end

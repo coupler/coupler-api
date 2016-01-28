@@ -28,6 +28,12 @@ module Coupler
           when '', '/'
             action = @controller.method(:create)
           end
+        when 'DELETE'
+          case path
+          when %r{/(\d+)$}
+            req['dataset_id'] = $1.to_i
+            action = @controller.method(:delete)
+          end
         when 'OPTIONS'
           result = ''
         end

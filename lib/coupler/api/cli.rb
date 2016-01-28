@@ -44,6 +44,7 @@ module Coupler
         injector.register_service('Datasets::Index', Datasets::Index)
         injector.register_service('Datasets::Create', Datasets::Create)
         injector.register_service('Datasets::Show', Datasets::Show)
+        injector.register_service('Datasets::Delete', Datasets::Delete)
       end
     end
   end

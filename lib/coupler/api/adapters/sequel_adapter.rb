@@ -24,6 +24,13 @@ module Coupler
         db[name].insert(data)
       end
 
+      def delete(name, conditions)
+        ds = db[name].where(conditions)
+        result = ds.all
+        ds.delete
+        result
+      end
+
       private
 
       def db
