@@ -1,15 +1,16 @@
 module Coupler
   module API
     class DatasetController
-      def initialize(index, create, show, delete)
+      def initialize(index, create, update, show, delete)
         @index = index
         @create = create
+        @update = update
         @show = show
         @delete = delete
       end
 
       def self.dependencies
-        ['Datasets::Index', 'Datasets::Create', 'Datasets::Show', 'Datasets::Delete']
+        ['Datasets::Index', 'Datasets::Create', 'Datasets::Update', 'Datasets::Show', 'Datasets::Delete']
       end
 
       def index(req, res)
@@ -19,13 +20,21 @@ module Coupler
 
       def create(req, res)
         data = JSON.parse(req.body.read)
-        params = DatasetParams.new(data)
+        params = DatasetParams::Create.new(data)
         result = @create.run(params)
         JSON.generate(result)
       end
 
+      def update(req, res)
+        data = JSON.parse(req.body.read)
+        data['id'] = req['dataset_id']
+        params = DatasetParams::Update.new(data)
+        result = @update.run(params)
+        JSON.generate(result)
+      end
+
       def show(req, res)
-        params = ShowParams.new({ 'id' => req['dataset_id'] })
+        params = DatasetParams::Show.new({ 'id' => req['dataset_id'] })
         result = @show.run(params)
         if result
           JSON.generate(result)
@@ -33,7 +42,7 @@ module Coupler
       end
 
       def delete(req, res)
-        params = ShowParams.new({ 'id' => req['dataset_id'] })
+        params = DatasetParams::Show.new({ 'id' => req['dataset_id'] })
         result = @delete.run(params)
         if result
           JSON.generate(result)

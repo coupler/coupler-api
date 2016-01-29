@@ -21,6 +21,10 @@ module Coupler
         @adapter.create(@name, data)
       end
 
+      def update(conditions, data)
+        @adapter.update(@name, conditions, data)
+      end
+
       def delete(conditions)
         @adapter.delete(@name, conditions)
       end
