@@ -4,16 +4,12 @@ module Coupler
       desc "start", "Run coupler-api"
       option :server, :type => :string, :default => 'webrick', :desc => "HTTP server to use"
       option :port, :type => :numeric, :default => 4567, :desc => "Port to use for HTTP server"
-      option :adapter, :type => :string, :default => 'sqlite', :desc => "Database adapter to use for storage"
-      option :database, :type => :string, :default => 'coupler-api.db', :desc => "Database path or name"
+      option :adapter, :type => :string, :default => 'sql', :desc => "Database adapter to use for storage"
+      option :uri, :type => :string, :default => 'sqlite://coupler-api.db', :desc => "Database URI"
 
       def start
         injector = Injector.new
         bootstrap(injector, options)
-
-        # run migrations
-        adapter = injector.get('adapter');
-        adapter.migrate(File.join(File.dirname(__FILE__), '..', '..', '..', 'migrate'))
 
         app = Application.new([
           { path: %r{^/datasets(?=/)?}, router: injector.get('DatasetRouter') }
@@ -32,12 +28,24 @@ module Coupler
       private
 
       def bootstrap(injector, options)
-        injector.register_factory('adapter', lambda {
-          SequelAdapter.new({
-            adapter: options[:adapter],
-            database: options[:database]
-          })
+        injector.register_factory('container', lambda {
+          config = ROM::Configuration.new(options[:adapter].to_sym, options[:uri])
+          config.use(:macros)
+          config.relation(:datasets)
+          config.commands(:datasets) do
+            define(:create)
+            define(:update)
+            define(:delete)
+          end
+          container = ROM.container(config)
+
+          # run migrations
+          gateway = container.gateways[:default]
+          gateway.run_migrations
+
+          container
         })
+
         injector.register_service('DatasetRepository', DatasetRepository)
         injector.register_service('DatasetRouter', DatasetRouter)
         injector.register_service('DatasetController', DatasetController)

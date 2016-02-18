@@ -12,7 +12,7 @@ module Coupler
 
         def run(params)
           if params.valid?
-            @repo.delete(params.to_hash).first
+            @repo.delete(params.to_hash)
           else
             { 'errors' => params.errors }
           end

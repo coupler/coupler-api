@@ -12,7 +12,6 @@ module Coupler
 
         def run(params)
           if params.valid?
-
             @repo.first(params.to_hash)
           else
             { 'errors' => params.errors }

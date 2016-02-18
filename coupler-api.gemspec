@@ -28,7 +28,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "linkage", "~> 0.1.0"
-  spec.add_dependency "sequel", "~> 4.29.0"
+  spec.add_dependency "rom-sql", "~> 0.7.0"
+  spec.add_dependency "rom-repository", "~> 0.2.0"
+  spec.add_dependency "inflecto", "~> 0.0.2"
   spec.add_dependency "rack", "~> 1.6.0"
   spec.add_dependency "thor", "~> 0.19.0"
   spec.add_dependency "sqlite3", "~> 1.3.11"

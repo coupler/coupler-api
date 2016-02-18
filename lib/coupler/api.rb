@@ -2,16 +2,14 @@ require "thor"
 require "rack"
 require "json"
 require "rack/cors"
+require "rom-sql"
+require "rom-repository"
 
 module Coupler
   module API
     autoload :Application, "coupler/api/application"
     autoload :CLI, "coupler/api/cli"
     autoload :Injector, "coupler/api/injector"
-    autoload :Repository, "coupler/api/repository"
-
-    # adapters
-    autoload :SequelAdapter, "coupler/api/adapters/sequel_adapter"
 
     # repositories
     autoload :DatasetRepository, "coupler/api/repositories/dataset_repository"
@@ -27,5 +25,8 @@ module Coupler
 
     # params
     autoload :DatasetParams, "coupler/api/params/dataset_params"
+
+    # entities
+    autoload :Dataset, "coupler/api/entities/dataset"
   end
 end
