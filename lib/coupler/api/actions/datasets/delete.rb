@@ -12,7 +12,14 @@ module Coupler
 
         def run(params)
           if params.valid?
-            @repo.delete(params.to_hash)
+            data = params.to_hash
+            id = data[:id]
+            num = @repo.delete(id)
+            if num == 0
+              { 'errors' => 'not found' }
+            else
+              { 'id' => id }
+            end
           else
             { 'errors' => params.errors }
           end

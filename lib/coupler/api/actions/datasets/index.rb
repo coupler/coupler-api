@@ -11,7 +11,7 @@ module Coupler
         end
 
         def run
-          @repo.find
+          @repo.find.collect(&:to_h)
         end
       end
     end

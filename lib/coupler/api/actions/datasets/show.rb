@@ -12,7 +12,12 @@ module Coupler
 
         def run(params)
           if params.valid?
-            @repo.first(params.to_hash)
+            dataset = @repo.first(params.to_hash)
+            if dataset.nil?
+              { 'errors' => 'not found' }
+            else
+              dataset.to_h
+            end
           else
             { 'errors' => params.errors }
           end

@@ -13,7 +13,7 @@ module Coupler
         def run(params)
           if params.valid?
             dataset = @repo.create(params.to_hash)
-            { 'id' => dataset[:id] }
+            { 'id' => dataset.id }
           else
             { 'errors' => params.errors }
           end

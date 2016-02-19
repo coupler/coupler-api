@@ -15,7 +15,7 @@ module Coupler
             data = params.to_hash
             id = data.delete(:id)
 
-            num = @repo.update({ :id => id }, data).count
+            num = @repo.update(id, data)
             if num > 0
               { 'id' => id }
             else
