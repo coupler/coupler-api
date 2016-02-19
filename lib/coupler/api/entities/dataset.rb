@@ -13,8 +13,10 @@ module Coupler
         @attributes[:table_name]
       end
 
-      def field_names
-        dataset.columns
+      def fields
+        dataset.columns.collect do |name|
+          { 'name' => name }
+        end
       end
 
       def to_h
@@ -27,15 +29,15 @@ module Coupler
         case @attributes[:type]
         when 'mysql'
           host, database_name, username, password, table_name = @attributes.values_at(:host, :database_name, :username, :password, :table_name)
-          Rom.container(:sql, "mysql2://#{host}/#{database}?username=#{username}&password=#{password}") do |rom|
-            use :macros
+          ROM.container(:sql, "mysql2://#{host}/#{database_name}?username=#{username}&password=#{password}") do |rom|
+            rom.use :macros
             rom.relation(table_name.to_sym)
           end
         end
       end
 
       def dataset
-        gateway = container.gateway[:default]
+        gateway = container.gateways[:default]
         gateway.dataset(table_name.to_sym)
       end
     end

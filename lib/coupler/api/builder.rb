@@ -40,6 +40,7 @@ module Coupler
         injector.register_service('Datasets::Update', Datasets::Update)
         injector.register_service('Datasets::Show', Datasets::Show)
         injector.register_service('Datasets::Delete', Datasets::Delete)
+        injector.register_service('Datasets::Fields', Datasets::Fields)
       end
 
       def create_container

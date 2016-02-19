@@ -22,6 +22,9 @@ module Coupler
           when %r{/(\d+)$}
             req['dataset_id'] = $1.to_i
             action = @controller.method(:show)
+          when %r{/(\d+)/fields$}
+            req['dataset_id'] = $1.to_i
+            action = @controller.method(:fields)
           end
         when 'POST'
           case path

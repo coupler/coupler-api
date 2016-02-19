@@ -97,4 +97,26 @@ class Coupler::API::IntegrationTests::DatasetTest < Minitest::Test
     assert_equal id, last_response_body['id']
     assert_equal count - 1, @db[:datasets].count
   end
+
+  def test_fields
+    id = @db[:datasets].insert({
+      'name' => 'foo',
+      'type' => 'mysql',
+      'host' => 'localhost',
+      'database_name' => 'test_coupler_api',
+      'username' => 'coupler_api',
+      'password' => 'secret',
+      'table_name' => 'foo'
+    })
+    db2 = Sequel.connect("mysql2://localhost/test_coupler_api?username=coupler_api&password=secret")
+    db2.create_table! :foo do
+      primary_key :id
+      String :foo
+      String :bar
+    end
+
+    get("/datasets/#{id}/fields")
+    assert_nil last_response_body['errors']
+    assert_equal [{ 'name' => 'id' }, { 'name' => 'foo' }, { 'name' => 'bar' }], last_response_body['fields']
+  end
 end
