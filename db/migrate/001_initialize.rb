@@ -7,7 +7,8 @@ Sequel.migration do
       String :host
       String :username
       String :password
-      String :table
+      String :database_name
+      String :table_name
       String :csv, text: true
     end
   end

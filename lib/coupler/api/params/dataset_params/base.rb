@@ -14,9 +14,10 @@ module Coupler
           @name = data['name']
           @type = data['type']
           @host = data['host']
+          @database_name = data['database_name']
           @username = data['username']
           @password = data['password']
-          @table = data['table']
+          @table_name = data['table_name']
           @csv = data['csv']
 
           @errors = []
@@ -38,12 +39,16 @@ module Coupler
                 @errors.push("host must be present")
               end
 
+              if @database_name.nil? || @database_name.empty?
+                @errors.push("database_name must be present")
+              end
+
               if @username.nil? || @username.empty?
                 @errors.push("username must be present")
               end
 
-              if @table.nil? || @table.empty?
-                @errors.push("table must be present")
+              if @table_name.nil? || @table_name.empty?
+                @errors.push("table_name must be present")
               end
 
               if !@csv.nil? && !@csv.empty?
@@ -54,12 +59,16 @@ module Coupler
                 @errors.push("host must not be present")
               end
 
+              if !@database_name.nil? && !@database_name.empty?
+                @errors.push("database_name must not be present")
+              end
+
               if !@username.nil? && !@username.empty?
                 @errors.push("username must not be present")
               end
 
-              if !@table.nil? && !@table.empty?
-                @errors.push("table must not be present")
+              if !@table_name.nil? && !@table_name.empty?
+                @errors.push("table_name must not be present")
               end
 
               if @csv.nil? || @csv.empty?
@@ -76,9 +85,10 @@ module Coupler
             :name => @name,
             :type => @type,
             :host => @host,
+            :database_name => @database_name,
             :username => @username,
             :password => @password,
-            :table => @table,
+            :table_name => @table_name,
             :csv => @csv
           }
         end
