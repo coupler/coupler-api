@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rack", "~> 1.6.0"
   spec.add_dependency "thor", "~> 0.19.0"
   spec.add_dependency "sqlite3", "~> 1.3.11"
+  spec.add_dependency "mysql2", "~> 0.4.2"
   spec.add_dependency "rack-cors", "~> 0.4.0"
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
