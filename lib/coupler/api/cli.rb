@@ -8,52 +8,8 @@ module Coupler
       option :uri, :type => :string, :default => 'sqlite://coupler-api.db', :desc => "Database URI"
 
       def start
-        injector = Injector.new
-        bootstrap(injector, options)
-
-        app = Application.new([
-          { path: %r{^/datasets(?=/)?}, router: injector.get('DatasetRouter') }
-        ])
-        builder = Rack::Builder.new(app) do
-          use Rack::Cors do
-            allow do
-              origins 'localhost:12345'
-              resource '*', :methods => :any, :headers => :any
-            end
-          end
-        end
-        Rack::Handler::WEBrick.run(builder, { Port: options[:port] })
-      end
-
-      private
-
-      def bootstrap(injector, options)
-        injector.register_factory('container', lambda {
-          config = ROM::Configuration.new(options[:adapter].to_sym, options[:uri])
-          config.use(:macros)
-          config.relation(:datasets)
-          config.commands(:datasets) do
-            define(:create)
-            define(:update)
-            define(:delete)
-          end
-          container = ROM.container(config)
-
-          # run migrations
-          gateway = container.gateways[:default]
-          gateway.run_migrations
-
-          container
-        })
-
-        injector.register_service('DatasetRepository', DatasetRepository)
-        injector.register_service('DatasetRouter', DatasetRouter)
-        injector.register_service('DatasetController', DatasetController)
-        injector.register_service('Datasets::Index', Datasets::Index)
-        injector.register_service('Datasets::Create', Datasets::Create)
-        injector.register_service('Datasets::Update', Datasets::Update)
-        injector.register_service('Datasets::Show', Datasets::Show)
-        injector.register_service('Datasets::Delete', Datasets::Delete)
+        app = Builder.create(options)
+        Rack::Handler::WEBrick.run(app, { Port: options[:port] })
       end
     end
   end

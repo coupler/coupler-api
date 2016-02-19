@@ -7,9 +7,10 @@ require "rom-repository"
 
 module Coupler
   module API
-    autoload :Application, "coupler/api/application"
-    autoload :CLI, "coupler/api/cli"
     autoload :Injector, "coupler/api/injector"
+    autoload :Application, "coupler/api/application"
+    autoload :Builder, "coupler/api/builder"
+    autoload :CLI, "coupler/api/cli"
 
     # repositories
     autoload :DatasetRepository, "coupler/api/repositories/dataset_repository"
