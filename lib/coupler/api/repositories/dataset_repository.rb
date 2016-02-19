@@ -15,23 +15,37 @@ module Coupler
       end
 
       def find
-        datasets.to_a.collect(&:to_hash)
+        datasets.to_a.collect do |obj|
+          instantiate(obj)
+        end
       end
 
       def first(conditions)
-        datasets.where(conditions).one.to_hash
+        obj = datasets.where(conditions).one
+        instantiate(obj)
       end
 
       def create(data)
-        @create.call([data]).one.to_hash
+        obj = @create.call([data]).one
+        instantiate(obj)
       end
 
-      def update(conditions, data)
-        @update.where(conditions).call(data).one.to_hash
+      def update(id, data)
+        @update.by_id(id).call(data).length
       end
 
-      def delete(conditions)
-        @delete.where(conditions).call.one.to_hash
+      def delete(id)
+        @delete.by_id(id).call.length
+      end
+
+      private
+
+      def instantiate(obj)
+        if obj.nil?
+          nil
+        else
+          Dataset.new(obj.to_h)
+        end
       end
     end
   end
