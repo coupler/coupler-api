@@ -33,4 +33,16 @@ class Coupler::API::IntegrationTests::LinkageTest < Minitest::Test
     assert_nil last_response_body['errors']
     assert_equal count + 1, @db[:linkages].count
   end
+
+  def test_show
+    id = @db[:linkages].insert({
+      'name' => 'foo',
+      'description' => 'foo bar',
+      'dataset_1_id' => 1,
+      'dataset_2_id' => 2
+    })
+
+    get("/linkages/#{id}")
+    assert_equal 'foo', last_response_body['name']
+  end
 end

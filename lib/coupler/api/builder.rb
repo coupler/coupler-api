@@ -47,6 +47,7 @@ module Coupler
         injector.register_service('LinkageRouter', LinkageRouter)
         injector.register_service('LinkageController', LinkageController)
         injector.register_service('Linkages::Create', Linkages::Create)
+        injector.register_service('Linkages::Show', Linkages::Show)
       end
 
       def create_container
