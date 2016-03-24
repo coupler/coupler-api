@@ -74,4 +74,19 @@ class Coupler::API::IntegrationTests::LinkageTest < Minitest::Test
     assert_equal id, last_response_body['id']
     assert_equal 'bar', @db[:linkages].first[:name]
   end
+
+  def test_delete
+    id = @db[:linkages].insert({
+      'name' => 'foo',
+      'description' => 'foo bar',
+      'dataset_1_id' => 1,
+      'dataset_2_id' => 2
+    })
+    count = @db[:linkages].count
+
+    delete("/linkages/#{id}")
+    assert_nil last_response_body['errors']
+    assert_equal id, last_response_body['id']
+    assert_equal count - 1, @db[:linkages].count
+  end
 end

@@ -1,19 +1,16 @@
 module Coupler
   module API
     class LinkageController
-      #def initialize(index, create, update, show, delete)
-      def initialize(index, create, update, show)
+      def initialize(index, create, update, show, delete)
         @index = index
         @create = create
         @update = update
         @show = show
-        #@delete = delete
-        #@fields = fields
+        @delete = delete
       end
 
       def self.dependencies
-        #['Linkages::Index', 'Linkages::Create', 'Linkages::Update', 'Linkages::Show', 'Linkages::Delete']
-        ['Linkages::Index', 'Linkages::Create', 'Linkages::Update', 'Linkages::Show']
+        ['Linkages::Index', 'Linkages::Create', 'Linkages::Update', 'Linkages::Show', 'Linkages::Delete']
       end
 
       def index(req, res)
@@ -44,13 +41,13 @@ module Coupler
         end
       end
 
-      #def delete(req, res)
-        #params = LinkageParams::Show.new({ 'id' => req['linkage_id'] })
-        #result = @delete.run(params)
-        #if result
-          #JSON.generate(result)
-        #end
-      #end
+      def delete(req, res)
+        params = LinkageParams::Show.process({ 'id' => req['linkage_id'] })
+        result = @delete.run(params)
+        if result
+          JSON.generate(result)
+        end
+      end
     end
   end
 end

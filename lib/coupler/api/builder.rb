@@ -50,6 +50,7 @@ module Coupler
         injector.register_service('Linkages::Create', Linkages::Create)
         injector.register_service('Linkages::Update', Linkages::Update)
         injector.register_service('Linkages::Show', Linkages::Show)
+        injector.register_service('Linkages::Delete', Linkages::Delete)
       end
 
       def create_container

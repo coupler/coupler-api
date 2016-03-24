@@ -34,12 +34,12 @@ module Coupler
             req['linkage_id'] = $1.to_i
             action = @controller.method(:update)
           end
-        #when 'DELETE'
-          #case path
-          #when %r{/(\d+)$}
-            #req['linkage_id'] = $1.to_i
-            #action = @controller.method(:delete)
-          #end
+        when 'DELETE'
+          case path
+          when %r{/(\d+)$}
+            req['linkage_id'] = $1.to_i
+            action = @controller.method(:delete)
+          end
         when 'OPTIONS'
           result = ''
         end
