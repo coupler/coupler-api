@@ -51,6 +51,15 @@ module Coupler
         injector.register_service('Linkages::Update', Linkages::Update)
         injector.register_service('Linkages::Show', Linkages::Show)
         injector.register_service('Linkages::Delete', Linkages::Delete)
+
+        injector.register_service('ComparatorRepository', ComparatorRepository)
+        injector.register_service('ComparatorRouter', ComparatorRouter)
+        injector.register_service('ComparatorController', ComparatorController)
+        injector.register_service('Comparators::Index', Comparators::Index)
+        injector.register_service('Comparators::Create', Comparators::Create)
+        injector.register_service('Comparators::Update', Comparators::Update)
+        injector.register_service('Comparators::Show', Comparators::Show)
+        injector.register_service('Comparators::Delete', Comparators::Delete)
       end
 
       def create_container
@@ -79,6 +88,17 @@ module Coupler
           define(:delete)
         end
 
+        config.relation(:comparators) do
+          def by_id(id)
+            where(id: id)
+          end
+        end
+        config.commands(:comparators) do
+          define(:create)
+          define(:update)
+          define(:delete)
+        end
+
         container = ROM.container(config)
 
         # run migrations
@@ -92,6 +112,7 @@ module Coupler
         [
           { path: %r{^/datasets(?=/)?}, router: injector.get('DatasetRouter') },
           { path: %r{^/linkages(?=/)?}, router: injector.get('LinkageRouter') },
+          { path: %r{^/comparators(?=/)?}, router: injector.get('ComparatorRouter') },
         ]
       end
     end
