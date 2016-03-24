@@ -11,9 +11,9 @@ module Coupler
         end
 
         def run(params)
-          if params.valid?
-            data = params.to_hash
-            id = data[:id]
+          errors = DatasetParams::Show.validate(params)
+          if errors.empty?
+            id = params['id']
             num = @repo.delete(id)
             if num == 0
               { 'errors' => 'not found' }
@@ -21,7 +21,7 @@ module Coupler
               { 'id' => id }
             end
           else
-            { 'errors' => params.errors }
+            { 'errors' => errors }
           end
         end
       end

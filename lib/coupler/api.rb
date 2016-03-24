@@ -4,6 +4,7 @@ require "json"
 require "rack/cors"
 require "rom-sql"
 require "rom-repository"
+require "hashery"
 
 module Coupler
   module API

@@ -2,26 +2,24 @@ module Coupler
   module API
     module DatasetParams
       class Update < Base
-        def initialize(data)
-          super
-
-          @id = data['id']
+        def self.process(data)
+          result = super
+          if data.has_key?('id')
+            result['id'] = data['id']
+          end
+          result
         end
 
-        def valid?
-          super
+        def self.validate(data)
+          errors = super
 
-          if @id.nil?
-            @errors.push("id must be present")
-          elsif !@id.is_a?(Fixnum)
-            @errors.push("id must be a number")
+          if data["id"].nil?
+            errors.push("id must be present")
+          elsif !data["id"].is_a?(Fixnum)
+            errors.push("id must be a number")
           end
 
-          @errors.empty?
-        end
-
-        def to_hash
-          super.merge({ :id => @id })
+          errors
         end
       end
     end

@@ -11,18 +11,18 @@ module Coupler
         end
 
         def run(params)
-          if params.valid?
-            data = params.to_hash
-            id = data.delete(:id)
+          errors = DatasetParams::Update.validate(params)
+          if errors.empty?
+            id = params.delete('id')
 
-            num = @repo.update(id, data)
+            num = @repo.update(id, params)
             if num > 0
               { 'id' => id }
             else
               nil
             end
           else
-            { 'errors' => params.errors }
+            { 'errors' => errors }
           end
         end
       end

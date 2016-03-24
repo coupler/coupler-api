@@ -2,34 +2,29 @@ module Coupler
   module API
     module DatasetParams
       class Show
-        attr_reader :errors
-
-        def initialize(data)
+        def self.process(data)
           if !data.is_a?(Hash)
             raise ArgumentError, "expected argument to be a Hash"
           end
 
-          @id = data['id']
-
-          @errors = []
+          data.select do |key, value|
+            %w{id}.include?(key)
+          end
         end
 
-        def valid?
-          @errors.clear
-
-          if @id.nil?
-            @errors.push("id must be present")
-          elsif !@id.is_a?(Fixnum)
-            @errors.push("id must be a number")
+        def self.validate(data)
+          if !data.is_a?(Hash)
+            raise ArgumentError, "expected argument to be a Hash"
           end
 
-          @errors.empty?
-        end
+          errors = []
+          if data["id"].nil?
+            errors.push("id must be present")
+          elsif !data["id"].is_a?(Fixnum)
+            errors.push("id must be a number")
+          end
 
-        def to_hash
-          {
-            :id => @id
-          }
+          errors
         end
       end
     end

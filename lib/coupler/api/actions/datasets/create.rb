@@ -11,11 +11,12 @@ module Coupler
         end
 
         def run(params)
-          if params.valid?
-            dataset = @repo.create(params.to_hash)
+          errors = DatasetParams::Create.validate(params)
+          if errors.empty?
+            dataset = @repo.create(params)
             { 'id' => dataset.id }
           else
-            { 'errors' => params.errors }
+            { 'errors' => errors }
           end
         end
       end

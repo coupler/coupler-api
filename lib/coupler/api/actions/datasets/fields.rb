@@ -11,15 +11,17 @@ module Coupler
         end
 
         def run(params)
-          if params.valid?
-            dataset = @repo.first(params.to_hash)
+          errors = DatasetParams::Show.validate(params)
+          if errors.empty?
+            params = params.rekey { |k| k.to_sym }
+            dataset = @repo.first(params)
             if dataset.nil?
               { 'errors' => 'not found' }
             else
               { 'fields' => dataset.fields }
             end
           else
-            { 'errors' => params.errors }
+            { 'errors' => errors }
           end
         end
       end
