@@ -28,12 +28,12 @@ module Coupler
           when '', '/'
             action = @controller.method(:create)
           end
-        #when 'PUT'
-          #case path
-          #when %r{/(\d+)$}
-            #req['linkage_id'] = $1.to_i
-            #action = @controller.method(:update)
-          #end
+        when 'PUT'
+          case path
+          when %r{/(\d+)$}
+            req['linkage_id'] = $1.to_i
+            action = @controller.method(:update)
+          end
         #when 'DELETE'
           #case path
           #when %r{/(\d+)$}

@@ -43,6 +43,23 @@ class Coupler::API::IntegrationTests::LinkageTest < Minitest::Test
     })
 
     get("/linkages/#{id}")
+    assert last_response.ok?
     assert_equal 'foo', last_response_body['name']
+  end
+
+  def test_update
+    data = {
+      'name' => 'foo',
+      'description' => 'foo bar',
+      'dataset_1_id' => 1,
+      'dataset_2_id' => 2,
+    }
+    id = @db[:linkages].insert(data)
+
+    put_json("/linkages/#{id}", data.merge({'name' => 'bar'}))
+    assert last_response.ok?
+    assert_nil last_response_body['errors']
+    assert_equal id, last_response_body['id']
+    assert_equal 'bar', @db[:linkages].first[:name]
   end
 end
