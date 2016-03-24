@@ -2,8 +2,8 @@ module Coupler
   module API
     class LinkageController
       #def initialize(index, create, update, show, delete)
-      def initialize(create, update, show)
-        #@index = index
+      def initialize(index, create, update, show)
+        @index = index
         @create = create
         @update = update
         @show = show
@@ -13,13 +13,13 @@ module Coupler
 
       def self.dependencies
         #['Linkages::Index', 'Linkages::Create', 'Linkages::Update', 'Linkages::Show', 'Linkages::Delete']
-        ['Linkages::Create', 'Linkages::Update', 'Linkages::Show']
+        ['Linkages::Index', 'Linkages::Create', 'Linkages::Update', 'Linkages::Show']
       end
 
-      #def index(req, res)
-        #result = @index.run
-        #JSON.generate(result)
-      #end
+      def index(req, res)
+        result = @index.run
+        JSON.generate(result)
+      end
 
       def create(req, res)
         data = JSON.parse(req.body.read)
