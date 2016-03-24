@@ -32,6 +32,7 @@ module Coupler
 
       def bootstrap
         injector.register_factory('container', method(:create_container))
+
         injector.register_service('DatasetRepository', DatasetRepository)
         injector.register_service('DatasetRouter', DatasetRouter)
         injector.register_service('DatasetController', DatasetController)
@@ -41,11 +42,17 @@ module Coupler
         injector.register_service('Datasets::Show', Datasets::Show)
         injector.register_service('Datasets::Delete', Datasets::Delete)
         injector.register_service('Datasets::Fields', Datasets::Fields)
+
+        injector.register_service('LinkageRepository', LinkageRepository)
+        injector.register_service('LinkageRouter', LinkageRouter)
+        injector.register_service('LinkageController', LinkageController)
+        injector.register_service('Linkages::Create', Linkages::Create)
       end
 
       def create_container
         config = ROM::Configuration.new(options[:adapter].to_sym, options[:uri])
         config.use(:macros)
+
         config.relation(:datasets) do
           def by_id(id)
             where(id: id)
@@ -56,6 +63,18 @@ module Coupler
           define(:update)
           define(:delete)
         end
+
+        config.relation(:linkages) do
+          def by_id(id)
+            where(id: id)
+          end
+        end
+        config.commands(:linkages) do
+          define(:create)
+          define(:update)
+          define(:delete)
+        end
+
         container = ROM.container(config)
 
         # run migrations
@@ -67,7 +86,8 @@ module Coupler
 
       def create_routes(injector)
         [
-          { path: %r{^/datasets(?=/)?}, router: injector.get('DatasetRouter') }
+          { path: %r{^/datasets(?=/)?}, router: injector.get('DatasetRouter') },
+          { path: %r{^/linkages(?=/)?}, router: injector.get('LinkageRouter') },
         ]
       end
     end
