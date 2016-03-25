@@ -27,12 +27,12 @@ module Coupler
       end
 
       def create(data)
-        obj = @create.call([data]).one
+        obj = @create.call([serialize(data)]).one
         instantiate(obj)
       end
 
       def update(id, data)
-        @update.by_id(id).call(data).length
+        @update.by_id(id).call(serialize(data)).length
       end
 
       def delete(id)
@@ -45,8 +45,24 @@ module Coupler
         if obj.nil?
           nil
         else
-          Comparator.new(obj.to_h)
+          Comparator.new(unserialize(obj))
         end
+      end
+
+      def serialize(data)
+        attribs = data.dup
+        attribs['set_1']   = JSON.generate(attribs['set_1'])   if attribs['set_1']
+        attribs['set_2']   = JSON.generate(attribs['set_2'])   if attribs['set_2']
+        attribs['options'] = JSON.generate(attribs['options']) if attribs['options']
+        attribs
+      end
+
+      def unserialize(obj)
+        attribs = obj.to_h.rekey { |k| k.to_s }
+        attribs['set_1']   = JSON.parse(attribs['set_1'])   if attribs['set_1']
+        attribs['set_2']   = JSON.parse(attribs['set_2'])   if attribs['set_2']
+        attribs['options'] = JSON.parse(attribs['options']) if attribs['options']
+        attribs
       end
     end
   end

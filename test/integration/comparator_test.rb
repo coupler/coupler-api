@@ -25,9 +25,9 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
   def test_create
     count = @db[:comparators].count
     post_json("/comparators", {
-      'set_1' => 'foo',
-      'set_2' => 'foo bar',
-      'options' => 'baz',
+      'set_1' => %w{foo},
+      'set_2' => %w{foo bar},
+      'options' => %w{baz},
       'linkage_id' => 1
     })
     assert_nil last_response_body['errors']
@@ -35,51 +35,64 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
   end
 
   def test_index
-    @db[:comparators].insert({
-      'set_1' => 'foo',
-      'set_2' => 'foo bar',
-      'options' => 'baz',
+    id = @db[:comparators].insert({
+      'set_1' => '["foo"]',
+      'set_2' => '["foo","bar"]',
+      'options' => '["baz"]',
       'linkage_id' => 1
     })
 
     get("/comparators")
-    assert_equal 1, last_response_body.length
+
+    expected = [{
+      'id' => id,
+      'set_1' => %w{foo},
+      'set_2' => %w{foo bar},
+      'options' => %w{baz},
+      'order' => nil,
+      'linkage_id' => 1
+    }]
+    assert_equal expected, last_response_body
   end
 
   def test_show
     id = @db[:comparators].insert({
-      'set_1' => 'foo',
-      'set_2' => 'foo bar',
-      'options' => 'baz',
+      'set_1' => '["foo"]',
+      'set_2' => '["foo","bar"]',
+      'options' => '["baz"]',
       'linkage_id' => 1
     })
 
     get("/comparators/#{id}")
     assert last_response.ok?
-    assert_equal 'foo', last_response_body['set_1']
+    assert_equal %w{foo}, last_response_body['set_1']
   end
 
   def test_update
-    data = {
-      'set_1' => 'foo',
-      'set_2' => 'foo bar',
-      'options' => 'baz',
+    id = @db[:comparators].insert({
+      'set_1' => '["foo"]',
+      'set_2' => '["foo","bar"]',
+      'options' => '["baz"]',
       'linkage_id' => 1
-    }
-    id = @db[:comparators].insert(data)
+    })
 
-    put_json("/comparators/#{id}", data.merge({'set_1' => 'bar'}))
+    put_json("/comparators/#{id}", {
+      'set_1' => %w{bar},
+      'set_2' => %w{foo bar},
+      'options' => %w{baz},
+      'linkage_id' => 1
+    })
     assert last_response.ok?
     assert_nil last_response_body['errors']
     assert_equal id, last_response_body['id']
-    assert_equal 'bar', @db[:comparators].first[:set_1]
+    assert_equal '["bar"]', @db[:comparators].first[:set_1]
   end
 
   def test_delete
     id = @db[:comparators].insert({
-      'set_1' => 'foo',
-      'set_2' => 'foo bar',
-      'options' => 'baz',
+      'set_1' => '["foo"]',
+      'set_2' => '["foo","bar"]',
+      'options' => '["baz"]',
       'linkage_id' => 1
     })
     count = @db[:comparators].count
