@@ -51,6 +51,7 @@ module Coupler
         injector.register_service('Linkages::Update', Linkages::Update)
         injector.register_service('Linkages::Show', Linkages::Show)
         injector.register_service('Linkages::Delete', Linkages::Delete)
+        injector.register_service('Linkages::Comparators', Linkages::Comparators)
 
         injector.register_service('ComparatorRepository', ComparatorRepository)
         injector.register_service('ComparatorRouter', ComparatorRouter)

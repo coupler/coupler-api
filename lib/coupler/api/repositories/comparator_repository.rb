@@ -14,8 +14,9 @@ module Coupler
         @delete = env.commands[:comparators][:delete]
       end
 
-      def find
-        comparators.to_a.collect do |obj|
+      def find(conditions = nil)
+        rel = conditions ? comparators.where(conditions) : comparators
+        rel.to_a.collect do |obj|
           instantiate(obj)
         end
       end

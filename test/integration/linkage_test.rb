@@ -89,4 +89,30 @@ class Coupler::API::IntegrationTests::LinkageTest < Minitest::Test
     assert_equal id, last_response_body['id']
     assert_equal count - 1, @db[:linkages].count
   end
+
+  def test_comparators
+    id = @db[:linkages].insert({
+      'name' => 'foo',
+      'description' => 'foo bar',
+      'dataset_1_id' => 1,
+      'dataset_2_id' => 2
+    })
+    comparator_id = @db[:comparators].insert({
+      'set_1' => 'foo',
+      'set_2' => 'bar',
+      'linkage_id' => id
+    })
+
+    get("/linkages/#{id}/comparators")
+
+    expected = [{
+      'id' => comparator_id,
+      'set_1' => 'foo',
+      'set_2' => 'bar',
+      'options' => nil,
+      'order' => nil,
+      'linkage_id' => id
+    }]
+    assert_equal expected, last_response_body
+  end
 end

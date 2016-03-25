@@ -22,6 +22,9 @@ module Coupler
           when %r{/(\d+)$}
             req['linkage_id'] = $1.to_i
             action = @controller.method(:show)
+          when %r{/(\d+)/comparators$}
+            req['linkage_id'] = $1.to_i
+            action = @controller.method(:comparators)
           end
         when 'POST'
           case path
