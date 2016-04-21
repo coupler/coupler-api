@@ -117,6 +117,6 @@ class Coupler::API::IntegrationTests::DatasetTest < Minitest::Test
 
     get("/datasets/#{id}/fields")
     assert_nil last_response_body['errors']
-    assert_equal [{ 'name' => 'id' }, { 'name' => 'foo' }, { 'name' => 'bar' }], last_response_body['fields']
+    assert_equal [{ 'name' => 'id', 'type' => 'integer' }, { 'name' => 'foo', 'type' => 'string' }, { 'name' => 'bar', 'type' => 'string' }], last_response_body['fields']
   end
 end

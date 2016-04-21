@@ -14,8 +14,8 @@ module Coupler
       end
 
       def fields
-        dataset.columns.collect do |name|
-          { 'name' => name }
+        schema.collect do |(name, info)|
+          { 'name' => name, 'type' => info[:type].to_s }
         end
       end
 
@@ -36,9 +36,16 @@ module Coupler
         end
       end
 
+      def gateway
+        container.gateways[:default]
+      end
+
       def dataset
-        gateway = container.gateways[:default]
         gateway.dataset(table_name.to_sym)
+      end
+
+      def schema
+        gateway.connection.schema(table_name.to_sym)
       end
     end
   end
