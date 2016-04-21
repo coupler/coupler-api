@@ -25,9 +25,10 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
   def test_create
     count = @db[:comparators].count
     post_json("/comparators", {
+      'kind' => 'compare',
       'set_1' => %w{foo},
       'set_2' => %w{foo bar},
-      'options' => %w{baz},
+      'options' => { 'operation' => 'equals' },
       'linkage_id' => 1
     })
     assert_nil last_response_body['errors']
@@ -36,9 +37,10 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
 
   def test_index
     id = @db[:comparators].insert({
+      'kind' => 'compare',
       'set_1' => '["foo"]',
       'set_2' => '["foo","bar"]',
-      'options' => '["baz"]',
+      'options' => '{"operation":"equals"}',
       'linkage_id' => 1
     })
 
@@ -46,9 +48,10 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
 
     expected = [{
       'id' => id,
+      'kind' => 'compare',
       'set_1' => %w{foo},
       'set_2' => %w{foo bar},
-      'options' => %w{baz},
+      'options' => { 'operation' => 'equals' },
       'order' => nil,
       'linkage_id' => 1
     }]
@@ -57,9 +60,10 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
 
   def test_show
     id = @db[:comparators].insert({
+      'kind' => 'compare',
       'set_1' => '["foo"]',
       'set_2' => '["foo","bar"]',
-      'options' => '["baz"]',
+      'options' => '{"operation":"equals"}',
       'linkage_id' => 1
     })
 
@@ -70,16 +74,18 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
 
   def test_update
     id = @db[:comparators].insert({
+      'kind' => 'compare',
       'set_1' => '["foo"]',
       'set_2' => '["foo","bar"]',
-      'options' => '["baz"]',
+      'options' => '{"operation":"equals"}',
       'linkage_id' => 1
     })
 
     put_json("/comparators/#{id}", {
+      'kind' => 'compare',
       'set_1' => %w{bar},
       'set_2' => %w{foo bar},
-      'options' => %w{baz},
+      'options' => { 'operation' => 'equals' },
       'linkage_id' => 1
     })
     assert last_response.ok?
@@ -90,9 +96,10 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
 
   def test_delete
     id = @db[:comparators].insert({
+      'kind' => 'compare',
       'set_1' => '["foo"]',
       'set_2' => '["foo","bar"]',
-      'options' => '["baz"]',
+      'options' => '{"operation":"equals"',
       'linkage_id' => 1
     })
     count = @db[:comparators].count

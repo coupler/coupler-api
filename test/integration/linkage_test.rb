@@ -98,6 +98,7 @@ class Coupler::API::IntegrationTests::LinkageTest < Minitest::Test
       'dataset_2_id' => 2
     })
     comparator_id = @db[:comparators].insert({
+      'kind' => 'compare',
       'set_1' => '["foo"]',
       'set_2' => '["bar"]',
       'linkage_id' => id
@@ -107,6 +108,7 @@ class Coupler::API::IntegrationTests::LinkageTest < Minitest::Test
 
     expected = [{
       'id' => comparator_id,
+      'kind' => 'compare',
       'set_1' => %w{foo},
       'set_2' => %w{bar},
       'options' => nil,

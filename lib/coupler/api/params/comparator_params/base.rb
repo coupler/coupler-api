@@ -1,6 +1,8 @@
 module Coupler
   module API
     module ComparatorParams
+      VALID_KINDS = %w{compare strcompare within}
+
       class Base
         def self.process(data)
           if !data.is_a?(Hash)
@@ -8,7 +10,7 @@ module Coupler
           end
 
           data.select do |key, value|
-            %w{set_1 set_2 options order linkage_id}
+            %w{kind set_1 set_2 options order linkage_id}
           end
         end
 
@@ -18,6 +20,12 @@ module Coupler
           end
 
           errors = []
+
+          if data["kind"].nil? || data["kind"].empty?
+            errors.push("kind must be present")
+          elsif !VALID_KINDS.include?(data["kind"])
+            errors.push("kind is not valid")
+          end
 
           if data["set_1"].nil? || data["set_1"].empty?
             errors.push("set_1 must be present")
