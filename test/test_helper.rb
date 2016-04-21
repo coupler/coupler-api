@@ -7,6 +7,9 @@ require 'sequel'
 
 module Coupler
   module API
+    module UnitTests
+    end
+
     module IntegrationTests
     end
 

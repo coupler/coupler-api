@@ -27,8 +27,8 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
     post_json("/comparators", {
       'kind' => 'compare',
       'set_1' => %w{foo},
-      'set_2' => %w{foo bar},
-      'options' => { 'operation' => 'equals' },
+      'set_2' => %w{foo},
+      'options' => { 'operation' => 'equal' },
       'linkage_id' => 1
     })
     assert_nil last_response_body['errors']
@@ -40,7 +40,7 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
       'kind' => 'compare',
       'set_1' => '["foo"]',
       'set_2' => '["foo","bar"]',
-      'options' => '{"operation":"equals"}',
+      'options' => '{"operation":"equal"}',
       'linkage_id' => 1
     })
 
@@ -51,7 +51,7 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
       'kind' => 'compare',
       'set_1' => %w{foo},
       'set_2' => %w{foo bar},
-      'options' => { 'operation' => 'equals' },
+      'options' => { 'operation' => 'equal' },
       'order' => nil,
       'linkage_id' => 1
     }]
@@ -63,7 +63,7 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
       'kind' => 'compare',
       'set_1' => '["foo"]',
       'set_2' => '["foo","bar"]',
-      'options' => '{"operation":"equals"}',
+      'options' => '{"operation":"equal"}',
       'linkage_id' => 1
     })
 
@@ -77,15 +77,15 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
       'kind' => 'compare',
       'set_1' => '["foo"]',
       'set_2' => '["foo","bar"]',
-      'options' => '{"operation":"equals"}',
+      'options' => '{"operation":"equal"}',
       'linkage_id' => 1
     })
 
     put_json("/comparators/#{id}", {
       'kind' => 'compare',
       'set_1' => %w{bar},
-      'set_2' => %w{foo bar},
-      'options' => { 'operation' => 'equals' },
+      'set_2' => %w{foo},
+      'options' => { 'operation' => 'equal' },
       'linkage_id' => 1
     })
     assert last_response.ok?
@@ -99,7 +99,7 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
       'kind' => 'compare',
       'set_1' => '["foo"]',
       'set_2' => '["foo","bar"]',
-      'options' => '{"operation":"equals"',
+      'options' => '{"operation":"equal"',
       'linkage_id' => 1
     })
     count = @db[:comparators].count
