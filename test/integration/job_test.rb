@@ -32,6 +32,16 @@ class Coupler::API::IntegrationTests::JobTest < Minitest::Test
     assert_equal count + 1, @db[:jobs].count
   end
 
+  def test_show
+    id = @db[:jobs].insert({
+      'kind' => 'linkage',
+      'linkage_id' => 1
+    })
+
+    get("/jobs/#{id}")
+    assert_equal id, last_response_body['id']
+  end
+
 =begin
   def test_index
     @db[:jobs].insert({
@@ -47,19 +57,6 @@ class Coupler::API::IntegrationTests::JobTest < Minitest::Test
     assert_equal 1, last_response_body.length
   end
 
-  def test_show
-    id = @db[:jobs].insert({
-      'name' => 'foo',
-      'type' => 'mysql',
-      'host' => 'localhost',
-      'database_name' => 'foo',
-      'username' => 'foo',
-      'table_name' => 'foo'
-    })
-
-    get("/jobs/#{id}")
-    assert_equal 'foo', last_response_body['name']
-  end
 
   def test_update
     data = {

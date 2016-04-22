@@ -15,6 +15,14 @@ module Coupler
         result = nil
 
         case req.request_method
+        when 'GET'
+          case path
+          #when '', '/'
+            #action = @controller.method(:index)
+          when %r{/(\d+)$}
+            req['job_id'] = $1.to_i
+            action = @controller.method(:show)
+          end
         when 'POST'
           case path
           when '', '/'

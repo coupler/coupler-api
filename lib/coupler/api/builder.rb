@@ -68,7 +68,7 @@ module Coupler
         #injector.register_service('Jobs::Index', Jobs::Index)
         injector.register_service('Jobs::Create', Jobs::Create)
         #injector.register_service('Jobs::Update', Jobs::Update)
-        #injector.register_service('Jobs::Show', Jobs::Show)
+        injector.register_service('Jobs::Show', Jobs::Show)
         #injector.register_service('Jobs::Delete', Jobs::Delete)
       end
 
