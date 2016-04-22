@@ -61,6 +61,15 @@ module Coupler
         injector.register_service('Comparators::Update', Comparators::Update)
         injector.register_service('Comparators::Show', Comparators::Show)
         injector.register_service('Comparators::Delete', Comparators::Delete)
+
+        injector.register_service('JobRepository', JobRepository)
+        injector.register_service('JobRouter', JobRouter)
+        injector.register_service('JobController', JobController)
+        #injector.register_service('Jobs::Index', Jobs::Index)
+        injector.register_service('Jobs::Create', Jobs::Create)
+        #injector.register_service('Jobs::Update', Jobs::Update)
+        #injector.register_service('Jobs::Show', Jobs::Show)
+        #injector.register_service('Jobs::Delete', Jobs::Delete)
       end
 
       def create_container
@@ -100,6 +109,17 @@ module Coupler
           define(:delete)
         end
 
+        config.relation(:jobs) do
+          def by_id(id)
+            where(id: id)
+          end
+        end
+        config.commands(:jobs) do
+          define(:create)
+          define(:update)
+          define(:delete)
+        end
+
         container = ROM.container(config)
 
         # run migrations
@@ -114,6 +134,7 @@ module Coupler
           { path: %r{^/datasets(?=/)?}, router: injector.get('DatasetRouter') },
           { path: %r{^/linkages(?=/)?}, router: injector.get('LinkageRouter') },
           { path: %r{^/comparators(?=/)?}, router: injector.get('ComparatorRouter') },
+          { path: %r{^/jobs(?=/)?}, router: injector.get('JobRouter') },
         ]
       end
     end
