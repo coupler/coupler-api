@@ -13,7 +13,6 @@ module Coupler
         def run(params)
           errors = LinkageParams::Show.validate(params)
           if errors.empty?
-            params = params.rekey { |k| k.to_sym }
             linkage = @repo.first(params)
             if linkage.nil?
               { 'errors' => 'not found' }

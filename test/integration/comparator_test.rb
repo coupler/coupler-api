@@ -32,6 +32,7 @@ class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
       'linkage_id' => 1
     })
     assert_nil last_response_body['errors']
+    assert_kind_of Integer, last_response_body['id']
     assert_equal count + 1, @db[:comparators].count
   end
 

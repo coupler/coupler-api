@@ -13,7 +13,6 @@ module Coupler
         def run(params)
           errors = ComparatorParams::Show.validate(params)
           if errors.empty?
-            params = params.rekey { |k| k.to_sym }
             comparator = @repo.first(params)
             if comparator.nil?
               { 'errors' => 'not found' }

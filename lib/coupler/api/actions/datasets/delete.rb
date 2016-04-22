@@ -13,7 +13,7 @@ module Coupler
         def run(params)
           errors = DatasetParams::Show.validate(params)
           if errors.empty?
-            id = params['id']
+            id = params[:id]
             num = @repo.delete(id)
             if num == 0
               { 'errors' => 'not found' }

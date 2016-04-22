@@ -13,7 +13,7 @@ module Coupler
         def run(params)
           errors = LinkageParams::Show.validate(params)
           if errors.empty?
-            conditions = { :linkage_id => params['id'] }
+            conditions = { :linkage_id => params[:id] }
             @repo.find(conditions).collect(&:to_h)
           else
             { 'errors' => errors }

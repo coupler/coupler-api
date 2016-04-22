@@ -13,7 +13,7 @@ module Coupler
         def run(params)
           errors = ComparatorParams::Update.validate(params)
           if errors.empty?
-            id = params.delete('id')
+            id = params.delete(:id)
 
             num = @repo.update(id, params)
             if num > 0

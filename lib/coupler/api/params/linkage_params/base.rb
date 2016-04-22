@@ -7,9 +7,13 @@ module Coupler
             raise ArgumentError, "expected argument to be a Hash"
           end
 
-          data.select do |key, value|
-            %w{name description dataset_1_id dataset_2_id}
+          result = {}
+          data.each_pair do |key, value|
+            if %w{name description dataset_1_id dataset_2_id}.include?(key)
+              result[key.to_sym] = value
+            end
           end
+          result
         end
 
         def self.validate(data)
@@ -19,19 +23,19 @@ module Coupler
 
           errors = []
 
-          if data["name"].nil? || data["name"].empty?
+          if data[:name].nil? || data[:name].empty?
             errors.push("name must be present")
           end
 
-          if data["dataset_1_id"].nil?
+          if data[:dataset_1_id].nil?
             errors.push("dataset_1_id must be present")
-          elsif !data["dataset_1_id"].is_a?(Fixnum)
+          elsif !data[:dataset_1_id].is_a?(Fixnum)
             errors.push("dataset_1_id must be an integer")
           end
 
-          if data["dataset_2_id"].nil?
+          if data[:dataset_2_id].nil?
             errors.push("dataset_2_id must be present")
-          elsif !data["dataset_2_id"].is_a?(Fixnum)
+          elsif !data[:dataset_2_id].is_a?(Fixnum)
             errors.push("dataset_2_id must be an integer")
           end
 

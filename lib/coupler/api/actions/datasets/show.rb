@@ -13,7 +13,6 @@ module Coupler
         def run(params)
           errors = DatasetParams::Show.validate(params)
           if errors.empty?
-            params = params.rekey { |k| k.to_sym }
             dataset = @repo.first(params)
             if dataset.nil?
               { 'errors' => 'not found' }

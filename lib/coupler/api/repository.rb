@@ -28,6 +28,16 @@ module Coupler
       def delete(conditions)
         @adapter.delete(@name, conditions)
       end
+
+      private
+
+      def unserialize(obj)
+        obj.to_h.rekey { |k| k.to_s }
+      end
+
+      def serialize(obj)
+        obj.to_h.rekey { |k| k.to_sym }
+      end
     end
   end
 end

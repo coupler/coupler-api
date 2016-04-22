@@ -5,7 +5,7 @@ module Coupler
         def self.process(data)
           result = super
           if data.has_key?('id')
-            result['id'] = data['id']
+            result[:id] = data['id']
           end
           result
         end
@@ -13,9 +13,9 @@ module Coupler
         def self.validate(data)
           errors = super
 
-          if data["id"].nil?
+          if data[:id].nil?
             errors.push("id must be present")
-          elsif !data["id"].is_a?(Fixnum)
+          elsif !data[:id].is_a?(Fixnum)
             errors.push("id must be a number")
           end
 
