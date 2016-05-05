@@ -31,6 +31,7 @@ module Coupler
       private
 
       def bootstrap
+        injector.register_value('result_path', @options[:result_path])
         injector.register_factory('container', method(:create_container))
 
         injector.register_service('DatasetRepository', DatasetRepository)
@@ -65,11 +66,9 @@ module Coupler
         injector.register_service('JobRepository', JobRepository)
         injector.register_service('JobRouter', JobRouter)
         injector.register_service('JobController', JobController)
-        #injector.register_service('Jobs::Index', Jobs::Index)
         injector.register_service('Jobs::Create', Jobs::Create)
-        #injector.register_service('Jobs::Update', Jobs::Update)
         injector.register_service('Jobs::Show', Jobs::Show)
-        #injector.register_service('Jobs::Delete', Jobs::Delete)
+        injector.register_service('Jobs::Linkage', Jobs::Linkage)
       end
 
       def create_container

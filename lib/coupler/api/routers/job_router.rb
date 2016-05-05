@@ -27,6 +27,9 @@ module Coupler
           case path
           when '', '/'
             action = @controller.method(:create)
+          when %r{/(\d+)/linkage$}
+            req['job_id'] = $1.to_i
+            action = @controller.method(:linkage)
           end
         when 'OPTIONS'
           result = ''
@@ -40,6 +43,8 @@ module Coupler
           res.write(result)
           res.status = 200
         else
+          p req.request_method
+          p path
           res.status = 404
         end
       end

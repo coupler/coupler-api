@@ -13,6 +13,14 @@ module Coupler
         @attributes[:table_name]
       end
 
+      def uri
+        case @attributes[:type]
+        when 'mysql'
+          host, database_name, username, password = @attributes.values_at(:host, :database_name, :username, :password)
+          "mysql2://#{host}/#{database_name}?username=#{username}&password=#{password}"
+        end
+      end
+
       def fields
         schema.collect do |(name, info)|
           { 'name' => name, 'type' => info[:type].to_s }
@@ -28,8 +36,8 @@ module Coupler
       def container
         case @attributes[:type]
         when 'mysql'
-          host, database_name, username, password, table_name = @attributes.values_at(:host, :database_name, :username, :password, :table_name)
-          ROM.container(:sql, "mysql2://#{host}/#{database_name}?username=#{username}&password=#{password}") do |rom|
+          table_name = @attributes[:table_name]
+          ROM.container(:sql, uri) do |rom|
             rom.use :macros
             rom.relation(table_name.to_sym)
           end

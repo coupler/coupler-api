@@ -9,6 +9,14 @@ module Coupler
         @attributes[:id]
       end
 
+      def kind
+        @attributes[:kind]
+      end
+
+      def linkage_id
+        @attributes[:linkage_id]
+      end
+
       def to_h
         @attributes.dup
       end
