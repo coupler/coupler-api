@@ -123,7 +123,10 @@ module Coupler
 
         # run migrations
         gateway = container.gateways[:default]
-        gateway.run_migrations
+        migrator = ROM::SQL::Migration::Migrator.new(gateway.connection, {
+          path: File.expand_path(File.join(File.dirname(__FILE__), '..', '..', '..', 'db', 'migrate'))
+        })
+        migrator.run
 
         container
       end
