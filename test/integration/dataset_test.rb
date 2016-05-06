@@ -19,7 +19,7 @@ class Coupler::API::IntegrationTests::DatasetTest < Minitest::Test
   end
 
   def database_uri
-    'sqlite://' + @tempfile.path
+    (RUBY_PLATFORM == "java" ? 'jdbc:sqlite' : 'sqlite') + '://' + @tempfile.path
   end
 
   def test_create
@@ -108,7 +108,13 @@ class Coupler::API::IntegrationTests::DatasetTest < Minitest::Test
       'password' => 'secret',
       'table_name' => 'foo'
     })
-    db2 = Sequel.connect("mysql2://localhost/test_coupler_api?username=coupler_api&password=secret")
+    uri =
+      if RUBY_PLATFORM == "java"
+        "jdbc:mysql://localhost/test_coupler_api?user=coupler_api&password=secret"
+      else
+        "mysql2://localhost/test_coupler_api?username=coupler_api&password=secret"
+      end
+    db2 = Sequel.connect(uri)
     db2.create_table! :foo do
       primary_key :id
       String :foo

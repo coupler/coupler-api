@@ -50,8 +50,9 @@ module Coupler
           end
 
           # create linkage result set
+          adapter = RUBY_PLATFORM == "java" ? "jdbc:sqlite" : "sqlite"
           result_set = ::Linkage::ResultSet['database'].new({
-            :adapter => 'sqlite',
+            :adapter => adapter,
             :database => File.join(@result_path, "#{job.id}.sqlite")
           })
 

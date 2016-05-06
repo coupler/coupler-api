@@ -17,7 +17,11 @@ module Coupler
         case @attributes[:type]
         when 'mysql'
           host, database_name, username, password = @attributes.values_at(:host, :database_name, :username, :password)
-          "mysql2://#{host}/#{database_name}?username=#{username}&password=#{password}"
+          if RUBY_PLATFORM == "java"
+            "jdbc:mysql://#{host}/#{database_name}?user=#{username}&password=#{password}"
+          else
+            "mysql2://#{host}/#{database_name}?username=#{username}&password=#{password}"
+          end
         end
       end
 

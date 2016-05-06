@@ -19,7 +19,7 @@ class Coupler::API::IntegrationTests::JobTest < Minitest::Test
   end
 
   def database_uri
-    'sqlite://' + @tempfile.path
+    (RUBY_PLATFORM == "java" ? 'jdbc:sqlite' : 'sqlite') + '://' + @tempfile.path
   end
 
   def test_create

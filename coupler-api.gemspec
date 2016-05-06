@@ -32,8 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "inflecto", "~> 0.0.2"
   spec.add_dependency "rack", "~> 1.6.0"
   spec.add_dependency "thor", "~> 0.19.0"
-  spec.add_dependency "sqlite3", "~> 1.3.11"
-  spec.add_dependency "mysql2", "~> 0.4.2"
   spec.add_dependency "rack-cors", "~> 0.4.0"
   spec.add_dependency "hashery", "~> 2.1.1"
   spec.add_development_dependency "bundler", "~> 1.10"
@@ -41,4 +39,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "sequel", "~> 4.31.0"
   spec.add_development_dependency "rack-test", "~> 0.6.3"
   spec.add_development_dependency "minitest"
+
+  if RUBY_PLATFORM == "java"
+    spec.add_dependency "jdbc-mysql", "~> 5.1.38"
+    spec.add_dependency "jdbc-sqlite3", "~> 3.8.11.2"
+  else
+    spec.add_dependency "sqlite3", "~> 1.3.11"
+    spec.add_dependency "mysql2", "~> 0.4.2"
+  end
 end
