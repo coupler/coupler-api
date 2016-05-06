@@ -8,7 +8,7 @@ module Coupler
       def call(env)
         req = Rack::Request.new(env)
         res = Rack::Response.new()
-        path = req.path
+        path = req.path_info
 
         router = nil
         @routes.each do |route|
