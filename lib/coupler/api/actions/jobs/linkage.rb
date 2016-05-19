@@ -2,16 +2,16 @@ module Coupler
   module API
     module Jobs
       class Linkage
-        def initialize(job_repo, linkage_repo, comparator_repo, dataset_repo, result_path)
+        def initialize(job_repo, linkage_repo, comparator_repo, dataset_repo, storage_path)
           @job_repo = job_repo
           @linkage_repo = linkage_repo
           @comparator_repo = comparator_repo
           @dataset_repo = dataset_repo
-          @result_path = result_path
+          @storage_path = storage_path
         end
 
         def self.dependencies
-          ['JobRepository', 'LinkageRepository', 'ComparatorRepository', 'DatasetRepository', 'result_path']
+          ['JobRepository', 'LinkageRepository', 'ComparatorRepository', 'DatasetRepository', 'storage_path']
         end
 
         def run(params)
@@ -50,7 +50,7 @@ module Coupler
           end
 
           # create linkage result set
-          db_path = File.join(@result_path, "job-#{job.id}.sqlite")
+          db_path = File.join(@storage_path, "job-#{job.id}.sqlite")
           options =
             if RUBY_PLATFORM == "java"
               {

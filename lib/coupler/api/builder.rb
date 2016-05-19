@@ -31,7 +31,7 @@ module Coupler
       private
 
       def bootstrap
-        injector.register_value('result_path', @options[:result_path])
+        injector.register_value('storage_path', @options[:storage_path])
         injector.register_factory('container', method(:create_container))
 
         injector.register_service('DatasetRepository', DatasetRepository)
