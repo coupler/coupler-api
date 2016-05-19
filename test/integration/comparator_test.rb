@@ -1,14 +1,14 @@
 require 'test_helper'
 
-class Coupler::API::IntegrationTests::ComparatorTest < Minitest::Test
-  include Coupler::API::IntegrationTest
+class CouplerAPI::IntegrationTests::ComparatorTest < Minitest::Test
+  include CouplerAPI::IntegrationTest
 
   attr_reader :app
 
   def setup
     @tempfile = Tempfile.new('coupler_api')
     @db = Sequel.connect(database_uri)
-    @app = Coupler::API::Builder.create({
+    @app = CouplerAPI::Builder.create({
       adapter: 'sql',
       uri: database_uri
     })

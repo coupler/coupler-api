@@ -1,0 +1,142 @@
+module CouplerAPI
+  class Builder
+    def self.create(options)
+      builder = new(options)
+      builder.create
+    end
+
+    attr_reader :injector, :options
+
+    def initialize(options)
+      @options = options
+      @injector = Injector.new
+    end
+
+    def create
+      bootstrap
+
+      routes = create_routes(injector)
+      app = Application.new(routes)
+      Rack::Builder.new(app) do
+        use Rack::Cors do
+          allow do
+            origins 'localhost:12345'
+            resource '*', :methods => :any, :headers => :any
+          end
+        end
+      end
+    end
+
+    private
+
+    def bootstrap
+      injector.register_value('storage_path', @options[:storage_path])
+      injector.register_factory('container', method(:create_container))
+
+      injector.register_service('DatasetRepository', DatasetRepository)
+      injector.register_service('DatasetRouter', DatasetRouter)
+      injector.register_service('DatasetController', DatasetController)
+      injector.register_service('Datasets::Index', Datasets::Index)
+      injector.register_service('Datasets::Create', Datasets::Create)
+      injector.register_service('Datasets::Update', Datasets::Update)
+      injector.register_service('Datasets::Show', Datasets::Show)
+      injector.register_service('Datasets::Delete', Datasets::Delete)
+      injector.register_service('Datasets::Fields', Datasets::Fields)
+
+      injector.register_service('LinkageRepository', LinkageRepository)
+      injector.register_service('LinkageRouter', LinkageRouter)
+      injector.register_service('LinkageController', LinkageController)
+      injector.register_service('Linkages::Index', Linkages::Index)
+      injector.register_service('Linkages::Create', Linkages::Create)
+      injector.register_service('Linkages::Update', Linkages::Update)
+      injector.register_service('Linkages::Show', Linkages::Show)
+      injector.register_service('Linkages::Delete', Linkages::Delete)
+      injector.register_service('Linkages::Comparators', Linkages::Comparators)
+
+      injector.register_service('ComparatorRepository', ComparatorRepository)
+      injector.register_service('ComparatorRouter', ComparatorRouter)
+      injector.register_service('ComparatorController', ComparatorController)
+      injector.register_service('Comparators::Index', Comparators::Index)
+      injector.register_service('Comparators::Create', Comparators::Create)
+      injector.register_service('Comparators::Update', Comparators::Update)
+      injector.register_service('Comparators::Show', Comparators::Show)
+      injector.register_service('Comparators::Delete', Comparators::Delete)
+
+      injector.register_service('JobRepository', JobRepository)
+      injector.register_service('JobRouter', JobRouter)
+      injector.register_service('JobController', JobController)
+      injector.register_service('Jobs::Create', Jobs::Create)
+      injector.register_service('Jobs::Show', Jobs::Show)
+      injector.register_service('Jobs::Linkage', Jobs::Linkage)
+    end
+
+    def create_container
+      config = ROM::Configuration.new(options[:adapter].to_sym, options[:uri])
+      config.use(:macros)
+
+      config.relation(:datasets) do
+        def by_id(id)
+          where(id: id)
+        end
+      end
+      config.commands(:datasets) do
+        define(:create)
+        define(:update)
+        define(:delete)
+      end
+
+      config.relation(:linkages) do
+        def by_id(id)
+          where(id: id)
+        end
+      end
+      config.commands(:linkages) do
+        define(:create)
+        define(:update)
+        define(:delete)
+      end
+
+      config.relation(:comparators) do
+        def by_id(id)
+          where(id: id)
+        end
+      end
+      config.commands(:comparators) do
+        define(:create)
+        define(:update)
+        define(:delete)
+      end
+
+      config.relation(:jobs) do
+        def by_id(id)
+          where(id: id)
+        end
+      end
+      config.commands(:jobs) do
+        define(:create)
+        define(:update)
+        define(:delete)
+      end
+
+      container = ROM.container(config)
+
+      # run migrations
+      gateway = container.gateways[:default]
+      migrator = ROM::SQL::Migration::Migrator.new(gateway.connection, {
+        path: File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'db', 'migrate'))
+      })
+      migrator.run
+
+      container
+    end
+
+    def create_routes(injector)
+      [
+        { path: %r{^/datasets(?=/)?}, router: injector.get('DatasetRouter') },
+        { path: %r{^/linkages(?=/)?}, router: injector.get('LinkageRouter') },
+        { path: %r{^/comparators(?=/)?}, router: injector.get('ComparatorRouter') },
+        { path: %r{^/jobs(?=/)?}, router: injector.get('JobRouter') },
+      ]
+    end
+  end
+end
