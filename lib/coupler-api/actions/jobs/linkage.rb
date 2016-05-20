@@ -1,20 +1,24 @@
 module CouplerAPI
   module Jobs
     class Linkage
-      def initialize(job_repo, linkage_repo, comparator_repo, dataset_repo, storage_path)
+      def initialize(job_repo, linkage_repo, comparator_repo, dataset_repo, validator, storage_path)
         @job_repo = job_repo
         @linkage_repo = linkage_repo
         @comparator_repo = comparator_repo
         @dataset_repo = dataset_repo
+        @validator = validator
         @storage_path = storage_path
       end
 
       def self.dependencies
-        ['JobRepository', 'LinkageRepository', 'ComparatorRepository', 'DatasetRepository', 'storage_path']
+        [
+          'JobRepository', 'LinkageRepository', 'ComparatorRepository',
+          'DatasetRepository', 'JobValidators::Linkage', 'storage_path'
+        ]
       end
 
       def run(params)
-        errors = JobParams::Linkage.validate(params)
+        errors = @validator.validate(params)
         if !errors.empty?
           return { 'errors' => errors }
         end

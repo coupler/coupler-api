@@ -1,15 +1,22 @@
 module CouplerAPI
   class ComparatorController
-    def initialize(index, create, update, show, delete)
+    def initialize(index, create, update, show, delete, create_params, update_params, show_params)
       @index = index
       @create = create
       @update = update
       @show = show
       @delete = delete
+      @create_params = create_params
+      @update_params = update_params
+      @show_params = show_params
     end
 
     def self.dependencies
-      ['Comparators::Index', 'Comparators::Create', 'Comparators::Update', 'Comparators::Show', 'Comparators::Delete']
+      [
+        'Comparators::Index', 'Comparators::Create', 'Comparators::Update',
+        'Comparators::Show', 'Comparators::Delete', 'ComparatorParams::Create',
+        'ComparatorParams::Update', 'ComparatorParams::Show'
+      ]
     end
 
     def index(req, res)
@@ -19,7 +26,7 @@ module CouplerAPI
 
     def create(req, res)
       data = JSON.parse(req.body.read)
-      params = ComparatorParams::Create.process(data)
+      params = @create_params.process(data)
       result = @create.run(params)
       JSON.generate(result)
     end
@@ -27,13 +34,13 @@ module CouplerAPI
     def update(req, res)
       data = JSON.parse(req.body.read)
       data['id'] = req['comparator_id']
-      params = ComparatorParams::Update.process(data)
+      params = @update_params.process(data)
       result = @update.run(params)
       JSON.generate(result)
     end
 
     def show(req, res)
-      params = ComparatorParams::Show.process({ 'id' => req['comparator_id'] })
+      params = @show_params.process({ 'id' => req['comparator_id'] })
       result = @show.run(params)
       if result
         JSON.generate(result)
@@ -41,7 +48,7 @@ module CouplerAPI
     end
 
     def delete(req, res)
-      params = ComparatorParams::Show.process({ 'id' => req['comparator_id'] })
+      params = @show_params.process({ 'id' => req['comparator_id'] })
       result = @delete.run(params)
       if result
         JSON.generate(result)

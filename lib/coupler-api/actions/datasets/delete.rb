@@ -1,16 +1,17 @@
 module CouplerAPI
   module Datasets
     class Delete
-      def initialize(repo)
+      def initialize(repo, validator)
         @repo = repo
+        @validator = validator
       end
 
       def self.dependencies
-        ['DatasetRepository']
+        ['DatasetRepository', 'DatasetValidators::Show']
       end
 
       def run(params)
-        errors = DatasetParams::Show.validate(params)
+        errors = @validator.validate(params)
         if errors.empty?
           id = params[:id]
           num = @repo.delete(id)

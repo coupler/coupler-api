@@ -1,16 +1,17 @@
 module CouplerAPI
   module Comparators
     class Create
-      def initialize(repo)
+      def initialize(repo, validator)
         @repo = repo
+        @validator = validator
       end
 
       def self.dependencies
-        ['ComparatorRepository']
+        ['ComparatorRepository', 'ComparatorValidators::Create']
       end
 
       def run(params)
-        errors = ComparatorParams::Create.validate(params)
+        errors = @validator.validate(params)
         if errors.empty?
           comparator = @repo.create(params)
           { 'id' => comparator.id }

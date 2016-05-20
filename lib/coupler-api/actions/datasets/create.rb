@@ -1,16 +1,17 @@
 module CouplerAPI
   module Datasets
     class Create
-      def initialize(repo)
+      def initialize(repo, validator)
         @repo = repo
+        @validator = validator
       end
 
       def self.dependencies
-        ['DatasetRepository']
+        ['DatasetRepository', 'DatasetValidators::Create']
       end
 
       def run(params)
-        errors = DatasetParams::Create.validate(params)
+        errors = @validator.validate(params)
         if errors.empty?
           dataset = @repo.create(params)
           { 'id' => dataset.id }

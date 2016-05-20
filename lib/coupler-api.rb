@@ -43,6 +43,12 @@ module CouplerAPI
   autoload :ComparatorParams, "coupler-api/params/comparator_params"
   autoload :JobParams, "coupler-api/params/job_params"
 
+  # validators
+  autoload :DatasetValidators, "coupler-api/validators/dataset_validators"
+  autoload :LinkageValidators, "coupler-api/validators/linkage_validators"
+  autoload :ComparatorValidators, "coupler-api/validators/comparator_validators"
+  autoload :JobValidators, "coupler-api/validators/job_validators"
+
   # entities
   autoload :Dataset, "coupler-api/entities/dataset"
   autoload :Linkage, "coupler-api/entities/linkage"

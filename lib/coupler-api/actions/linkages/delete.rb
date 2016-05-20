@@ -1,16 +1,17 @@
 module CouplerAPI
   module Linkages
     class Delete
-      def initialize(repo)
+      def initialize(repo, validator)
         @repo = repo
+        @validator = validator
       end
 
       def self.dependencies
-        ['LinkageRepository']
+        ['LinkageRepository', 'LinkageValidators::Show']
       end
 
       def run(params)
-        errors = LinkageParams::Show.validate(params)
+        errors = @validator.validate(params)
         if errors.empty?
           id = params[:id]
           num = @repo.delete(id)

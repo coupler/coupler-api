@@ -1,16 +1,17 @@
 module CouplerAPI
   module Linkages
     class Create
-      def initialize(repo)
+      def initialize(repo, validator)
         @repo = repo
+        @validator = validator
       end
 
       def self.dependencies
-        ['LinkageRepository']
+        ['LinkageRepository', 'LinkageValidators::Create']
       end
 
       def run(params)
-        errors = LinkageParams::Create.validate(params)
+        errors = @validator.validate(params)
         if errors.empty?
           linkage = @repo.create(params)
           { 'id' => linkage.id }

@@ -1,16 +1,17 @@
 module CouplerAPI
   module Comparators
     class Delete
-      def initialize(repo)
+      def initialize(repo, validator)
         @repo = repo
+        @validator = validator
       end
 
       def self.dependencies
-        ['ComparatorRepository']
+        ['ComparatorRepository', 'ComparatorValidators::Show']
       end
 
       def run(params)
-        errors = ComparatorParams::Show.validate(params)
+        errors = @validator.validate(params)
         if errors.empty?
           id = params[:id]
           num = @repo.delete(id)

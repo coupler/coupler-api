@@ -1,16 +1,17 @@
 module CouplerAPI
   module Linkages
     class Update
-      def initialize(repo)
+      def initialize(repo, validator)
         @repo = repo
+        @validator = validator
       end
 
       def self.dependencies
-        ['LinkageRepository']
+        ['LinkageRepository', 'LinkageValidators::Update']
       end
 
       def run(params)
-        errors = LinkageParams::Update.validate(params)
+        errors = @validator.validate(params)
         if errors.empty?
           id = params.delete(:id)
 

@@ -1,16 +1,17 @@
 module CouplerAPI
   module Jobs
     class Create
-      def initialize(repo)
+      def initialize(repo, validator)
         @repo = repo
+        @validator = validator
       end
 
       def self.dependencies
-        ['JobRepository']
+        ['JobRepository', 'JobValidators::Create']
       end
 
       def run(params)
-        errors = JobParams::Create.validate(params)
+        errors = @validator.validate(params)
         if errors.empty?
           job = @repo.create(params)
           { 'id' => job.id }

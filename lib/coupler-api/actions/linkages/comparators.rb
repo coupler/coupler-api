@@ -1,16 +1,17 @@
 module CouplerAPI
   module Linkages
     class Comparators
-      def initialize(repo)
+      def initialize(repo, validator)
         @repo = repo
+        @validator = validator
       end
 
       def self.dependencies
-        ['ComparatorRepository']
+        ['ComparatorRepository', 'LinkageValidators::Show']
       end
 
       def run(params)
-        errors = LinkageParams::Show.validate(params)
+        errors = @validator.validate(params)
         if errors.empty?
           conditions = { :linkage_id => params[:id] }
           @repo.find(conditions).collect(&:to_h)
