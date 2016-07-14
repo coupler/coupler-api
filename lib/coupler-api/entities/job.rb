@@ -1,23 +1,10 @@
 module CouplerAPI
-  class Job
-    def initialize(attributes)
-      @attributes = attributes
-    end
-
-    def id
-      @attributes[:id]
-    end
-
-    def kind
-      @attributes[:kind]
-    end
-
-    def linkage_id
-      @attributes[:linkage_id]
-    end
-
-    def to_h
-      @attributes.dup
-    end
-  end
+  Job = Entity([
+    :id,
+    :kind,
+    :status,
+    :linkage_id,
+    :started_at,
+    :ended_at
+  ])
 end

@@ -1,23 +1,9 @@
 module CouplerAPI
-  class Linkage
-    def initialize(attributes)
-      @attributes = attributes
-    end
-
-    def id
-      @attributes[:id]
-    end
-
-    def dataset_1_id
-      @attributes[:dataset_1_id]
-    end
-
-    def dataset_2_id
-      @attributes[:dataset_2_id]
-    end
-
-    def to_h
-      @attributes.dup
-    end
-  end
+  Linkage = Entity([
+    :id,
+    :name,
+    :description,
+    :dataset_1_id,
+    :dataset_2_id,
+  ])
 end

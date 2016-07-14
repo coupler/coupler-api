@@ -1,21 +1,18 @@
 module CouplerAPI
-  class Dataset
-    def initialize(attributes)
-      @attributes = attributes
-    end
-
-    def id
-      @attributes[:id]
-    end
-
-    def table_name
-      @attributes[:table_name]
-    end
-
+  Dataset = Entity([
+    :id,
+    :name,
+    :type,
+    :host,
+    :username,
+    :password,
+    :database_name,
+    :table_name
+    :csv
+  ]) do
     def uri
-      case @attributes[:type]
+      case type
       when 'mysql'
-        host, database_name, username, password = @attributes.values_at(:host, :database_name, :username, :password)
         if RUBY_PLATFORM == "java"
           "jdbc:mysql://#{host}/#{database_name}?user=#{username}&password=#{password}"
         else
@@ -30,16 +27,11 @@ module CouplerAPI
       end
     end
 
-    def to_h
-      @attributes.dup
-    end
-
     private
 
     def container
-      case @attributes[:type]
+      case type
       when 'mysql'
-        table_name = @attributes[:table_name]
         ROM.container(:sql, uri) do |rom|
           rom.use :macros
           rom.relation(table_name.to_sym)

@@ -55,3 +55,5 @@ module CouplerAPI
   autoload :Comparator, "coupler-api/entities/comparator"
   autoload :Job, "coupler-api/entities/job"
 end
+
+require 'coupler-api/entity'
