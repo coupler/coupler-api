@@ -9,6 +9,7 @@ module CouplerAPI
       :type => :string,
       :default => "#{RUBY_PLATFORM == "java" ? "jdbc:sqlite" : "sqlite"}://coupler-api.db",
       :desc => "Database URI"
+    }
 
     def start
       app = Builder.create(options)
