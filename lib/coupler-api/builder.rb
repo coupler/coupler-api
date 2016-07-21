@@ -92,6 +92,8 @@ module CouplerAPI
       injector.register_service('JobValidators::Create', JobValidators::Create)
       injector.register_service('JobValidators::Show', JobValidators::Show)
       injector.register_service('JobValidators::Linkage', JobValidators::Linkage)
+
+      injector.register_service('LinkageCombiner', LinkageCombiner)
     end
 
     def create_container

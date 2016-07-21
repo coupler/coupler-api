@@ -4,6 +4,8 @@ require 'coupler-api'
 require 'tempfile'
 require 'rack/test'
 require 'sequel'
+require 'ostruct'
+require 'minitest/mock'
 
 module CouplerAPI
   module UnitTests

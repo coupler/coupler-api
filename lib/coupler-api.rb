@@ -54,6 +54,9 @@ module CouplerAPI
   autoload :Linkage, "coupler-api/entities/linkage"
   autoload :Comparator, "coupler-api/entities/comparator"
   autoload :Job, "coupler-api/entities/job"
+
+  # combiners
+  autoload :LinkageCombiner, "coupler-api/combiners/linkage_combiner"
 end
 
 require 'coupler-api/entity'
