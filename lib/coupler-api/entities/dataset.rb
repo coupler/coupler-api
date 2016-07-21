@@ -7,7 +7,7 @@ module CouplerAPI
     :username,
     :password,
     :database_name,
-    :table_name
+    :table_name,
     :csv
   ]) do
     def uri
