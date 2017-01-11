@@ -13,6 +13,9 @@ module CouplerAPI
   autoload :Builder, "coupler-api/builder"
   autoload :CLI, "coupler-api/cli"
 
+  # adapters
+  autoload :SequelAdapter, "coupler-api/adapters/sequel_adapter"
+
   # repositories
   autoload :DatasetRepository, "coupler-api/repositories/dataset_repository"
   autoload :LinkageRepository, "coupler-api/repositories/linkage_repository"
