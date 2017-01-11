@@ -11,8 +11,12 @@ module CouplerAPI
       Sequel::Migrator.apply(db, path)
     end
 
-    def find(name)
-      db[name].all
+    def find(name, conditions = nil)
+      ds = db[name]
+      if conditions
+        ds = ds.where(conditions)
+      end
+      ds.all
     end
 
     def first(name, conditions)
@@ -37,7 +41,7 @@ module CouplerAPI
     private
 
     def db
-      if @db.nil?
+      unless @db
         @db = Sequel.connect(@options)
       end
       @db

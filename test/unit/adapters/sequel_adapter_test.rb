@@ -24,6 +24,17 @@ module CouplerAPI
         @relation.verify
       end
 
+      def test_find_with_conditions
+        @db.expect(:[], @relation, [:foo])
+        @relation.expect(:where, @relation, ['condition'])
+        @relation.expect(:all, :return_value)
+        Sequel.stub :connect, @db do
+          assert_equal :return_value, @adapter.find(:foo, 'condition')
+        end
+        @db.verify
+        @relation.verify
+      end
+
       def test_first
         @db.expect(:[], @relation, [:foo])
         @relation.expect(:where, @relation, ['condition'])
