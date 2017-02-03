@@ -27,18 +27,16 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "linkage", "~> 0.1.0"
-  spec.add_dependency "rom-sql", "~> 0.7.0"
-  spec.add_dependency "rom-repository", "~> 0.2.0"
-  spec.add_dependency "inflecto", "~> 0.0.2"
   spec.add_dependency "rack", "~> 1.6.0"
   spec.add_dependency "thor", "~> 0.19.0"
   spec.add_dependency "rack-cors", "~> 0.4.0"
   spec.add_dependency "hashery", "~> 2.1.1"
+  spec.add_dependency "sequel"
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "sequel", "~> 4.31.0"
   spec.add_development_dependency "rack-test", "~> 0.6.3"
   spec.add_development_dependency "minitest"
+  spec.add_development_dependency "mocha"
 
   if RUBY_PLATFORM == "java"
     spec.add_dependency "jdbc-mysql", "~> 5.1.38"
