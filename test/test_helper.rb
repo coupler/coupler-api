@@ -5,7 +5,12 @@ require 'tempfile'
 require 'rack/test'
 require 'sequel'
 require 'ostruct'
+
+# setup mocha
+gem 'mocha'
+require 'minitest/autorun'
 require 'minitest/mock'
+require 'mocha/mini_test'
 
 module CouplerAPI
   module UnitTests
@@ -30,5 +35,3 @@ module CouplerAPI
     end
   end
 end
-
-require 'minitest/autorun'
