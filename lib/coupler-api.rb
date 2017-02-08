@@ -8,6 +8,7 @@ require "linkage"
 
 module CouplerAPI
   autoload :Injector, "coupler-api/injector"
+  autoload :Repository, "coupler-api/repository"
   autoload :Application, "coupler-api/application"
   autoload :Builder, "coupler-api/builder"
   autoload :CLI, "coupler-api/cli"
