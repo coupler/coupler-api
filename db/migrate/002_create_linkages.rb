@@ -4,8 +4,8 @@ Sequel.migration do
       primary_key :id
       String :name
       String :description
-      Fixnum :dataset_1_id
-      Fixnum :dataset_2_id
+      Integer :dataset_1_id
+      Integer :dataset_2_id
     end
   end
 end

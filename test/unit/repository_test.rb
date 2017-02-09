@@ -73,7 +73,7 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
 
   def test_first_nil
     @adapter.expects(:first).with('foo', 'conditions').returns(nil)
-    assert_equal nil, @repo.first('conditions')
+    assert_nil @repo.first('conditions')
   end
 
   def test_save_new

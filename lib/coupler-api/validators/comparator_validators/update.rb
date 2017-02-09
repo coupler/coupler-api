@@ -6,7 +6,7 @@ module CouplerAPI
 
         if data[:id].nil?
           errors.push("id must be present")
-        elsif !data[:id].is_a?(Fixnum)
+        elsif !data[:id].is_a?(Integer)
           errors.push("id must be a number")
         end
 

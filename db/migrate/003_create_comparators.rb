@@ -5,8 +5,8 @@ Sequel.migration do
       String :set_1, text: true
       String :set_2, text: true
       String :options, text: true
-      Fixnum :order
-      Fixnum :linkage_id
+      Integer :order
+      Integer :linkage_id
     end
   end
 end

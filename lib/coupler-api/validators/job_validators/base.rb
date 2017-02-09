@@ -22,7 +22,7 @@ module CouplerAPI
 
         if data[:linkage_id].nil?
           errors.push("linkage_id must be present")
-        elsif !data[:linkage_id].is_a?(Fixnum)
+        elsif !data[:linkage_id].is_a?(Integer)
           errors.push("linkage_id is not valid")
         end
 

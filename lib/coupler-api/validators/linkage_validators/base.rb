@@ -18,13 +18,13 @@ module CouplerAPI
 
         if data[:dataset_1_id].nil?
           errors.push("dataset_1_id must be present")
-        elsif !data[:dataset_1_id].is_a?(Fixnum)
+        elsif !data[:dataset_1_id].is_a?(Integer)
           errors.push("dataset_1_id must be an integer")
         end
 
         if data[:dataset_2_id].nil?
           errors.push("dataset_2_id must be present")
-        elsif !data[:dataset_2_id].is_a?(Fixnum)
+        elsif !data[:dataset_2_id].is_a?(Integer)
           errors.push("dataset_2_id must be an integer")
         end
 

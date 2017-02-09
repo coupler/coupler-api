@@ -38,7 +38,7 @@ module CouplerAPI
           errors.push("set_2 is not valid")
         end
 
-        if !data[:order].nil? && !data[:order].is_a?(Fixnum)
+        if !data[:order].nil? && !data[:order].is_a?(Integer)
           errors.push("order is not valid")
         end
 
@@ -50,7 +50,7 @@ module CouplerAPI
 
         if data[:linkage_id].nil?
           errors.push("linkage_id must be present")
-        elsif !data[:linkage_id].is_a?(Fixnum)
+        elsif !data[:linkage_id].is_a?(Integer)
           errors.push("linkage_id is not valid")
         end
 
