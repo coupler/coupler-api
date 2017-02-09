@@ -9,11 +9,14 @@ module CouplerAPI
     end
 
     def find
-      @adapter.find(@name)
+      @adapter.find(@name).collect do |hsh|
+        @constructor.new(hsh)
+      end
     end
 
     def first(conditions)
-      @adapter.first(@name, conditions)
+      hsh = @adapter.first(@name, conditions)
+      @constructor.new(hsh) unless hsh.nil?
     end
 
     def create(data)
@@ -25,7 +28,9 @@ module CouplerAPI
     end
 
     def delete(conditions)
-      @adapter.delete(@name, conditions)
+      @adapter.delete(@name, conditions).collect do |hsh|
+        @constructor.new(hsh)
+      end
     end
 
     private
