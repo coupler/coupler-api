@@ -1,67 +1,39 @@
 module CouplerAPI
-  class ComparatorRepository < ROM::Repository
-    relations :comparators
-
-    def self.dependencies
-      ['container']
-    end
-
-    def initialize(env, options = {})
+  class ComparatorRepository < Repository
+    def initialize(*args)
       super
-      @create = env.commands[:comparators][:create]
-      @update = env.commands[:comparators][:update]
-      @delete = env.commands[:comparators][:delete]
-    end
-
-    def find(conditions = nil)
-      rel = conditions ? comparators.where(conditions) : comparators
-      rel.to_a.collect do |obj|
-        instantiate(obj)
-      end
-    end
-
-    def first(conditions)
-      obj = comparators.where(conditions).one
-      instantiate(obj)
-    end
-
-    def create(data)
-      obj = @create.call([serialize(data)]).one
-      instantiate(obj)
-    end
-
-    def update(id, data)
-      @update.by_id(id).call(serialize(data)).length
-    end
-
-    def delete(id)
-      @delete.by_id(id).call.length
+      @name = :comparators
+      @constructor = Comparator
     end
 
     private
 
-    def instantiate(obj)
-      if obj.nil?
-        nil
-      else
-        Comparator.new(unserialize(obj))
+    def serialize(hsh)
+      hsh.merge({
+        set_1: convert_to_json(hsh[:set_1]),
+        set_2: convert_to_json(hsh[:set_2]),
+        options: convert_to_json(hsh[:options])
+      })
+    end
+
+    def unserialize(hsh)
+      hsh.merge({
+        set_1: convert_from_json(hsh[:set_1]),
+        set_2: convert_from_json(hsh[:set_2]),
+        options: convert_from_json(hsh[:options])
+      })
+    end
+
+    def convert_to_json(value)
+      if value
+        JSON.generate(value)
       end
     end
 
-    def serialize(data)
-      attribs = data.to_h.dup
-      attribs[:set_1]   = JSON.generate(attribs[:set_1])   if attribs[:set_1]
-      attribs[:set_2]   = JSON.generate(attribs[:set_2])   if attribs[:set_2]
-      attribs[:options] = JSON.generate(attribs[:options]) if attribs[:options]
-      attribs
-    end
-
-    def unserialize(data)
-      attribs = data.to_h.dup
-      attribs[:set_1]   = JSON.parse(attribs[:set_1])   if attribs[:set_1]
-      attribs[:set_2]   = JSON.parse(attribs[:set_2])   if attribs[:set_2]
-      attribs[:options] = JSON.parse(attribs[:options]) if attribs[:options]
-      attribs
+    def convert_from_json(value)
+      if value
+        JSON.parse(value)
+      end
     end
   end
 end
