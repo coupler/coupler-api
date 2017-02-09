@@ -10,6 +10,10 @@ module CouplerAPI
       end
     end
 
+    def update(hsh)
+      @attributes.update(hsh)
+    end
+
     def to_h
       @attributes.dup
     end
