@@ -10,17 +10,17 @@ module CouplerAPI
 
     def find
       @adapter.find(@name).collect do |hsh|
-        @constructor.new(hsh)
+        @constructor.new(unserialize(hsh))
       end
     end
 
     def first(conditions)
       hsh = @adapter.first(@name, conditions)
-      @constructor.new(hsh) unless hsh.nil?
+      @constructor.new(unserialize(hsh)) unless hsh.nil?
     end
 
     def save(obj)
-      hsh = obj.to_h
+      hsh = serialize(obj.to_h)
       if hsh[:id].nil?
         id = @adapter.create(@name, hsh)
         if id.nil?
@@ -45,14 +45,14 @@ module CouplerAPI
       obj
     end
 
-    private
+    protected
 
-    def unserialize(obj)
-      obj.to_h.rekey { |k| k.to_s }
+    def unserialize(hsh)
+      hsh
     end
 
-    def serialize(obj)
-      obj.to_h.rekey { |k| k.to_sym }
+    def serialize(hsh)
+      hsh
     end
   end
 end

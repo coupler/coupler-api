@@ -37,9 +37,31 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
     assert_equal expected, @repo.find
   end
 
+  def test_find_with_unserialize
+    @repo_klass.class_eval(<<-EOF)
+      def unserialize(obj)
+        obj + 1
+      end
+    EOF
+    @adapter.expects(:find).with('foo').returns([1, 2, 3])
+    expected = (2..4).collect { |i| @entity_klass.new(i) }
+    assert_equal expected, @repo.find
+  end
+
   def test_first
     @adapter.expects(:first).with('foo', 'conditions').returns(1)
     expected = @entity_klass.new(1)
+    assert_equal expected, @repo.first('conditions')
+  end
+
+  def test_first_with_unserialize
+    @repo_klass.class_eval(<<-EOF)
+      def unserialize(obj)
+        obj + 1
+      end
+    EOF
+    @adapter.expects(:first).with('foo', 'conditions').returns(1)
+    expected = @entity_klass.new(2)
     assert_equal expected, @repo.first('conditions')
   end
 
@@ -51,6 +73,19 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
   def test_save_new
     obj = mock(:to_h => { foo: 'bar' })
     @adapter.expects(:create).with('foo', { foo: 'bar' }).returns(1)
+    obj.expects(:id=).with(1)
+    assert_same obj, @repo.save(obj)
+  end
+
+  def test_save_new_with_serialize
+    @repo_klass.class_eval(<<-EOF)
+      def serialize(hsh)
+        hsh[:foo] += "baz"
+        hsh
+      end
+    EOF
+    obj = mock(:to_h => { foo: 'bar' })
+    @adapter.expects(:create).with('foo', { foo: 'barbaz' }).returns(1)
     obj.expects(:id=).with(1)
     assert_same obj, @repo.save(obj)
   end
@@ -67,6 +102,19 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
   def test_save_not_new
     obj = mock(:to_h => { id: 123, foo: 'bar' })
     @adapter.expects(:update).with('foo', { id: 123 }, { id: 123, foo: 'bar' }).returns(1)
+    obj.expects(:id=).never
+    assert_same obj, @repo.save(obj)
+  end
+
+  def test_save_not_new_with_serialize
+    @repo_klass.class_eval(<<-EOF)
+      def serialize(hsh)
+        hsh[:foo] += "baz"
+        hsh
+      end
+    EOF
+    obj = mock(:to_h => { id: 123, foo: 'bar' })
+    @adapter.expects(:update).with('foo', { id: 123 }, { id: 123, foo: 'barbaz' }).returns(1)
     obj.expects(:id=).never
     assert_same obj, @repo.save(obj)
   end
