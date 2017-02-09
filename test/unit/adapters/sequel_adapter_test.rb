@@ -46,8 +46,7 @@ class CouplerAPI::UnitTests::SequelAdapterTest < Minitest::Test
   def test_delete
     @db.expects(:[]).with(:foo).returns(@relation)
     @relation.expects(:where).with('conditions').returns(@relation)
-    @relation.expects(:all).returns(:return_value)
-    @relation.expects(:delete).returns('junk')
+    @relation.expects(:delete).returns(:return_value)
     assert_equal :return_value, @adapter.delete(:foo, 'conditions')
   end
 
