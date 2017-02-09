@@ -19,18 +19,30 @@ module CouplerAPI
       @constructor.new(hsh) unless hsh.nil?
     end
 
-    def create(data)
-      @adapter.create(@name, data)
-    end
-
-    def update(conditions, data)
-      @adapter.update(@name, conditions, data)
-    end
-
-    def delete(conditions)
-      @adapter.delete(@name, conditions).collect do |hsh|
-        @constructor.new(hsh)
+    def save(obj)
+      hsh = obj.to_h
+      if hsh[:id].nil?
+        id = @adapter.create(@name, hsh)
+        if id.nil?
+          raise "adapter did not return an id"
+        end
+        obj.id = id
+      else
+        count = @adapter.update(@name, { id: hsh[:id] }, hsh)
+        if count == 0
+          raise "nothing was updated"
+        end
       end
+      obj
+    end
+
+    def delete(obj)
+      hsh = obj.to_h
+      count = @adapter.delete(@name, { id: hsh[:id] })
+      if count == 0
+        raise "nothing was deleted"
+      end
+      obj
     end
 
     private

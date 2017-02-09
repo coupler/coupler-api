@@ -48,19 +48,49 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
     assert_equal nil, @repo.first('conditions')
   end
 
-  def test_create
-    @adapter.expects(:create).with('foo', 'data').returns(:return_value)
-    assert_equal :return_value, @repo.create('data')
+  def test_save_new
+    obj = mock(:to_h => { foo: 'bar' })
+    @adapter.expects(:create).with('foo', { foo: 'bar' }).returns(1)
+    obj.expects(:id=).with(1)
+    assert_same obj, @repo.save(obj)
   end
 
-  def test_update
-    @adapter.expects(:update).with('foo', 'conditions', 'data').returns(:return_value)
-    assert_equal :return_value, @repo.update('conditions', 'data')
+  def test_save_new_failure
+    obj = mock(:to_h => { foo: 'bar' })
+    @adapter.expects(:create).with('foo', { foo: 'bar' }).returns(nil)
+    obj.expects(:id=).never
+    assert_raises(Exception) do
+      @repo.save(obj)
+    end
+  end
+
+  def test_save_not_new
+    obj = mock(:to_h => { id: 123, foo: 'bar' })
+    @adapter.expects(:update).with('foo', { id: 123 }, { id: 123, foo: 'bar' }).returns(1)
+    obj.expects(:id=).never
+    assert_same obj, @repo.save(obj)
+  end
+
+  def test_save_not_new_failure
+    obj = mock(:to_h => { id: 123, foo: 'bar' })
+    @adapter.expects(:update).with('foo', { id: 123 }, { id: 123, foo: 'bar' }).returns(0)
+    obj.expects(:id=).never
+    assert_raises(Exception) do
+      @repo.save(obj)
+    end
   end
 
   def test_delete
-    @adapter.expects(:delete).with('foo', 'conditions').returns([1, 2, 3])
-    expected = (1..3).collect { |i| @entity_klass.new(i) }
-    assert_equal expected, @repo.delete('conditions')
+    obj = mock(:to_h => { id: 123 })
+    @adapter.expects(:delete).with('foo', { id: 123 }).returns(1)
+    assert_same obj, @repo.delete(obj)
+  end
+
+  def test_delete_failure
+    obj = mock(:to_h => { id: 123 })
+    @adapter.expects(:delete).with('foo', { id: 123 }).returns(0)
+    assert_raises(Exception) do
+      @repo.delete(obj)
+    end
   end
 end
