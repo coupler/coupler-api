@@ -55,4 +55,9 @@ class CouplerAPI::UnitTests::SequelAdapterTest < Minitest::Test
     Sequel::Migrator.expects(:apply).with(@db, 'foo')
     @adapter.migrate('foo')
   end
+
+  def test_schema
+    @db.expects(:schema).with(:foo).returns(:return_value)
+    assert_equal :return_value, @adapter.schema(:foo)
+  end
 end

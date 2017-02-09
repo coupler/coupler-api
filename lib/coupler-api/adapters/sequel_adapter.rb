@@ -11,6 +11,10 @@ module CouplerAPI
       Sequel::Migrator.apply(db, path)
     end
 
+    def schema(name)
+      db.schema(name)
+    end
+
     def find(name, conditions = nil)
       ds = db[name]
       if conditions
