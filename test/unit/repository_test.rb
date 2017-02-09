@@ -32,9 +32,15 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
   end
 
   def test_find
-    @adapter.expects(:find).with('foo').returns([1, 2, 3])
+    @adapter.expects(:find).with('foo', nil).returns([1, 2, 3])
     expected = (1..3).collect { |i| @entity_klass.new(i) }
     assert_equal expected, @repo.find
+  end
+
+  def test_find_with_conditions
+    @adapter.expects(:find).with('foo', 'conditions').returns([1, 2, 3])
+    expected = (1..3).collect { |i| @entity_klass.new(i) }
+    assert_equal expected, @repo.find('conditions')
   end
 
   def test_find_with_unserialize
@@ -43,7 +49,7 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
         obj + 1
       end
     EOF
-    @adapter.expects(:find).with('foo').returns([1, 2, 3])
+    @adapter.expects(:find).with('foo', nil).returns([1, 2, 3])
     expected = (2..4).collect { |i| @entity_klass.new(i) }
     assert_equal expected, @repo.find
   end

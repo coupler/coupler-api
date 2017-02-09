@@ -8,8 +8,8 @@ module CouplerAPI
       ['adapter']
     end
 
-    def find
-      @adapter.find(@name).collect do |hsh|
+    def find(conditions = nil)
+      @adapter.find(@name, conditions).collect do |hsh|
         @constructor.new(unserialize(hsh))
       end
     end
