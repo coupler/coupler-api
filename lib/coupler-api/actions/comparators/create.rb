@@ -13,7 +13,7 @@ module CouplerAPI
       def run(params)
         errors = @validator.validate(params)
         if errors.empty?
-          comparator = @repo.create(params)
+          comparator = @repo.save(Comparator.new(params))
           { 'id' => comparator.id }
         else
           { 'errors' => errors }

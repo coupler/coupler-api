@@ -9,7 +9,6 @@ class CouplerAPI::IntegrationTests::JobTest < Minitest::Test
     @tempfile = Tempfile.new('coupler_api')
     @db = Sequel.connect(database_uri)
     @app = CouplerAPI::Builder.create({
-      adapter: 'sql',
       uri: database_uri
     })
   end

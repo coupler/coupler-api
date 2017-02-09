@@ -13,7 +13,7 @@ module CouplerAPI
       def run(params)
         errors = @validator.validate(params)
         if errors.empty?
-          linkage = @repo.create(params)
+          linkage = @repo.save(Linkage.new(params))
           { 'id' => linkage.id }
         else
           { 'errors' => errors }

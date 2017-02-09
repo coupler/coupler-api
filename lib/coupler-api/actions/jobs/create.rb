@@ -13,7 +13,7 @@ module CouplerAPI
       def run(params)
         errors = @validator.validate(params)
         if errors.empty?
-          job = @repo.create(params)
+          job = @repo.save(Job.new(params))
           { 'id' => job.id }
         else
           { 'errors' => errors }

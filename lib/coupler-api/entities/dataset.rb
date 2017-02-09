@@ -29,26 +29,15 @@ module CouplerAPI
 
     private
 
-    def container
+    def adapter
       case type
       when 'mysql'
-        ROM.container(:sql, uri) do |rom|
-          rom.use :macros
-          rom.relation(table_name.to_sym)
-        end
+        SequelAdapter.new(uri)
       end
     end
 
-    def gateway
-      container.gateways[:default]
-    end
-
-    def dataset
-      gateway.dataset(table_name.to_sym)
-    end
-
     def schema
-      gateway.connection.schema(table_name.to_sym)
+      adapter.schema(table_name.to_sym)
     end
   end
 end

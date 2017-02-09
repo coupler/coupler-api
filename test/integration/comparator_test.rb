@@ -9,7 +9,6 @@ class CouplerAPI::IntegrationTests::ComparatorTest < Minitest::Test
     @tempfile = Tempfile.new('coupler_api')
     @db = Sequel.connect(database_uri)
     @app = CouplerAPI::Builder.create({
-      adapter: 'sql',
       uri: database_uri
     })
   end
@@ -100,7 +99,7 @@ class CouplerAPI::IntegrationTests::ComparatorTest < Minitest::Test
       'kind' => 'compare',
       'set_1' => '["foo"]',
       'set_2' => '["foo","bar"]',
-      'options' => '{"operation":"equal"',
+      'options' => '{"operation":"equal"}',
       'linkage_id' => 1
     })
     count = @db[:comparators].count

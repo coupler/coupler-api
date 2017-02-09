@@ -12,18 +12,18 @@ module CouplerAPI
 
       def run(params)
         errors = @validator.validate(params)
-        if errors.empty?
-          id = params.delete(:id)
-
-          num = @repo.update(id, params)
-          if num > 0
-            { 'id' => id }
-          else
-            nil
-          end
-        else
-          { 'errors' => errors }
+        if !errors.empty?
+          return { 'errors' => errors }
         end
+
+        comparator = @repo.first(id: params[:id])
+        if comparator.nil?
+          return { 'errors' => { 'id' => ['was not found'] } }
+        end
+
+        comparator.update(params)
+        @repo.save(comparator)
+        { 'id' => comparator.id }
       end
     end
   end

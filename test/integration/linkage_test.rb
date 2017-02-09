@@ -9,7 +9,6 @@ class CouplerAPI::IntegrationTests::LinkageTest < Minitest::Test
     @tempfile = Tempfile.new('coupler_api')
     @db = Sequel.connect(database_uri)
     @app = CouplerAPI::Builder.create({
-      adapter: 'sql',
       uri: database_uri
     })
   end
@@ -69,8 +68,8 @@ class CouplerAPI::IntegrationTests::LinkageTest < Minitest::Test
     id = @db[:linkages].insert(data)
 
     put_json("/linkages/#{id}", data.merge({'name' => 'bar'}))
-    assert last_response.ok?
     assert_nil last_response_body['errors']
+    assert last_response.ok?
     assert_equal id, last_response_body['id']
     assert_equal 'bar', @db[:linkages].first[:name]
   end
