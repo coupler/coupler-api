@@ -31,7 +31,7 @@ module CouplerAPI
 
     def bootstrap
       injector.register_value('storage_path', @options[:storage_path])
-      injector.register_factory('container', method(:create_container))
+      injector.register_factory('adapter', method(:create_adapter))
 
       injector.register_service('DatasetRepository', DatasetRepository)
       injector.register_service('DatasetRouter', DatasetRouter)
@@ -96,64 +96,10 @@ module CouplerAPI
       injector.register_service('LinkageCombiner', LinkageCombiner)
     end
 
-    def create_container
-      config = ROM::Configuration.new(options[:adapter].to_sym, options[:uri])
-      config.use(:macros)
-
-      config.relation(:datasets) do
-        def by_id(id)
-          where(id: id)
-        end
-      end
-      config.commands(:datasets) do
-        define(:create)
-        define(:update)
-        define(:delete)
-      end
-
-      config.relation(:linkages) do
-        def by_id(id)
-          where(id: id)
-        end
-      end
-      config.commands(:linkages) do
-        define(:create)
-        define(:update)
-        define(:delete)
-      end
-
-      config.relation(:comparators) do
-        def by_id(id)
-          where(id: id)
-        end
-      end
-      config.commands(:comparators) do
-        define(:create)
-        define(:update)
-        define(:delete)
-      end
-
-      config.relation(:jobs) do
-        def by_id(id)
-          where(id: id)
-        end
-      end
-      config.commands(:jobs) do
-        define(:create)
-        define(:update)
-        define(:delete)
-      end
-
-      container = ROM.container(config)
-
-      # run migrations
-      gateway = container.gateways[:default]
-      migrator = ROM::SQL::Migration::Migrator.new(gateway.connection, {
-        path: File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'db', 'migrate'))
-      })
-      migrator.run
-
-      container
+    def create_adapter
+      adapter = SequelAdapter.new(@options[:uri])
+      adapter.migrate(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'db', 'migrate')))
+      adapter
     end
 
     def create_routes(injector)
