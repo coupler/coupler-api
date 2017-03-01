@@ -12,11 +12,17 @@ module CouplerAPI
 
       def run(params)
         errors = @validator.validate(params)
-        if errors.empty?
-          dataset = @repo.save(Dataset.new(params))
+        if !errors.empty?
+          return { 'errors' => errors }
+        end
+
+        # check for connectivity
+        dataset = Dataset.new(params)
+        if dataset.can_connect?
+          @repo.save(dataset)
           { 'id' => dataset.id }
         else
-          { 'errors' => errors }
+          { 'errors' => { 'base' => ["can't connect"] } }
         end
       end
     end

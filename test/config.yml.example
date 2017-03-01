@@ -1,0 +1,12 @@
+dataset_1:
+  type: mysql
+  host: localhost
+  database_name: coupler
+  table_name: people
+  username: coupler
+  password: coupler
+mysql_sandbox:
+  host: localhost
+  database_name: test
+  username: coupler
+  password: coupler

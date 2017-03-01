@@ -27,6 +27,15 @@ module CouplerAPI
       end
     end
 
+    def can_connect?
+      begin
+        schema
+        true
+      rescue Exception
+        false
+      end
+    end
+
     private
 
     def adapter

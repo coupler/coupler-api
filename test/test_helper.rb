@@ -33,5 +33,9 @@ module CouplerAPI
     def last_response_body
       JSON.parse(last_response.body)
     end
+
+    def config
+      @config ||= YAML.load_file(File.join(__dir__, "config.yml"))
+    end
   end
 end

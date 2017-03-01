@@ -22,8 +22,14 @@ module CouplerAPI
         end
 
         dataset.update(params)
-        @repo.save(dataset)
-        { 'id' => dataset.id }
+        # check for connectivity
+        dataset = Dataset.new(params)
+        if dataset.can_connect?
+          @repo.save(dataset)
+          { 'id' => dataset.id }
+        else
+          { 'errors' => { 'base' => ["can't connect"] } }
+        end
       end
     end
   end

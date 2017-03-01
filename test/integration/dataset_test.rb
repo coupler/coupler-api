@@ -23,55 +23,38 @@ class CouplerAPI::IntegrationTests::DatasetTest < Minitest::Test
 
   def test_create
     count = @db[:datasets].count
-    post_json("/datasets", {
-      'name' => 'foo',
-      'type' => 'mysql',
-      'host' => 'localhost',
-      'database_name' => 'foo',
-      'username' => 'foo',
-      'table_name' => 'foo'
+    data = config['dataset_1'].merge({
+      'name' => 'foo'
     })
+    post_json("/datasets", data)
     assert_nil last_response_body['errors']
     assert_equal count + 1, @db[:datasets].count
   end
 
   def test_index
-    @db[:datasets].insert({
-      'name' => 'foo',
-      'type' => 'mysql',
-      'host' => 'localhost',
-      'database_name' => 'foo',
-      'username' => 'foo',
-      'table_name' => 'foo'
+    data = config['dataset_1'].merge({
+      'name' => 'foo'
     })
+    @db[:datasets].insert(data)
 
     get("/datasets")
     assert_equal 1, last_response_body.length
   end
 
   def test_show
-    id = @db[:datasets].insert({
-      'name' => 'foo',
-      'type' => 'mysql',
-      'host' => 'localhost',
-      'database_name' => 'foo',
-      'username' => 'foo',
-      'table_name' => 'foo'
+    data = config['dataset_1'].merge({
+      'name' => 'foo'
     })
+    id = @db[:datasets].insert(data)
 
     get("/datasets/#{id}")
     assert_equal 'foo', last_response_body['name']
   end
 
   def test_update
-    data = {
-      'name' => 'foo',
-      'type' => 'mysql',
-      'host' => 'localhost',
-      'database_name' => 'foo',
-      'username' => 'foo',
-      'table_name' => 'foo'
-    }
+    data = config['dataset_1'].merge({
+      'name' => 'foo'
+    })
     id = @db[:datasets].insert(data)
 
     put_json("/datasets/#{id}", data.merge({'name' => 'bar'}))
@@ -81,14 +64,10 @@ class CouplerAPI::IntegrationTests::DatasetTest < Minitest::Test
   end
 
   def test_delete
-    id = @db[:datasets].insert({
-      'name' => 'foo',
-      'type' => 'mysql',
-      'host' => 'localhost',
-      'database_name' => 'foo',
-      'username' => 'foo',
-      'table_name' => 'foo'
+    data = config['dataset_1'].merge({
+      'name' => 'foo'
     })
+    id = @db[:datasets].insert(data)
     count = @db[:datasets].count
 
     delete("/datasets/#{id}")
@@ -98,27 +77,29 @@ class CouplerAPI::IntegrationTests::DatasetTest < Minitest::Test
   end
 
   def test_fields
-    id = @db[:datasets].insert({
-      'name' => 'foo',
-      'type' => 'mysql',
-      'host' => 'localhost',
-      'database_name' => 'test_coupler_api',
-      'username' => 'coupler_api',
-      'password' => 'secret',
-      'table_name' => 'foo'
-    })
+    sandbox = config['mysql_sandbox']
     uri =
       if RUBY_PLATFORM == "java"
-        "jdbc:mysql://localhost/test_coupler_api?user=coupler_api&password=secret"
+        "jdbc:mysql://%s/%s?user=%s&password=%s" %
+          sandbox.values_at('host', 'database_name', 'username', 'password')
       else
-        "mysql2://localhost/test_coupler_api?username=coupler_api&password=secret"
+        "mysql2://%s/%s?username=%s&password=%s" %
+          sandbox.values_at('host', 'database_name', 'username', 'password')
       end
+
     db2 = Sequel.connect(uri)
     db2.create_table! :foo do
       primary_key :id
       String :foo
       String :bar
     end
+
+    data = sandbox.merge({
+      'name' => 'foo',
+      'type' => 'mysql',
+      'table_name' => 'foo'
+    })
+    id = @db[:datasets].insert(data)
 
     get("/datasets/#{id}/fields")
     assert_nil last_response_body['errors']
