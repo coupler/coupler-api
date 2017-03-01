@@ -24,6 +24,7 @@ module CouplerAPI
             resource '*', :methods => :any, :headers => :any
           end
         end
+        use Rack::CommonLogger
       end
     end
 
