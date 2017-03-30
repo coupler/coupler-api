@@ -20,7 +20,7 @@ module CouplerAPI
       Rack::Builder.new(app) do
         use Rack::Cors do
           allow do
-            origins 'localhost:12345'
+            origins 'localhost:4200'
             resource '*', :methods => :any, :headers => :any
           end
         end
