@@ -52,7 +52,7 @@ module CouplerAPI
 
       if !result.nil?
         res.write(result)
-        res.status = 200
+        res.status = 200 unless res.status
       else
         res.status = 404
       end

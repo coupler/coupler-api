@@ -37,6 +37,9 @@ module CouplerAPI
       data['id'] = req['dataset_id']
       params = @update_params.process(data)
       result = @update.run(params)
+      if result['errors']
+        res.status = 400
+      end
       JSON.generate(result)
     end
 
