@@ -12,7 +12,11 @@ module CouplerAPI
 
     def start
       app = Builder.create(options)
-      Rack::Handler::WEBrick.run(app, { Port: options[:port] })
+      Rack::Handler::WEBrick.run(app, { Port: options[:port] }) do |server|
+        Signal.trap("INT") do
+          server.shutdown
+        end
+      end
     end
   end
 end
