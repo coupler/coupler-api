@@ -95,6 +95,9 @@ module CouplerAPI
       injector.register_service('JobValidators::Linkage', JobValidators::Linkage)
 
       injector.register_service('LinkageCombiner', LinkageCombiner)
+
+      injector.register_service('Runner', Runner)
+      injector.register_service('LinkageRunner', LinkageRunner)
     end
 
     def create_adapter

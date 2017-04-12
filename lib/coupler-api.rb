@@ -60,6 +60,10 @@ module CouplerAPI
 
   # combiners
   autoload :LinkageCombiner, "coupler-api/combiners/linkage_combiner"
+
+  # runners
+  autoload :Runner, "coupler-api/runner"
+  autoload :LinkageRunner, "coupler-api/runners/linkage_runner"
 end
 
 require 'coupler-api/entity'
