@@ -27,6 +27,12 @@ module CouplerAPI
       end
     end
 
+    def to_h
+      result = super
+      result['fields'] = fields
+      result
+    end
+
     def can_connect?
       begin
         schema
