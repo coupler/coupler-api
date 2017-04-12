@@ -23,7 +23,7 @@ module CouplerAPI
 
     def fields
       schema.collect do |(name, info)|
-        { 'name' => name, 'type' => info[:type].to_s }
+        { 'name' => name, 'kind' => info[:type].to_s }
       end
     end
 
