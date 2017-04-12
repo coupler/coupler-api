@@ -1,6 +1,6 @@
 module CouplerAPI
   module JobValidators
-    class Linkage
+    class Run
       def self.dependencies
         []
       end

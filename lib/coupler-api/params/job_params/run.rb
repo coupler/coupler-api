@@ -1,6 +1,6 @@
 module CouplerAPI
   module JobParams
-    class Linkage
+    class Run
       def self.dependencies
         []
       end

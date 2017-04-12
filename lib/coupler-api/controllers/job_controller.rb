@@ -1,18 +1,18 @@
 module CouplerAPI
   class JobController
-    def initialize(create, show, linkage, create_params, show_params, linkage_params)
+    def initialize(create, show, run, create_params, show_params, run_params)
       @create = create
       @show = show
-      @linkage = linkage
+      @run = run
       @create_params = create_params
       @show_params = show_params
-      @linkage_params = linkage_params
+      @run_params = run_params
     end
 
     def self.dependencies
       [
-        'Jobs::Create', 'Jobs::Show', 'Jobs::Linkage', 'JobParams::Create',
-        'JobParams::Show', 'JobParams::Linkage'
+        'Jobs::Create', 'Jobs::Show', 'Jobs::Run', 'JobParams::Create',
+        'JobParams::Show', 'JobParams::Run'
       ]
     end
 
@@ -31,9 +31,9 @@ module CouplerAPI
       end
     end
 
-    def linkage(req, res)
-      params = @linkage_params.process({ 'id' => req['job_id'] })
-      result = @linkage.run(params)
+    def run(req, res)
+      params = @run_params.process({ 'id' => req['job_id'] })
+      result = @run.run(params)
       if result
         JSON.generate(result)
       end

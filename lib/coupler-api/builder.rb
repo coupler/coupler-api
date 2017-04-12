@@ -86,13 +86,13 @@ module CouplerAPI
       injector.register_service('JobController', JobController)
       injector.register_service('Jobs::Create', Jobs::Create)
       injector.register_service('Jobs::Show', Jobs::Show)
-      injector.register_service('Jobs::Linkage', Jobs::Linkage)
+      injector.register_service('Jobs::Run', Jobs::Run)
       injector.register_service('JobParams::Create', JobParams::Create)
       injector.register_service('JobParams::Show', JobParams::Show)
-      injector.register_service('JobParams::Linkage', JobParams::Linkage)
+      injector.register_service('JobParams::Run', JobParams::Run)
       injector.register_service('JobValidators::Create', JobValidators::Create)
       injector.register_service('JobValidators::Show', JobValidators::Show)
-      injector.register_service('JobValidators::Linkage', JobValidators::Linkage)
+      injector.register_service('JobValidators::Run', JobValidators::Run)
 
       injector.register_service('LinkageCombiner', LinkageCombiner)
 

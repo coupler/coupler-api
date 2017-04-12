@@ -26,9 +26,9 @@ module CouplerAPI
         case path
         when '', '/'
           action = @controller.method(:create)
-        when %r{/(\d+)/linkage$}
+        when %r{/(\d+)/run$}
           req['job_id'] = $1.to_i
-          action = @controller.method(:linkage)
+          action = @controller.method(:run)
         end
       when 'OPTIONS'
         result = ''

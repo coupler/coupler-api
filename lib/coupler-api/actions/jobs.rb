@@ -6,6 +6,6 @@ module CouplerAPI
     autoload :Show, "coupler-api/actions/jobs/show"
     #autoload :Delete, "coupler-api/actions/jobs/delete"
 
-    autoload :Linkage, "coupler-api/actions/jobs/linkage"
+    autoload :Run, "coupler-api/actions/jobs/run"
   end
 end
