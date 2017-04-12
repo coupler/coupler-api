@@ -1,19 +1,19 @@
 module CouplerAPI
   module Linkages
     class Show
-      def initialize(repo, validator)
-        @repo = repo
+      def initialize(combiner, validator)
+        @combiner = combiner
         @validator = validator
       end
 
       def self.dependencies
-        ['LinkageRepository', 'LinkageValidators::Show']
+        ['LinkageCombiner', 'LinkageValidators::Show']
       end
 
       def run(params)
         errors = @validator.validate(params)
         if errors.empty?
-          linkage = @repo.first(params)
+          linkage = @combiner.find(params)
           if linkage.nil?
             { 'errors' => 'not found' }
           else
