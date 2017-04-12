@@ -11,8 +11,8 @@ module CouplerAPI
       @job_repo = job_repo
     end
 
-    def find(id)
-      linkage = @linkage_repo.first({ :id => id })
+    def find(conditions)
+      linkage = @linkage_repo.first(conditions)
       if linkage.nil?
         return nil
       end
@@ -24,8 +24,8 @@ module CouplerAPI
         dataset_2 = @dataset_repo.first({ :id => linkage.dataset_2_id })
       end
 
-      comparators = @comparator_repo.find({ :linkage_id => id})
-      jobs = @job_repo.find({ :linkage_id => id})
+      comparators = @comparator_repo.find({ :linkage_id => linkage.id })
+      jobs = @job_repo.find({ :linkage_id => linkage.id })
 
       linkage.dataset_1 = dataset_1
       linkage.dataset_2 = dataset_2
