@@ -17,7 +17,7 @@ module CouplerAPI
           if dataset.nil?
             { 'errors' => 'not found' }
           else
-            { 'fields' => dataset.fields }
+            dataset.fields
           end
         else
           { 'errors' => errors }
