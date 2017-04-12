@@ -39,6 +39,12 @@ module CouplerAPI
       db[name].where(conditions).delete
     end
 
+    def close
+      if @db
+        @db.disconnect
+      end
+    end
+
     private
 
     def db

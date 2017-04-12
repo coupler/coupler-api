@@ -39,14 +39,21 @@ module CouplerAPI
     private
 
     def adapter
-      case type
-      when 'mysql'
-        SequelAdapter.new(uri)
-      end
+      adapter =
+        case type
+        when 'mysql'
+          SequelAdapter.new(uri)
+        end
+      yield adapter
+      adapter.close
     end
 
     def schema
-      adapter.schema(table_name.to_sym)
+      result = nil
+      adapter do |adapter|
+        result = adapter.schema(table_name.to_sym)
+      end
+      result
     end
   end
 end
