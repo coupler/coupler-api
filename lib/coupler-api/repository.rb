@@ -20,7 +20,7 @@ module CouplerAPI
     end
 
     def save(obj)
-      hsh = serialize(obj.to_h)
+      hsh = serialize(obj.attributes)
       if hsh[:id].nil?
         id = @adapter.create(@name, hsh)
         if id.nil?
@@ -37,7 +37,7 @@ module CouplerAPI
     end
 
     def delete(obj)
-      hsh = obj.to_h
+      hsh = obj.attributes
       count = @adapter.delete(@name, { id: hsh[:id] })
       if count == 0
         raise "nothing was deleted"

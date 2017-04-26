@@ -17,6 +17,10 @@ module CouplerAPI
     def to_h
       @attributes.dup
     end
+
+    def attributes
+      @attributes.dup
+    end
   end
 
   def self.Entity(attribute_names, &block)
