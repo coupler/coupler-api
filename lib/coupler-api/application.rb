@@ -9,6 +9,12 @@ module CouplerAPI
       res = Rack::Response.new()
       path = req.path_info
 
+      if req.request_method == "OPTIONS"
+        res.status = 200
+        res.finish
+        return
+      end
+
       router = nil
       @routes.each do |route|
         md = route[:path].match(path)
@@ -27,15 +33,14 @@ module CouplerAPI
         rescue Exception => e
           p e
           p e.backtrace
+          res["Content-Type"] = "application/json"
           res.write(JSON.generate({ 'errors' => [e] }))
           res.status = 500
         end
       else
+        res["Content-Type"] = "application/json"
+        res.write(JSON.generate({ 'errors' => [ 'not found' ] }))
         res.status = 404
-      end
-
-      if res.not_found?
-        res.write('{"errors":["not found"]}')
       end
 
       res.finish

@@ -1,5 +1,5 @@
 module CouplerAPI
-  class DatasetController
+  class DatasetController < Controller
     def initialize(index, create, update, show, delete, fields, create_params, update_params, show_params)
       @index = index
       @create = create
@@ -21,50 +21,35 @@ module CouplerAPI
     end
 
     def index(req, res)
-      result = @index.run
-      JSON.generate(result)
+      @index.run
     end
 
     def create(req, res)
       data = JSON.parse(req.body.read)
       params = @create_params.process(data)
-      result = @create.run(params)
-      JSON.generate(result)
+      @create.run(params)
     end
 
     def update(req, res)
       data = JSON.parse(req.body.read)
       data['id'] = req['dataset_id']
       params = @update_params.process(data)
-      result = @update.run(params)
-      if result['errors']
-        res.status = 400
-      end
-      JSON.generate(result)
+      @update.run(params)
     end
 
     def show(req, res)
       params = @show_params.process({ 'id' => req['dataset_id'] })
-      result = @show.run(params)
-      if result
-        JSON.generate(result)
-      end
+      @show.run(params)
     end
 
     def delete(req, res)
       params = @show_params.process({ 'id' => req['dataset_id'] })
-      result = @delete.run(params)
-      if result
-        JSON.generate(result)
-      end
+      @delete.run(params)
     end
 
     def fields(req, res)
       params = @show_params.process({ 'id' => req['dataset_id'] })
-      result = @fields.run(params)
-      if result
-        JSON.generate(result)
-      end
+      @fields.run(params)
     end
   end
 end

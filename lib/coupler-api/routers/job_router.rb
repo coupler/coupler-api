@@ -1,5 +1,5 @@
 module CouplerAPI
-  class JobRouter
+  class JobRouter < Router
     def initialize(controller)
       @controller = controller
     end
@@ -8,44 +8,31 @@ module CouplerAPI
       ['JobController']
     end
 
-    def route(req, res)
+    def setup_action(req)
       path = req.path_info
       action = nil
-      result = nil
 
       case req.request_method
       when 'GET'
         case path
         #when '', '/'
-          #action = @controller.method(:index)
+          #action = @controller.build_action(:index)
         when %r{/(\d+)$}
           req['job_id'] = $1.to_i
-          action = @controller.method(:show)
+          action = @controller.build_action(:show)
         end
       when 'POST'
         case path
         when '', '/'
-          action = @controller.method(:create)
+          action = @controller.build_action(:create)
         when %r{/(\d+)/run$}
           req['job_id'] = $1.to_i
-          action = @controller.method(:run)
+          action = @controller.build_action(:run)
         end
       when 'OPTIONS'
         result = ''
       end
-
-      if action
-        result = action.call(req, res)
-      end
-
-      if !result.nil?
-        res.write(result)
-        res.status = 200
-      else
-        p req.request_method
-        p path
-        res.status = 404
-      end
+      action
     end
   end
 end

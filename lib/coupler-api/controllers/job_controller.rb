@@ -1,5 +1,5 @@
 module CouplerAPI
-  class JobController
+  class JobController < Controller
     def initialize(create, show, run, create_params, show_params, run_params)
       @create = create
       @show = show
@@ -19,24 +19,17 @@ module CouplerAPI
     def create(req, res)
       data = JSON.parse(req.body.read)
       params = @create_params.process(data)
-      result = @create.run(params)
-      JSON.generate(result)
+      @create.run(params)
     end
 
     def show(req, res)
       params = @show_params.process({ 'id' => req['job_id'] })
-      result = @show.run(params)
-      if result
-        JSON.generate(result)
-      end
+      @show.run(params)
     end
 
     def run(req, res)
       params = @run_params.process({ 'id' => req['job_id'] })
-      result = @run.run(params)
-      if result
-        JSON.generate(result)
-      end
+      @run.run(params)
     end
   end
 end

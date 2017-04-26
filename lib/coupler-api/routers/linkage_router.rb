@@ -1,5 +1,5 @@
 module CouplerAPI
-  class LinkageRouter
+  class LinkageRouter < Router
     def initialize(controller)
       @controller = controller
     end
@@ -8,54 +8,41 @@ module CouplerAPI
       ['LinkageController']
     end
 
-    def route(req, res)
+    def setup_action(req)
       path = req.path_info
       action = nil
-      result = nil
 
       case req.request_method
       when 'GET'
         case path
         when '', '/'
-          action = @controller.method(:index)
+          action = @controller.build_action(:index)
         when %r{/(\d+)$}
           req['linkage_id'] = $1.to_i
-          action = @controller.method(:show)
+          action = @controller.build_action(:show)
         when %r{/(\d+)/comparators$}
           req['linkage_id'] = $1.to_i
-          action = @controller.method(:comparators)
+          action = @controller.build_action(:comparators)
         end
       when 'POST'
         case path
         when '', '/'
-          action = @controller.method(:create)
+          action = @controller.build_action(:create)
         end
       when 'PUT'
         case path
         when %r{/(\d+)$}
           req['linkage_id'] = $1.to_i
-          action = @controller.method(:update)
+          action = @controller.build_action(:update)
         end
       when 'DELETE'
         case path
         when %r{/(\d+)$}
           req['linkage_id'] = $1.to_i
-          action = @controller.method(:delete)
+          action = @controller.build_action(:delete)
         end
-      when 'OPTIONS'
-        result = ''
       end
-
-      if action
-        result = action.call(req, res)
-      end
-
-      if !result.nil?
-        res.write(result)
-        res.status = 200
-      else
-        res.status = 404
-      end
+      action
     end
   end
 end
