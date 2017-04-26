@@ -11,7 +11,7 @@ module CouplerAPI
     end
 
     def run(job)
-      linkage = @linkage_combiner.find(job.linkage_id)
+      linkage = @linkage_combiner.find(id: job.linkage_id)
       if linkage.nil?
         return { 'errors' => 'linkage not found' }
       end
