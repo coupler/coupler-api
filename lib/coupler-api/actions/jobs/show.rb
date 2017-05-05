@@ -1,19 +1,19 @@
 module CouplerAPI
   module Jobs
     class Show
-      def initialize(repo, validator)
-        @repo = repo
+      def initialize(combiner, validator)
+        @combiner = combiner
         @validator = validator
       end
 
       def self.dependencies
-        ['JobRepository', 'JobValidators::Show']
+        ['JobCombiner', 'JobValidators::Show']
       end
 
       def run(params)
         errors = @validator.validate(params)
         if errors.empty?
-          job = @repo.first(params)
+          job = @combiner.find(params)
           if job.nil?
             { 'errors' => 'not found' }
           else
