@@ -23,7 +23,11 @@ module CouplerAPI
 
     def fields
       schema.collect do |(name, info)|
-        { 'name' => name, 'kind' => info[:type].to_s }
+        field = { 'name' => name, 'kind' => info[:type].to_s }
+        if info[:primary_key]
+          field['primary_key'] = info[:primary_key]
+        end
+        field
       end
     end
 
@@ -40,6 +44,14 @@ module CouplerAPI
       rescue Exception
         false
       end
+    end
+
+    def fetch_records(conditions)
+      result = nil
+      adapter do |adapter|
+        result = adapter.find(table_name.to_sym, conditions)
+      end
+      result
     end
 
     private
