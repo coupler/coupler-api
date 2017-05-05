@@ -4,6 +4,9 @@ module CouplerAPI
       action = setup_action(req)
       if action
         action.call(req, res)
+      else
+        res.status = 404
+        { "errors" => ["not found"] }
       end
     end
 
