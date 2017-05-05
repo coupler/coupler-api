@@ -1,13 +1,14 @@
 module CouplerAPI
   class LinkageRunner
-    def initialize(linkage_combiner, job_repo, storage_path)
+    def initialize(linkage_combiner, job_repo, linkage_result_repo, storage_path)
       @linkage_combiner = linkage_combiner
       @job_repo = job_repo
+      @linkage_result_repo = linkage_result_repo
       @storage_path = storage_path
     end
 
     def self.dependencies
-      [ 'LinkageCombiner', 'JobRepository', 'storage_path' ]
+      [ 'LinkageCombiner', 'JobRepository', 'LinkageResultRepository', 'storage_path' ]
     end
 
     def run(job)
@@ -28,21 +29,18 @@ module CouplerAPI
       dataset_2 = linkage.dataset_2
       comparators = linkage.comparators
 
-      # create linkage result set
-      db_path = File.join(@storage_path, "job-#{job.id}.sqlite")
-      options =
-        if RUBY_PLATFORM == "java"
-          {
-            :adapter => "jdbc",
-            :uri => "jdbc:sqlite:#{db_path}"
-          }
-        else
-          {
-            :adapter => "sqlite",
-            :database => db_path
-          }
-        end
-      result_set = ::Linkage::ResultSet['database'].new(options)
+      # create linkage result
+      linkage_result = LinkageResult.new({
+        job_id: job.id, linkage_id: linkage.id
+      })
+      @linkage_result_repo.save(linkage_result)
+      job.linkage_result_id = linkage_result.id
+
+      linkage_result.database_path =
+        File.join(@storage_path, "linkage-result-#{linkage_result.id}.sqlite")
+      @linkage_result_repo.save(linkage_result)
+
+      result_set = ::Linkage::ResultSet['database'].new(linkage_result.uri)
 
       # create linkage datasets
       dataset_1 = ::Linkage::Dataset.new(dataset_1.uri, dataset_1.table_name)
@@ -85,6 +83,9 @@ module CouplerAPI
         job.ended_at = Time.now
         @job_repo.save(job)
 
+        # save result summary
+        linkage_result.calculate_match_count!
+        @linkage_result_repo.save(linkage_result_repo)
 
         { 'success' => true }
       rescue Exception => e
