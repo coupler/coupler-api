@@ -15,12 +15,20 @@ module CouplerAPI
       db.schema(name)
     end
 
-    def find(name, conditions = nil)
+    def find(name, conditions = nil, limit = nil, offset = nil)
+      ds = db[name]
+      ds = ds.where(conditions) if conditions
+      ds = ds.limit(limit)      if limit
+      ds = ds.offset(offset)    if offset
+      ds.all
+    end
+
+    def count(name, conditions = nil)
       ds = db[name]
       if conditions
         ds = ds.where(conditions)
       end
-      ds.all
+      ds.count
     end
 
     def first(name, conditions)
