@@ -25,8 +25,6 @@ module CouplerAPI
         end
 
         @runner.run(job)
-
-        { 'success' => true }
       end
     end
   end
