@@ -64,6 +64,7 @@ module CouplerAPI
 
   # combiners
   autoload :LinkageCombiner, "coupler-api/combiners/linkage_combiner"
+  autoload :JobCombiner, "coupler-api/combiners/job_combiner"
 
   # runners
   autoload :Runner, "coupler-api/runner"
