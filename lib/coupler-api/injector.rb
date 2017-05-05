@@ -1,5 +1,7 @@
 module CouplerAPI
   class Injector
+    class NotRegisteredError < Exception; end
+
     def initialize(parent = nil)
       @registry = {}
       @parent = nil
@@ -17,13 +19,13 @@ module CouplerAPI
       @registry[name] = {type: 'value', object: value}
     end
 
-    def get(name)
+    def get(name, chain = [])
       if !@registry.has_key?(name)
         if @parent
-          return @parent.get(name)
+          return @parent.get(name, chain)
         end
 
-        raise "#{name} has not been registered"
+        raise "#{name} has not been registered (chain: #{chain.inspect})"
       end
 
       entry = @registry[name]
@@ -32,13 +34,13 @@ module CouplerAPI
         case entry[:type]
         when 'service'
           klass = entry[:klass]
-          deps = klass.dependencies.collect { |name| get(name) }
+          deps = klass.dependencies.collect { |name| get(name, chain + [name]) }
           object = klass.new(*deps)
         when 'factory'
           factory = entry[:factory]
           deps =
             if factory.respond_to?(:dependencies)
-              factory.dependencies.collect { |name| get(name) }
+              factory.dependencies.collect { |name| get(name, chain + [name]) }
             else
               []
             end
