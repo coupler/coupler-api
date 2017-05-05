@@ -23,6 +23,7 @@ module CouplerAPI
   autoload :LinkageRepository, "coupler-api/repositories/linkage_repository"
   autoload :ComparatorRepository, "coupler-api/repositories/comparator_repository"
   autoload :JobRepository, "coupler-api/repositories/job_repository"
+  autoload :LinkageResultRepository, "coupler-api/repositories/linkage_result_repository"
 
   # actions
   autoload :Datasets, "coupler-api/actions/datasets"
@@ -59,6 +60,7 @@ module CouplerAPI
   autoload :Linkage, "coupler-api/entities/linkage"
   autoload :Comparator, "coupler-api/entities/comparator"
   autoload :Job, "coupler-api/entities/job"
+  autoload :LinkageResult, "coupler-api/entities/linkage_result"
 
   # combiners
   autoload :LinkageCombiner, "coupler-api/combiners/linkage_combiner"

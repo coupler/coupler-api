@@ -51,6 +51,7 @@ module CouplerAPI
       injector.register_service('DatasetValidators::Show', DatasetValidators::Show)
 
       injector.register_service('LinkageRepository', LinkageRepository)
+      injector.register_service('LinkageCombiner', LinkageCombiner)
       injector.register_service('LinkageRouter', LinkageRouter)
       injector.register_service('LinkageController', LinkageController)
       injector.register_service('Linkages::Index', Linkages::Index)
@@ -94,7 +95,7 @@ module CouplerAPI
       injector.register_service('JobValidators::Show', JobValidators::Show)
       injector.register_service('JobValidators::Run', JobValidators::Run)
 
-      injector.register_service('LinkageCombiner', LinkageCombiner)
+      injector.register_service('LinkageResultRepository', LinkageResultRepository)
 
       injector.register_service('Runner', Runner)
       injector.register_service('LinkageRunner', LinkageRunner)
