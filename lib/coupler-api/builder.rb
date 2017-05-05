@@ -97,6 +97,14 @@ module CouplerAPI
       injector.register_service('JobValidators::Run', JobValidators::Run)
 
       injector.register_service('LinkageResultRepository', LinkageResultRepository)
+      injector.register_service('LinkageResultRouter', LinkageResultRouter)
+      injector.register_service('LinkageResultController', LinkageResultController)
+      injector.register_service('LinkageResults::Show', LinkageResults::Show)
+      injector.register_service('LinkageResults::Matches', LinkageResults::Matches)
+      injector.register_service('LinkageResultParams::Show', LinkageResultParams::Show)
+      injector.register_service('LinkageResultParams::Matches', LinkageResultParams::Matches)
+      injector.register_service('LinkageResultValidators::Show', LinkageResultValidators::Show)
+      injector.register_service('LinkageResultValidators::Matches', LinkageResultValidators::Matches)
 
       injector.register_service('Runner', Runner)
       injector.register_service('LinkageRunner', LinkageRunner)
@@ -114,6 +122,7 @@ module CouplerAPI
         { path: %r{^/linkages(?=/)?}, router: injector.get('LinkageRouter') },
         { path: %r{^/comparators(?=/)?}, router: injector.get('ComparatorRouter') },
         { path: %r{^/jobs(?=/)?}, router: injector.get('JobRouter') },
+        { path: %r{^/linkage_results(?=/)?}, router: injector.get('LinkageResultRouter') },
       ]
     end
   end

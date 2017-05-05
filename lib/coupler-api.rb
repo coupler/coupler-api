@@ -30,30 +30,35 @@ module CouplerAPI
   autoload :Linkages, "coupler-api/actions/linkages"
   autoload :Comparators, "coupler-api/actions/comparators"
   autoload :Jobs, "coupler-api/actions/jobs"
+  autoload :LinkageResults, "coupler-api/actions/linkage_results"
 
   # routers
   autoload :DatasetRouter, "coupler-api/routers/dataset_router"
   autoload :LinkageRouter, "coupler-api/routers/linkage_router"
   autoload :ComparatorRouter, "coupler-api/routers/comparator_router"
   autoload :JobRouter, "coupler-api/routers/job_router"
+  autoload :LinkageResultRouter, "coupler-api/routers/linkage_result_router"
 
   # controllers
   autoload :DatasetController, "coupler-api/controllers/dataset_controller"
   autoload :LinkageController, "coupler-api/controllers/linkage_controller"
   autoload :ComparatorController, "coupler-api/controllers/comparator_controller"
   autoload :JobController, "coupler-api/controllers/job_controller"
+  autoload :LinkageResultController, "coupler-api/controllers/linkage_result_controller"
 
   # params
   autoload :DatasetParams, "coupler-api/params/dataset_params"
   autoload :LinkageParams, "coupler-api/params/linkage_params"
   autoload :ComparatorParams, "coupler-api/params/comparator_params"
   autoload :JobParams, "coupler-api/params/job_params"
+  autoload :LinkageResultParams, "coupler-api/params/linkage_result_params"
 
   # validators
   autoload :DatasetValidators, "coupler-api/validators/dataset_validators"
   autoload :LinkageValidators, "coupler-api/validators/linkage_validators"
   autoload :ComparatorValidators, "coupler-api/validators/comparator_validators"
   autoload :JobValidators, "coupler-api/validators/job_validators"
+  autoload :LinkageResultValidators, "coupler-api/validators/linkage_result_validators"
 
   # entities
   autoload :Dataset, "coupler-api/entities/dataset"
