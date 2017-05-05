@@ -11,9 +11,18 @@ module CouplerAPI
     end
 
     def run(job)
+      job.status = "running"
+      job.started_at = Time.now
+      @job_repo.save(job)
+
       linkage = @linkage_combiner.find(id: job.linkage_id)
       if linkage.nil?
-        return { 'errors' => 'linkage not found' }
+        job.status = "failed"
+        job.ended_at = Time.now
+        job.error = "linkage not found"
+        @job_repo.save(job)
+
+        return { 'errors' => ['linkage not found'] }
       end
       dataset_1 = linkage.dataset_1
       dataset_2 = linkage.dataset_2
@@ -67,17 +76,25 @@ module CouplerAPI
         end
       end
 
-      job.status = "running"
-      job.started_at = Time.now
-      @job_repo.save(job)
+      begin
+        # run linkage
+        runner = ::Linkage::Runner.new(config)
+        runner.execute
 
-      # run linkage
-      runner = ::Linkage::Runner.new(config)
-      runner.execute
+        job.status = "finished"
+        job.ended_at = Time.now
+        @job_repo.save(job)
 
-      job.status = "finished"
-      job.ended_at = Time.now
-      @job_repo.save(job)
+
+        { 'success' => true }
+      rescue Exception => e
+        job.status = "failed"
+        job.ended_at = Time.now
+        job.error = e.to_s
+        @job_repo.save(job)
+
+        { 'errors' => [e.to_s] }
+      end
     end
   end
 end

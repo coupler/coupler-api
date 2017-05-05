@@ -3,6 +3,7 @@ module CouplerAPI
     :id,
     :kind,
     :status,
+    :error,
     :linkage_id,
     :started_at,
     :ended_at
