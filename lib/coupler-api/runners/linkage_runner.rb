@@ -44,7 +44,8 @@ module CouplerAPI
 
       # create linkage datasets
       dataset_1 = ::Linkage::Dataset.new(dataset_1.uri, dataset_1.table_name)
-      if dataset_2
+      dataset_2 = nil
+      if linkage.dataset_1_id != linkage.dataset_2_id
         dataset_2 = ::Linkage::Dataset.new(dataset_2.uri, dataset_2.table_name)
       end
 
