@@ -1,6 +1,7 @@
 module CouplerAPI
   class JobController < Controller
-    def initialize(create, show, run, create_params, show_params, run_params)
+    def initialize(index, create, show, run, create_params, show_params, run_params)
+      @index = index
       @create = create
       @show = show
       @run = run
@@ -11,9 +12,13 @@ module CouplerAPI
 
     def self.dependencies
       [
-        'Jobs::Create', 'Jobs::Show', 'Jobs::Run', 'JobParams::Create',
-        'JobParams::Show', 'JobParams::Run'
+        'Jobs::Index', 'Jobs::Create', 'Jobs::Show', 'Jobs::Run',
+        'JobParams::Create', 'JobParams::Show', 'JobParams::Run'
       ]
+    end
+
+    def index(req, res)
+      @index.run
     end
 
     def create(req, res)

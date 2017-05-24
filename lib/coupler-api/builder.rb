@@ -86,6 +86,7 @@ module CouplerAPI
       injector.register_service('JobCombiner', JobCombiner)
       injector.register_service('JobRouter', JobRouter)
       injector.register_service('JobController', JobController)
+      injector.register_service('Jobs::Index', Jobs::Index)
       injector.register_service('Jobs::Create', Jobs::Create)
       injector.register_service('Jobs::Show', Jobs::Show)
       injector.register_service('Jobs::Run', Jobs::Run)
