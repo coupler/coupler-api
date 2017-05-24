@@ -85,7 +85,7 @@ module CouplerAPI
 
         # save result summary
         linkage_result.calculate_match_count!
-        @linkage_result_repo.save(linkage_result_repo)
+        @linkage_result_repo.save(linkage_result)
 
         { 'success' => true }
       rescue Exception => e
