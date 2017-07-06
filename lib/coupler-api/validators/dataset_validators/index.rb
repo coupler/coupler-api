@@ -1,6 +1,6 @@
 module CouplerAPI
   module DatasetValidators
-    class Show
+    class Index
       def self.dependencies
         []
       end
@@ -11,11 +11,6 @@ module CouplerAPI
         end
 
         errors = []
-        if data[:id].nil?
-          errors.push("id must be present")
-        elsif !data[:id].is_a?(Integer)
-          errors.push("id must be a number")
-        end
 
         key = :include_fields
         if data.has_key?(key) && data[key] != false && data[key] != true

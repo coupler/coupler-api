@@ -1,12 +1,14 @@
 module CouplerAPI
   class DatasetController < Controller
-    def initialize(index, create, update, show, delete, fields, create_params, update_params, show_params)
+    def initialize(index, create, update, show, delete, fields, index_params,
+                   create_params, update_params, show_params)
       @index = index
       @create = create
       @update = update
       @show = show
       @delete = delete
       @fields = fields
+      @index_params = index_params
       @create_params = create_params
       @update_params = update_params
       @show_params = show_params
@@ -16,12 +18,18 @@ module CouplerAPI
       [
         'Datasets::Index', 'Datasets::Create', 'Datasets::Update',
         'Datasets::Show', 'Datasets::Delete', 'Datasets::Fields',
-        'DatasetParams::Create', 'DatasetParams::Update', 'DatasetParams::Show'
+        'DatasetParams::Index', 'DatasetParams::Create',
+        'DatasetParams::Update', 'DatasetParams::Show'
       ]
     end
 
     def index(req, res)
-      @index.run
+      data = {}
+      if req.params.has_key?('include_fields')
+        data['include_fields'] = req.params['include_fields']
+      end
+      params = @index_params.process(data)
+      @index.run(params)
     end
 
     def create(req, res)
