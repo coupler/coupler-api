@@ -31,9 +31,9 @@ module CouplerAPI
       end
     end
 
-    def to_h
-      result = super
-      result['fields'] = fields
+    def to_h(include_fields = false)
+      result = super()
+      result['fields'] = fields if include_fields
       result
     end
 

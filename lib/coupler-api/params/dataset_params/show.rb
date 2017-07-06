@@ -12,9 +12,21 @@ module CouplerAPI
 
         result = {}
         data.each_pair do |key, value|
-          if %w{id}.include?(key)
-            result[key.to_sym] = value
+          case key
+          when "id"
+            # no-op
+          when "include_fields"
+            value =
+              case value
+              when "true" then true
+              when "false" then false
+              else
+                value
+              end
+          else
+            next
           end
+          result[key.to_sym] = value
         end
         result
       end

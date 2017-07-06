@@ -17,6 +17,11 @@ module CouplerAPI
           errors.push("id must be a number")
         end
 
+        key = :include_fields
+        if data[key] && data[key] != false && data[key] != true
+          errors.push("include_fields must be true or false")
+        end
+
         errors
       end
     end

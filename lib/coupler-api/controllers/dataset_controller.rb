@@ -38,7 +38,11 @@ module CouplerAPI
     end
 
     def show(req, res)
-      params = @show_params.process({ 'id' => req['dataset_id'] })
+      data = { 'id' => req['dataset_id'] }
+      if req.params.has_key?('include_fields')
+        data['include_fields'] = req.params['include_fields']
+      end
+      params = @show_params.process(data)
       @show.run(params)
     end
 

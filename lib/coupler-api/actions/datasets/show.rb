@@ -13,11 +13,15 @@ module CouplerAPI
       def run(params)
         errors = @validator.validate(params)
         if errors.empty?
-          dataset = @repo.first(params)
+          dataset = @repo.first(id: params[:id])
           if dataset.nil?
             { 'errors' => 'not found' }
           else
-            dataset.to_h
+            include_fields = true
+            if params.has_key?(:include_fields)
+              include_fields = params[:include_fields]
+            end
+            dataset.to_h(include_fields)
           end
         else
           { 'errors' => errors }
