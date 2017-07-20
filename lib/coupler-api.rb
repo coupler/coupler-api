@@ -71,6 +71,9 @@ module CouplerAPI
   autoload :LinkageCombiner, "coupler-api/combiners/linkage_combiner"
   autoload :JobCombiner, "coupler-api/combiners/job_combiner"
 
+  # destroyers
+  autoload :LinkageDestroyer, "coupler-api/destroyers/linkage_destroyer"
+
   # runners
   autoload :Runner, "coupler-api/runner"
   autoload :LinkageRunner, "coupler-api/runners/linkage_runner"

@@ -41,8 +41,9 @@ module CouplerAPI
       count = @adapter.delete(@name, { id: hsh[:id] })
       if count == 0
         raise "nothing was deleted"
+      else
+        obj
       end
-      obj
     end
 
     protected

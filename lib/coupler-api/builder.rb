@@ -54,6 +54,7 @@ module CouplerAPI
 
       injector.register_service('LinkageRepository', LinkageRepository)
       injector.register_service('LinkageCombiner', LinkageCombiner)
+      injector.register_service('LinkageDestroyer', LinkageDestroyer)
       injector.register_service('LinkageRouter', LinkageRouter)
       injector.register_service('LinkageController', LinkageController)
       injector.register_service('Linkages::Index', Linkages::Index)
