@@ -115,7 +115,12 @@ module CouplerAPI
     end
 
     def create_adapter
-      adapter = SequelAdapter.new(@options[:uri])
+      uri = @options[:uri]
+      if uri.nil?
+        uri = RUBY_PLATFORM == "java" ? "jdbc:sqlite" : "sqlite" + "://" +
+          File.join(@options[:storage_path], "coupler-api.db")
+      end
+      adapter = SequelAdapter.new(uri)
       adapter.migrate(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'db', 'migrate')))
       adapter
     end
