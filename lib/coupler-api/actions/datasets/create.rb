@@ -22,7 +22,7 @@ module CouplerAPI
           @repo.save(dataset)
           { 'id' => dataset.id }
         else
-          { 'errors' => { 'base' => ["can't connect"] } }
+          { 'errors' => ["unable to connect"] }
         end
       end
     end
