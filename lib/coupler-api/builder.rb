@@ -1,22 +1,18 @@
 module CouplerAPI
   class Builder
-    def self.create(options)
-      builder = new(options)
-      builder.create
-    end
-
     attr_reader :injector, :options
 
     def initialize(options)
-      @options = options
+      @options = options.dup
+      @options["database_uri"] ||=
+        RUBY_PLATFORM == "java" ? "jdbc:sqlite" : "sqlite" + "://" +
+          File.join(@options["storage_path"], "coupler-api.db")
       @injector = Injector.new
+      bootstrap
     end
 
-    def create
-      bootstrap
-
-      routes = create_routes(injector)
-      app = Application.new(routes)
+    def app
+      app = injector.get("Application")
       Rack::Builder.new(app) do
         use Rack::Cors do
           allow do
@@ -31,8 +27,10 @@ module CouplerAPI
     private
 
     def bootstrap
-      injector.register_value('storage_path', @options[:storage_path])
+      injector.register_value('storage_path', @options["storage_path"])
       injector.register_factory('adapter', method(:create_adapter))
+
+      injector.register_service('Application', Application)
 
       injector.register_service('DatasetRepository', DatasetRepository)
       injector.register_service('DatasetRouter', DatasetRouter)
@@ -115,24 +113,9 @@ module CouplerAPI
     end
 
     def create_adapter
-      uri = @options[:uri]
-      if uri.nil?
-        uri = RUBY_PLATFORM == "java" ? "jdbc:sqlite" : "sqlite" + "://" +
-          File.join(@options[:storage_path], "coupler-api.db")
-      end
-      adapter = SequelAdapter.new(uri)
+      adapter = SequelAdapter.new(@options["database_uri"])
       adapter.migrate(File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'db', 'migrate')))
       adapter
-    end
-
-    def create_routes(injector)
-      [
-        { path: %r{^/datasets(?=/)?}, router: injector.get('DatasetRouter') },
-        { path: %r{^/linkages(?=/)?}, router: injector.get('LinkageRouter') },
-        { path: %r{^/comparators(?=/)?}, router: injector.get('ComparatorRouter') },
-        { path: %r{^/jobs(?=/)?}, router: injector.get('JobRouter') },
-        { path: %r{^/linkage_results(?=/)?}, router: injector.get('LinkageResultRouter') },
-      ]
     end
   end
 end
