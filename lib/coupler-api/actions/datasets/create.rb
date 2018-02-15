@@ -19,8 +19,12 @@ module CouplerAPI
         # check for connectivity
         dataset = Dataset.new(params)
         if dataset.can_connect?
-          @repo.save(dataset)
-          { 'id' => dataset.id }
+          if dataset.has_primary_key?
+            @repo.save(dataset)
+            { 'id' => dataset.id }
+          else
+            { 'errors' => ["dataset has no primary key"] }
+          end
         else
           { 'errors' => ["unable to connect"] }
         end

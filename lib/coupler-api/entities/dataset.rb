@@ -46,6 +46,12 @@ module CouplerAPI
       end
     end
 
+    def has_primary_key?
+      result = false
+      ds = ::Linkage::Dataset.new(uri, table_name)
+      !ds.field_set.primary_key.nil?
+    end
+
     def fetch_records(conditions)
       result = nil
       adapter do |adapter|
