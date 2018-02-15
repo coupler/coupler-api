@@ -14,6 +14,7 @@ module CouplerAPI
   autoload :Application, "coupler-api/application"
   autoload :Builder, "coupler-api/builder"
   autoload :CLI, "coupler-api/cli"
+  autoload :Entity, "coupler-api/entity"
 
   # adapters
   autoload :SequelAdapter, "coupler-api/adapters/sequel_adapter"
@@ -77,6 +78,26 @@ module CouplerAPI
   # runners
   autoload :Runner, "coupler-api/runner"
   autoload :LinkageRunner, "coupler-api/runners/linkage_runner"
-end
 
-require 'coupler-api/entity'
+  def self.Entity(attribute_names, &block)
+    klass = Class.new(Entity) do
+      @attribute_names = attribute_names
+
+      attribute_names.each do |attribute_name|
+        define_method(attribute_name) do
+          @attributes[attribute_name]
+        end
+
+        define_method("#{attribute_name}=") do |value|
+          @attributes[attribute_name] = value
+        end
+      end
+    end
+
+    if block
+      klass.module_eval(&block)
+    end
+
+    klass
+  end
+end
