@@ -24,10 +24,20 @@ module CouplerAPI
       end
     end
 
+    def background
+      injector.get("Background")
+    end
+
+    def runner
+      injector.get("Runner")
+    end
+
     private
 
     def bootstrap
       injector.register_value('storage_path', @options["storage_path"])
+      injector.register_value('database_uri', @options["database_uri"])
+      injector.register_value('script_name', $0)
       injector.register_factory('adapter', method(:create_adapter))
 
       injector.register_service('Application', Application)
@@ -90,13 +100,10 @@ module CouplerAPI
       injector.register_service('Jobs::Index', Jobs::Index)
       injector.register_service('Jobs::Create', Jobs::Create)
       injector.register_service('Jobs::Show', Jobs::Show)
-      injector.register_service('Jobs::Run', Jobs::Run)
       injector.register_service('JobParams::Create', JobParams::Create)
       injector.register_service('JobParams::Show', JobParams::Show)
-      injector.register_service('JobParams::Run', JobParams::Run)
       injector.register_service('JobValidators::Create', JobValidators::Create)
       injector.register_service('JobValidators::Show', JobValidators::Show)
-      injector.register_service('JobValidators::Run', JobValidators::Run)
 
       injector.register_service('LinkageResultRepository', LinkageResultRepository)
       injector.register_service('LinkageResultRouter', LinkageResultRouter)
@@ -110,6 +117,8 @@ module CouplerAPI
 
       injector.register_service('Runner', Runner)
       injector.register_service('LinkageRunner', LinkageRunner)
+
+      injector.register_service('Background', Background)
     end
 
     def create_adapter

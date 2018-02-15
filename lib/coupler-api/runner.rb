@@ -1,14 +1,18 @@
 module CouplerAPI
   class Runner
-    def initialize(linkage_runner)
+    def initialize(job_repo, linkage_runner)
+      @job_repo = job_repo
       @linkage_runner = linkage_runner
     end
 
     def self.dependencies
-      [ 'LinkageRunner' ]
+      ['JobRepository', 'LinkageRunner']
     end
 
-    def run(job)
+    def run(job_id)
+      job = @job_repo.first(:id => job_id)
+      raise "Job #{job_id} not found" if job.nil?
+
       runner =
         case job.kind
         when 'linkage' then @linkage_runner

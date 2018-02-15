@@ -7,14 +7,15 @@ require "hashery"
 require "linkage"
 
 module CouplerAPI
+  autoload :Application, "coupler-api/application"
+  autoload :Background, "coupler-api/background"
+  autoload :Builder, "coupler-api/builder"
+  autoload :CLI, "coupler-api/cli"
+  autoload :Controller, "coupler-api/controller"
+  autoload :Entity, "coupler-api/entity"
   autoload :Injector, "coupler-api/injector"
   autoload :Repository, "coupler-api/repository"
   autoload :Router, "coupler-api/router"
-  autoload :Controller, "coupler-api/controller"
-  autoload :Application, "coupler-api/application"
-  autoload :Builder, "coupler-api/builder"
-  autoload :CLI, "coupler-api/cli"
-  autoload :Entity, "coupler-api/entity"
 
   # adapters
   autoload :SequelAdapter, "coupler-api/adapters/sequel_adapter"

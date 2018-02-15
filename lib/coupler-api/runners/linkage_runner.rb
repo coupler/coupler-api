@@ -90,6 +90,8 @@ module CouplerAPI
 
         { 'success' => true }
       rescue Exception => e
+        p e
+        puts e.backtrace.join("\n")
         job.status = "failed"
         job.ended_at = Time.now
         job.error = e.to_s

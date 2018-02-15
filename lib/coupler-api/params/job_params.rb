@@ -4,6 +4,5 @@ module CouplerAPI
     autoload :Create, "coupler-api/params/job_params/create"
     autoload :Update, "coupler-api/params/job_params/update"
     autoload :Show, "coupler-api/params/job_params/show"
-    autoload :Run, "coupler-api/params/job_params/run"
   end
 end
