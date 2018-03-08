@@ -5,7 +5,7 @@ module CouplerAPI
     def initialize(options)
       @options = options.dup
       @options["database_uri"] ||=
-        RUBY_PLATFORM == "java" ? "jdbc:sqlite" : "sqlite" + "://" +
+        RUBY_PLATFORM == "java" ? "jdbc:sqlite:" : "sqlite://" +
           File.join(@options["storage_path"], "coupler-api.db")
       @injector = Injector.new
       bootstrap

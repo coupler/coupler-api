@@ -17,5 +17,5 @@ group :test do
   gem "rack-test", "~> 0.6.3"
   gem "minitest"
   gem "mocha"
-  gem "byebug"
+  #gem "byebug"
 end
