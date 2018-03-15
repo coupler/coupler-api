@@ -8,7 +8,7 @@ module CouplerAPI
   ]) do
     def uri
       if RUBY_PLATFORM == "java"
-        "jdbc:sqlite://#{database_path}"
+        "jdbc:sqlite:#{database_path}"
       else
         "sqlite://#{database_path}"
       end

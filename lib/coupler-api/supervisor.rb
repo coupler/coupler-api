@@ -1,18 +1,11 @@
 module CouplerAPI
-  class Background
-    def initialize(storage_path, database_uri, script_name, job_repo)
-      @storage_path = storage_path
-      @database_uri = database_uri
-      @script_name = script_name
+  class Supervisor
+    def initialize(job_repo)
       @job_repo = job_repo
 
       @running = false
       @main_thread = nil
       @processes = []
-    end
-
-    def self.dependencies
-      ['storage_path', 'database_uri', 'script_name', 'JobRepository']
     end
 
     def start
@@ -21,7 +14,8 @@ module CouplerAPI
         while @running
           jobs = @job_repo.find(status: 'initialized')
           jobs.each do |job|
-            run_job(job)
+            process = run_job(job)
+            @processes.push(process)
           end
 
           # clean up finished processes
@@ -33,12 +27,7 @@ module CouplerAPI
     end
 
     def run_job(job)
-      thread = Thread.new do
-        pid = spawn(RbConfig.ruby, @script_name, "job", "--storage-path",
-                    @storage_path, "--database-uri", @database_uri, job.id.to_s)
-        Process.wait(pid)
-      end
-      @processes << thread
+      raise NotImplementedError
     end
 
     def stop

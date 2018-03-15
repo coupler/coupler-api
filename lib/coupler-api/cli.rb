@@ -8,15 +8,15 @@ module CouplerAPI
 
     def start
       builder = Builder.new(options.to_hash)
-      background = builder.background
-      background.start
+      supervisor = builder.supervisor
+      supervisor.start
       Rack::Handler::WEBrick.run(builder.app, { Port: options[:port] }) do |server|
         Signal.trap("INT") do
           puts "Shutting down server..."
           server.shutdown
 
           puts "Waiting for jobs to finish..."
-          background.stop
+          supervisor.stop
         end
       end
     end

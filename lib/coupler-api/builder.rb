@@ -5,8 +5,9 @@ module CouplerAPI
     def initialize(options)
       @options = options.dup
       @options["database_uri"] ||=
-        RUBY_PLATFORM == "java" ? "jdbc:sqlite:" : "sqlite://" +
-          File.join(@options["storage_path"], "coupler-api.db")
+        (RUBY_PLATFORM == "java" ? "jdbc:sqlite:" : "sqlite://") +
+        File.join(@options["storage_path"], "coupler-api.db")
+      @options["supervisor_style"] ||= "spawn"
       @injector = Injector.new
       bootstrap
     end
@@ -24,8 +25,8 @@ module CouplerAPI
       end
     end
 
-    def background
-      injector.get("Background")
+    def supervisor
+      injector.get("Supervisor")
     end
 
     def runner
@@ -37,7 +38,6 @@ module CouplerAPI
     def bootstrap
       injector.register_value('storage_path', @options["storage_path"])
       injector.register_value('database_uri', @options["database_uri"])
-      injector.register_value('script_name', $0)
       injector.register_factory('adapter', method(:create_adapter))
 
       injector.register_service('Application', Application)
@@ -118,7 +118,14 @@ module CouplerAPI
       injector.register_service('Runner', Runner)
       injector.register_service('LinkageRunner', LinkageRunner)
 
-      injector.register_service('Background', Background)
+      case @options["supervisor_style"]
+      when "spawn"
+        injector.register_service('Supervisor', SpawnSupervisor)
+      when "thread"
+        injector.register_service('Supervisor', ThreadSupervisor)
+      else
+        raise "Unknown supervisor stype: #{@options["supervisor_style"]}"
+      end
     end
 
     def create_adapter

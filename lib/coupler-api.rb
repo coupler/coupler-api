@@ -8,7 +8,6 @@ require "linkage"
 
 module CouplerAPI
   autoload :Application, "coupler-api/application"
-  autoload :Background, "coupler-api/background"
   autoload :Builder, "coupler-api/builder"
   autoload :CLI, "coupler-api/cli"
   autoload :Controller, "coupler-api/controller"
@@ -16,6 +15,8 @@ module CouplerAPI
   autoload :Injector, "coupler-api/injector"
   autoload :Repository, "coupler-api/repository"
   autoload :Router, "coupler-api/router"
+  autoload :Runner, "coupler-api/runner"
+  autoload :Supervisor, "coupler-api/supervisor"
 
   # adapters
   autoload :SequelAdapter, "coupler-api/adapters/sequel_adapter"
@@ -77,8 +78,11 @@ module CouplerAPI
   autoload :LinkageDestroyer, "coupler-api/destroyers/linkage_destroyer"
 
   # runners
-  autoload :Runner, "coupler-api/runner"
   autoload :LinkageRunner, "coupler-api/runners/linkage_runner"
+
+  # supervisors
+  autoload :SpawnSupervisor, "coupler-api/supervisors/spawn_supervisor"
+  autoload :ThreadSupervisor, "coupler-api/supervisors/thread_supervisor"
 
   def self.Entity(attribute_names, &block)
     klass = Class.new(Entity) do
