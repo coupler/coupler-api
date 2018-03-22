@@ -84,6 +84,9 @@ module CouplerAPI
   autoload :SpawnSupervisor, "coupler-api/supervisors/spawn_supervisor"
   autoload :ThreadSupervisor, "coupler-api/supervisors/thread_supervisor"
 
+  # importers
+  autoload :CSVImporter, "coupler-api/importers/csv_importer"
+
   def self.Entity(attribute_names, &block)
     klass = Class.new(Entity) do
       @attribute_names = attribute_names

@@ -2,6 +2,8 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'coupler-api'
 
 require 'tempfile'
+require 'tmpdir'
+require 'fileutils'
 require 'rack/test'
 require 'sequel'
 require 'ostruct'
