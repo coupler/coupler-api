@@ -77,7 +77,7 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
   end
 
   def test_save_new
-    obj = mock(:to_h => { foo: 'bar' })
+    obj = mock(:attributes => { foo: 'bar' })
     @adapter.expects(:create).with('foo', { foo: 'bar' }).returns(1)
     obj.expects(:id=).with(1)
     assert_same obj, @repo.save(obj)
@@ -90,14 +90,14 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
         hsh
       end
     EOF
-    obj = mock(:to_h => { foo: 'bar' })
+    obj = mock(:attributes => { foo: 'bar' })
     @adapter.expects(:create).with('foo', { foo: 'barbaz' }).returns(1)
     obj.expects(:id=).with(1)
     assert_same obj, @repo.save(obj)
   end
 
   def test_save_new_failure
-    obj = mock(:to_h => { foo: 'bar' })
+    obj = mock(:attributes => { foo: 'bar' })
     @adapter.expects(:create).with('foo', { foo: 'bar' }).returns(nil)
     obj.expects(:id=).never
     assert_raises(Exception) do
@@ -106,7 +106,7 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
   end
 
   def test_save_not_new
-    obj = mock(:to_h => { id: 123, foo: 'bar' })
+    obj = mock(:attributes => { id: 123, foo: 'bar' })
     @adapter.expects(:update).with('foo', { id: 123 }, { id: 123, foo: 'bar' }).returns(1)
     obj.expects(:id=).never
     assert_same obj, @repo.save(obj)
@@ -119,14 +119,14 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
         hsh
       end
     EOF
-    obj = mock(:to_h => { id: 123, foo: 'bar' })
+    obj = mock(:attributes => { id: 123, foo: 'bar' })
     @adapter.expects(:update).with('foo', { id: 123 }, { id: 123, foo: 'barbaz' }).returns(1)
     obj.expects(:id=).never
     assert_same obj, @repo.save(obj)
   end
 
   def test_save_not_new_failure
-    obj = mock(:to_h => { id: 123, foo: 'bar' })
+    obj = mock(:attributes => { id: 123, foo: 'bar' })
     @adapter.expects(:update).with('foo', { id: 123 }, { id: 123, foo: 'bar' }).returns(0)
     obj.expects(:id=).never
     assert_raises(Exception) do
@@ -135,13 +135,13 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
   end
 
   def test_delete
-    obj = mock(:to_h => { id: 123 })
+    obj = mock(:attributes => { id: 123 })
     @adapter.expects(:delete).with('foo', { id: 123 }).returns(1)
     assert_same obj, @repo.delete(obj)
   end
 
   def test_delete_failure
-    obj = mock(:to_h => { id: 123 })
+    obj = mock(:attributes => { id: 123 })
     @adapter.expects(:delete).with('foo', { id: 123 }).returns(0)
     assert_raises(Exception) do
       @repo.delete(obj)

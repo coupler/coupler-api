@@ -8,9 +8,8 @@ class CouplerAPI::IntegrationTests::JobTest < Minitest::Test
   def setup
     @tempfile = Tempfile.new('coupler_api')
     @db = Sequel.connect(database_uri)
-    @app = CouplerAPI::Builder.create({
-      uri: database_uri
-    })
+    @builder = CouplerAPI::Builder.new({ "database_uri" => database_uri })
+    @app = @builder.app
   end
 
   def teardown

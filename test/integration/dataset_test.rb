@@ -8,9 +8,8 @@ class CouplerAPI::IntegrationTests::DatasetTest < Minitest::Test
   def setup
     @tempfile = Tempfile.new('coupler_api')
     @db = Sequel.connect(database_uri)
-    @app = CouplerAPI::Builder.create({
-      uri: database_uri
-    })
+    @builder = CouplerAPI::Builder.new({ "database_uri" => database_uri })
+    @app = @builder.app
   end
 
   def teardown
@@ -102,7 +101,14 @@ class CouplerAPI::IntegrationTests::DatasetTest < Minitest::Test
     id = @db[:datasets].insert(data)
 
     get("/datasets/#{id}/fields")
-    assert_nil last_response_body['errors']
-    assert_equal [{ 'name' => 'id', 'type' => 'integer' }, { 'name' => 'foo', 'type' => 'string' }, { 'name' => 'bar', 'type' => 'string' }], last_response_body['fields']
+    result = last_response_body
+    assert_kind_of Array, result
+
+    expected = [
+      { 'name' => 'id', 'kind' => 'integer', 'primary_key' => true },
+      { 'name' => 'foo', 'kind' => 'string' },
+      { 'name' => 'bar', 'kind' => 'string' }
+    ]
+    assert_equal expected, result
   end
 end
