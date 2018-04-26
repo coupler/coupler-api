@@ -44,7 +44,7 @@ module CouplerAPI
             case row[j]
             when /^\d+$/      then "integer"
             when /^\d*\.\d+$/ then "float"
-            else "string"
+            else "text"
             end
 
           if field['kind'].nil?
@@ -54,14 +54,52 @@ module CouplerAPI
                (field['kind'] == "float" && kind == "integer")
               field['kind'] = "float"
             else
-              field['kind'] = "string"
+              field['kind'] = "text"
             end
           end
         end
       end
 
-      fields.each_value { |v| v['kind'] ||= 'string' }
+      fields.each_value { |v| v['kind'] ||= 'text' }
       fields.values
+    end
+
+    def create_database(name, fields, csv_filename)
+      database_path = File.join(@storage_path, name + '.db')
+      connect_args =
+        if RUBY_PLATFORM == "java"
+          [ "jdbc:sqlite:#{database_path}", convert_types: false ]
+        else
+          [ "sqlite://#{database_path}" ]
+        end
+
+      Sequel.connect(*connect_args) do |db|
+        table_name = name.to_sym
+        db.create_table(table_name) do
+          fields.each do |field|
+            args = [
+              field['name'].to_sym,
+              field['kind'].to_sym,
+              { primary_key: field['primary_key'] == true }
+            ]
+            column(*args)
+          end
+        end
+        ds = db[table_name]
+
+        begin
+          csv = CSV.open(csv_filename, headers: true)
+          while !csv.eof?
+            rows = []
+            50.times do
+              break if csv.eof?
+              rows << csv.shift.to_h
+            end
+            ds.multi_insert(rows)
+          end
+        end
+      end
+      database_path
     end
   end
 end
