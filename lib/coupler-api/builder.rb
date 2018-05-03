@@ -115,8 +115,17 @@ module CouplerAPI
       injector.register_service('LinkageResultValidators::Show', LinkageResultValidators::Show)
       injector.register_service('LinkageResultValidators::Matches', LinkageResultValidators::Matches)
 
+      injector.register_service('CsvImportRepository', CsvImportRepository)
+      injector.register_service('CsvImportRouter', CsvImportRouter)
+      injector.register_service('CsvImportController', CsvImportController)
+      injector.register_service('CsvImports::Create', CsvImports::Create)
+      injector.register_service('CsvImportParams::Create', CsvImportParams::Create)
+      injector.register_service('CsvImportValidators::Create', CsvImportValidators::Create)
+
       injector.register_service('Runner', Runner)
       injector.register_service('LinkageRunner', LinkageRunner)
+
+      injector.register_service('CSVImporter', CSVImporter)
 
       case @options["supervisor_style"]
       when "spawn"
@@ -124,7 +133,7 @@ module CouplerAPI
       when "thread"
         injector.register_service('Supervisor', ThreadSupervisor)
       else
-        raise "Unknown supervisor stype: #{@options["supervisor_style"]}"
+        raise "Unknown supervisor type: #{@options["supervisor_style"]}"
       end
     end
 

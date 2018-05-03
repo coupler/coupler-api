@@ -13,18 +13,17 @@ module CouplerAPI
       end
 
       def test_detect_fields_guesses_types
-        f = Tempfile.new("coupler-api")
-        f.puts %{int,float,floatish,text,empty,junk}
-        f.puts %{0,0.0,0,foo,,123}
-        f.puts %{1,1.0,1,bar,,hey}
-        f.puts %{2,2.0,2.0,baz,,1.0}
-        f.puts %{3,3.0,3,qux,,}
-        f.puts %{4,4.0,4.0,quux,,blah}
-        f.puts %{,,,,,}
-        f.close
+        data = [
+          %{int,float,floatish,text,empty,junk},
+          %{0,0.0,0,foo,,123},
+          %{1,1.0,1,bar,,hey},
+          %{2,2.0,2.0,baz,,1.0},
+          %{3,3.0,3,qux,,},
+          %{4,4.0,4.0,quux,,blah},
+          %{,,,,,}
+        ].join("\n")
 
-        fields = @importer.detect_fields(f.path)
-        f.unlink
+        fields = @importer.detect_fields(data)
 
         expected = [
           { 'name' => 'int', 'kind' => 'integer' },

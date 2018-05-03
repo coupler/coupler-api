@@ -10,8 +10,8 @@ module CouplerAPI
       [ 'storage_path' ]
     end
 
-    def detect_fields(csv_filename)
-      csv = CSV.open(csv_filename)
+    def detect_fields(data)
+      csv = CSV.new(data)
 
       begin
         headers = csv.shift

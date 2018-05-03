@@ -27,6 +27,7 @@ module CouplerAPI
   autoload :ComparatorRepository, "coupler-api/repositories/comparator_repository"
   autoload :JobRepository, "coupler-api/repositories/job_repository"
   autoload :LinkageResultRepository, "coupler-api/repositories/linkage_result_repository"
+  autoload :CsvImportRepository, "coupler-api/repositories/csv_import_repository"
 
   # actions
   autoload :Datasets, "coupler-api/actions/datasets"
@@ -34,6 +35,7 @@ module CouplerAPI
   autoload :Comparators, "coupler-api/actions/comparators"
   autoload :Jobs, "coupler-api/actions/jobs"
   autoload :LinkageResults, "coupler-api/actions/linkage_results"
+  autoload :CsvImports, "coupler-api/actions/csv_imports"
 
   # routers
   autoload :DatasetRouter, "coupler-api/routers/dataset_router"
@@ -41,6 +43,7 @@ module CouplerAPI
   autoload :ComparatorRouter, "coupler-api/routers/comparator_router"
   autoload :JobRouter, "coupler-api/routers/job_router"
   autoload :LinkageResultRouter, "coupler-api/routers/linkage_result_router"
+  autoload :CsvImportRouter, "coupler-api/routers/csv_import_router"
 
   # controllers
   autoload :DatasetController, "coupler-api/controllers/dataset_controller"
@@ -48,6 +51,7 @@ module CouplerAPI
   autoload :ComparatorController, "coupler-api/controllers/comparator_controller"
   autoload :JobController, "coupler-api/controllers/job_controller"
   autoload :LinkageResultController, "coupler-api/controllers/linkage_result_controller"
+  autoload :CsvImportController, "coupler-api/controllers/csv_import_controller"
 
   # params
   autoload :DatasetParams, "coupler-api/params/dataset_params"
@@ -55,6 +59,7 @@ module CouplerAPI
   autoload :ComparatorParams, "coupler-api/params/comparator_params"
   autoload :JobParams, "coupler-api/params/job_params"
   autoload :LinkageResultParams, "coupler-api/params/linkage_result_params"
+  autoload :CsvImportParams, "coupler-api/params/csv_import_params"
 
   # validators
   autoload :DatasetValidators, "coupler-api/validators/dataset_validators"
@@ -62,6 +67,7 @@ module CouplerAPI
   autoload :ComparatorValidators, "coupler-api/validators/comparator_validators"
   autoload :JobValidators, "coupler-api/validators/job_validators"
   autoload :LinkageResultValidators, "coupler-api/validators/linkage_result_validators"
+  autoload :CsvImportValidators, "coupler-api/validators/csv_import_validators"
 
   # entities
   autoload :Dataset, "coupler-api/entities/dataset"
@@ -69,6 +75,7 @@ module CouplerAPI
   autoload :Comparator, "coupler-api/entities/comparator"
   autoload :Job, "coupler-api/entities/job"
   autoload :LinkageResult, "coupler-api/entities/linkage_result"
+  autoload :CsvImport, "coupler-api/entities/csv_import"
 
   # combiners
   autoload :LinkageCombiner, "coupler-api/combiners/linkage_combiner"
