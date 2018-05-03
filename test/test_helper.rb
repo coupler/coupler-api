@@ -12,7 +12,7 @@ require 'ostruct'
 gem 'mocha'
 require 'minitest/autorun'
 require 'minitest/mock'
-require 'mocha/mini_test'
+require 'mocha/minitest'
 
 module CouplerAPI
   module UnitTests
