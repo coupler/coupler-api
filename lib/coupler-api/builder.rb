@@ -119,8 +119,11 @@ module CouplerAPI
       injector.register_service('CsvImportRouter', CsvImportRouter)
       injector.register_service('CsvImportController', CsvImportController)
       injector.register_service('CsvImports::Create', CsvImports::Create)
+      injector.register_service('CsvImports::Show', CsvImports::Show)
       injector.register_service('CsvImportParams::Create', CsvImportParams::Create)
+      injector.register_service('CsvImportParams::Show', CsvImportParams::Show)
       injector.register_service('CsvImportValidators::Create', CsvImportValidators::Create)
+      injector.register_service('CsvImportValidators::Show', CsvImportValidators::Show)
 
       injector.register_service('Runner', Runner)
       injector.register_service('LinkageRunner', LinkageRunner)

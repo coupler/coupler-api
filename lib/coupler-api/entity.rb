@@ -18,6 +18,10 @@ module CouplerAPI
       @attributes.dup
     end
 
+    def to_sanitized_hash
+      @attributes.dup
+    end
+
     def attributes
       @attributes.dup
     end
