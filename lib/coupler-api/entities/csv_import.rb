@@ -4,6 +4,7 @@ module CouplerAPI
     :original_name,
     :file_size,
     :file_path,
+    :sha1_sum,
     :detected_fields,
     :created_at,
     :dataset_id

@@ -36,6 +36,7 @@ module CouplerAPI
           original_name: params[:filename],
           file_path: file_path,
           file_size: File.size(file_path),
+          sha1_sum: digest,
           detected_fields: fields,
           created_at: Time.now
         })
