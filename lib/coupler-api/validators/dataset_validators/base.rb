@@ -1,10 +1,17 @@
 module CouplerAPI
   module DatasetValidators
     class Base
-      VALID_TYPES = %w{csv mysql}
-
       def self.dependencies
         []
+      end
+
+      def self.valid_types
+        # csv is only valid on create
+        @@valid_types ||= %w{mysql sqlite3}
+      end
+
+      def valid_types
+        self.class.valid_types
       end
 
       def validate(data)
@@ -17,8 +24,8 @@ module CouplerAPI
           errors.push("name must be present")
         end
 
-        if !VALID_TYPES.include?(data[:type])
-          errors.push("type must be one of the following: #{VALID_TYPES.inspect}")
+        if !valid_types.include?(data[:type])
+          errors.push("type must be one of the following: #{valid_types.inspect}")
         else
           case data[:type]
           when "mysql"
@@ -37,29 +44,13 @@ module CouplerAPI
             if data[:table_name].nil? || data[:table_name].empty?
               errors.push("table_name must be present")
             end
-
-            if !data[:csv].nil? && !data[:csv].empty?
-              errors.push("csv must not be present")
-            end
-          when "csv"
-            if !data[:host].nil? && !data[:host].empty?
-              errors.push("host must not be present")
+          when "sqlite3"
+            if data[:database_path].nil? || data[:database_path].empty?
+              errors.push("database_path must be present")
             end
 
-            if !data[:database_name].nil? && !data[:database_name].empty?
-              errors.push("database_name must not be present")
-            end
-
-            if !data[:username].nil? && !data[:username].empty?
-              errors.push("username must not be present")
-            end
-
-            if !data[:table_name].nil? && !data[:table_name].empty?
-              errors.push("table_name must not be present")
-            end
-
-            if data[:csv].nil? || data[:csv].empty?
-              errors.push("csv must be present")
+            if data[:table_name].nil? || data[:table_name].empty?
+              errors.push("table_name must be present")
             end
           end
         end

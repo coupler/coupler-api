@@ -1,6 +1,7 @@
 module CouplerAPI
   class CSVImporter
     class MalformedCSVError < Exception; end
+    class DatabaseExistsError < Exception; end
 
     def initialize(storage_path)
       @storage_path = storage_path
@@ -66,6 +67,10 @@ module CouplerAPI
 
     def create_database(name, fields, csv_filename)
       database_path = File.join(@storage_path, name + '.db')
+      if File.exist?(database_path)
+        raise DatabaseExistsError
+      end
+
       connect_args =
         if RUBY_PLATFORM == "java"
           [ "jdbc:sqlite:#{database_path}", convert_types: false ]

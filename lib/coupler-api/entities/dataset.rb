@@ -7,8 +7,9 @@ module CouplerAPI
     :username,
     :password,
     :database_name,
+    :database_path,
     :table_name,
-    :csv
+    :csv_import_id
   ]) do
     def uri
       case type
@@ -17,6 +18,12 @@ module CouplerAPI
           "jdbc:mysql://#{host}/#{database_name}?user=#{username}&password=#{password}"
         else
           "mysql2://#{host}/#{database_name}?username=#{username}&password=#{password}"
+        end
+      when 'sqlite3'
+        if RUBY_PLATFORM == "java"
+          "jdbc:sqlite:#{database_path}"
+        else
+          "sqlite://#{database_path}"
         end
       end
     end
@@ -65,7 +72,7 @@ module CouplerAPI
     def adapter
       adapter =
         case type
-        when 'mysql'
+        when 'mysql', 'sqlite3'
           SequelAdapter.new(uri)
         end
       yield adapter
