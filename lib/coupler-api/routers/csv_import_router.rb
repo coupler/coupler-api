@@ -15,6 +15,8 @@ module CouplerAPI
       case req.request_method
       when 'GET'
         case path
+        when '', '/'
+          action = @controller.build_action(:index)
         when %r{/(\d+)$}
           req['dataset_id'] = $1.to_i
           action = @controller.build_action(:show)
