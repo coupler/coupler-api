@@ -1,22 +1,31 @@
 module CouplerAPI
   class CsvImportController < Controller
-    def initialize(create, show, index, create_params, show_params)
+    def initialize(create, update, show, index, create_params, update_params, show_params)
       @create = create
+      @update = update
       @show = show
       @index = index
       @create_params = create_params
+      @update_params = update_params
       @show_params = show_params
     end
 
     def self.dependencies
-      [ 'CsvImports::Create', 'CsvImports::Show', 'CsvImports::Index',
-        'CsvImportParams::Create', 'CsvImportParams::Show' ]
+      [ 'CsvImports::Create', 'CsvImports::Update', 'CsvImports::Show',
+        'CsvImports::Index', 'CsvImportParams::Create',
+        'CsvImportParams::Update', 'CsvImportParams::Show' ]
     end
 
     def create(req, res)
       data = JSON.parse(req.body.read)
       params = @create_params.process(data)
       @create.run(params)
+    end
+
+    def update(req, res)
+      data = JSON.parse(req.body.read)
+      params = @update_params.process(data)
+      @update.run(params)
     end
 
     def show(req, res)

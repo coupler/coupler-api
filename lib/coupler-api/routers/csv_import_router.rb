@@ -26,6 +26,12 @@ module CouplerAPI
         when '', '/'
           action = @controller.build_action(:create)
         end
+      when 'PUT'
+        case path
+        when %r{/(\d+)$}
+          req['id'] = $1.to_i
+          action = @controller.build_action(:update)
+        end
       end
       action
     end
