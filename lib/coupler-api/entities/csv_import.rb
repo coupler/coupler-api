@@ -24,5 +24,9 @@ module CouplerAPI
       csv.close
       rows
     end
+
+    def generate_table_name
+      original_name.downcase.sub(/\..+?$/, "").gsub(/[^a-z0-9_]+/, "_")
+    end
   end
 end

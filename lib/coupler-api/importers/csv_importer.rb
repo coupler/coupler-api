@@ -65,8 +65,10 @@ module CouplerAPI
       fields.values
     end
 
-    def create_database(name, fields, csv_filename)
-      database_path = File.join(@storage_path, name + '.db')
+    def create_database(csv_filename, table_name, fields)
+      prefix = File.basename(csv_filename, '.csv');
+      timestamp = Time.now.utc.strftime("%Y%m%d%H%M")
+      database_path = File.join(@storage_path, "#{prefix}-#{timestamp}.db")
       if File.exist?(database_path)
         raise DatabaseExistsError
       end
@@ -79,8 +81,8 @@ module CouplerAPI
         end
 
       Sequel.connect(*connect_args) do |db|
-        table_name = name.to_sym
-        db.create_table(table_name) do
+        table_name = table_name.to_sym
+        db.create_table(table_name.to_sym) do
           fields.each do |field|
             args = [
               field['name'].to_sym,

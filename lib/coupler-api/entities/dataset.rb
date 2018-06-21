@@ -46,8 +46,7 @@ module CouplerAPI
 
     def can_connect?
       begin
-        schema
-        true
+        !schema.nil?
       rescue Exception
         false
       end
