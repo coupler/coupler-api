@@ -12,10 +12,10 @@ module CouplerAPI
 
         errors = []
 
-        if data[:filename].nil? || data[:filename].empty?
-          errors.push("filename must be present")
-        elsif !data[:filename].is_a?(String)
-          errors.push("filename is not valid")
+        if data[:original_name].nil? || data[:original_name].empty?
+          errors.push("original_name must be present")
+        elsif !data[:original_name].is_a?(String)
+          errors.push("original_name is not valid")
         end
 
         if data[:data].nil? || data[:data].empty?

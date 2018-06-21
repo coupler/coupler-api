@@ -10,13 +10,13 @@ module CouplerAPI
 
     def serialize(hsh)
       hsh.merge({
-        detected_fields: convert_to_json(hsh[:detected_fields])
+        fields: convert_to_json(hsh[:fields])
       })
     end
 
     def unserialize(hsh)
       hsh.merge({
-        detected_fields: convert_from_json(hsh[:detected_fields])
+        fields: convert_from_json(hsh[:fields])
       })
     end
 

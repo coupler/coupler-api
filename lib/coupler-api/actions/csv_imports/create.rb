@@ -33,15 +33,15 @@ module CouplerAPI
           File.open(file_path, 'wb') { |f| f.write(params[:data]) }
         end
         csv_import = CsvImport.new({
-          original_name: params[:filename],
+          original_name: params[:original_name],
           file_path: file_path,
           file_size: File.size(file_path),
           sha1_sum: digest,
-          detected_fields: fields,
+          fields: fields,
           created_at: Time.now
         })
         @repo.save(csv_import)
-        { 'id' => csv_import.id, 'detected_fields' => fields }
+        { 'id' => csv_import.id }
       end
     end
   end

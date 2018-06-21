@@ -11,7 +11,7 @@ module CouplerAPI
         end
 
         result = {}
-        %w{filename data}.each do |key|
+        %w{original_name data}.each do |key|
           if data.has_key?(key)
             result[key.to_sym] = data[key]
           end
