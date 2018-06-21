@@ -11,14 +11,18 @@ module CouplerAPI
       end
 
       def run(params)
-        errors = @validator.validate(params)
-        if !errors.empty?
-          return { 'errors' => errors }
+        if params[:id]
+          dataset = @repo.first(id: params[:id])
+          if dataset.nil?
+            return { 'errors' => ['id was not found'] }
+          end
+        else
+          dataset = nil
         end
 
-        dataset = @repo.first(id: params[:id])
-        if dataset.nil?
-          return { 'errors' => ['id was not found'] }
+        errors = @validator.validate(params, dataset)
+        if !errors.empty?
+          return { 'errors' => errors }
         end
 
         dataset.update(params)

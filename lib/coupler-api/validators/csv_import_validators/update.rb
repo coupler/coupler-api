@@ -1,8 +1,6 @@
 module CouplerAPI
   module CsvImportValidators
     class Update
-      include CsvValidationHelpers
-
       def self.dependencies
         []
       end
