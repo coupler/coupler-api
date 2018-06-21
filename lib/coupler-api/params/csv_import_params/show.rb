@@ -14,6 +14,13 @@ module CouplerAPI
         if data.has_key?('id')
           result[:id] = data['id']
         end
+        if data.has_key?('row_count')
+          value = data['row_count']
+          if value =~ /^\d+$/
+            value = value.to_i
+          end
+          result[:row_count] = value
+        end
         result
       end
     end

@@ -17,6 +17,13 @@ module CouplerAPI
           errors.push("id must be a number")
         end
 
+        if data.has_key?(:row_count)
+          row_count = data[:row_count]
+          if !row_count.is_a?(Integer)
+            errors.push("row_count must be a number")
+          end
+        end
+
         errors
       end
     end

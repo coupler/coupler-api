@@ -18,7 +18,7 @@ module CouplerAPI
         when '', '/'
           action = @controller.build_action(:index)
         when %r{/(\d+)$}
-          req['dataset_id'] = $1.to_i
+          req['id'] = $1.to_i
           action = @controller.build_action(:show)
         end
       when 'POST'

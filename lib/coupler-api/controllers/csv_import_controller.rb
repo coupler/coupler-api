@@ -20,7 +20,10 @@ module CouplerAPI
     end
 
     def show(req, res)
-      data = { 'id' => req['dataset_id'] }
+      data = { 'id' => req['id'] }
+      if req.params.has_key?('row_count')
+        data['row_count'] = req.params['row_count']
+      end
       params = @show_params.process(data)
       @show.run(params)
     end

@@ -17,7 +17,9 @@ module CouplerAPI
           if csv_import.nil?
             { 'errors' => 'not found' }
           else
-            csv_import.to_sanitized_hash
+            result = csv_import.to_sanitized_hash
+            result['rows'] = csv_import.rows(params[:row_count] || 20)
+            result
           end
         else
           { 'errors' => errors }
