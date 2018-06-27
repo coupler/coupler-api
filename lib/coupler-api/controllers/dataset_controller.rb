@@ -1,25 +1,29 @@
 module CouplerAPI
   class DatasetController < Controller
-    def initialize(index, create, update, show, delete, fields, index_params,
-                   create_params, update_params, show_params)
+    def initialize(index, create, update, show, delete, fields, records,
+                   index_params, create_params, update_params, show_params,
+                   records_params)
       @index = index
       @create = create
       @update = update
       @show = show
       @delete = delete
       @fields = fields
+      @records = records
       @index_params = index_params
       @create_params = create_params
       @update_params = update_params
       @show_params = show_params
+      @records_params = records_params
     end
 
     def self.dependencies
       [
         'Datasets::Index', 'Datasets::Create', 'Datasets::Update',
         'Datasets::Show', 'Datasets::Delete', 'Datasets::Fields',
-        'DatasetParams::Index', 'DatasetParams::Create',
-        'DatasetParams::Update', 'DatasetParams::Show'
+        'Datasets::Records', 'DatasetParams::Index', 'DatasetParams::Create',
+        'DatasetParams::Update', 'DatasetParams::Show',
+        'DatasetParams::Records'
       ]
     end
 
@@ -62,6 +66,15 @@ module CouplerAPI
     def fields(req, res)
       params = @show_params.process({ 'id' => req['dataset_id'] })
       @fields.run(params)
+    end
+
+    def records(req, res)
+      params = @records_params.process({
+        'id' => req['dataset_id'],
+        'limit' => req.params['limit'],
+        'offset' => req.params['offset']
+      })
+      @records.run(params)
     end
   end
 end

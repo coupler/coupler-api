@@ -58,10 +58,18 @@ module CouplerAPI
       !ds.field_set.primary_key.nil?
     end
 
-    def fetch_records(conditions)
+    def fetch_records(conditions = nil, limit = nil, offset = nil)
       result = nil
       adapter do |adapter|
-        result = adapter.find(table_name.to_sym, conditions)
+        result = adapter.find(table_name.to_sym, conditions, limit, offset)
+      end
+      result
+    end
+
+    def count_records(conditions = nil)
+      result = nil
+      adapter do |adapter|
+        result = adapter.count(table_name.to_sym, conditions)
       end
       result
     end

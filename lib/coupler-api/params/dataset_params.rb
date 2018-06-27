@@ -5,5 +5,6 @@ module CouplerAPI
     autoload :Update, "coupler-api/params/dataset_params/update"
     autoload :Show, "coupler-api/params/dataset_params/show"
     autoload :Index, "coupler-api/params/dataset_params/index"
+    autoload :Records, "coupler-api/params/dataset_params/records"
   end
 end
