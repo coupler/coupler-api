@@ -6,5 +6,6 @@ module CouplerAPI
     autoload :Show, "coupler-api/validators/dataset_validators/show"
     autoload :Index, "coupler-api/validators/dataset_validators/index"
     autoload :Records, "coupler-api/validators/dataset_validators/records"
+    autoload :CountRecords, "coupler-api/validators/dataset_validators/count_records"
   end
 end

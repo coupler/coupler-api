@@ -26,6 +26,9 @@ module CouplerAPI
         when %r{/(\d+)/records$}
           req['dataset_id'] = $1.to_i
           action = @controller.build_action(:records)
+        when %r{/(\d+)/count_records$}
+          req['dataset_id'] = $1.to_i
+          action = @controller.build_action(:count_records)
         end
       when 'POST'
         case path

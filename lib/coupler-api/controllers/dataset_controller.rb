@@ -1,8 +1,8 @@
 module CouplerAPI
   class DatasetController < Controller
     def initialize(index, create, update, show, delete, fields, records,
-                   index_params, create_params, update_params, show_params,
-                   records_params)
+                   count_records, index_params, create_params, update_params,
+                   show_params, records_params, count_records_params)
       @index = index
       @create = create
       @update = update
@@ -10,20 +10,23 @@ module CouplerAPI
       @delete = delete
       @fields = fields
       @records = records
+      @count_records = count_records
       @index_params = index_params
       @create_params = create_params
       @update_params = update_params
       @show_params = show_params
       @records_params = records_params
+      @count_records_params = count_records_params
     end
 
     def self.dependencies
       [
         'Datasets::Index', 'Datasets::Create', 'Datasets::Update',
         'Datasets::Show', 'Datasets::Delete', 'Datasets::Fields',
-        'Datasets::Records', 'DatasetParams::Index', 'DatasetParams::Create',
-        'DatasetParams::Update', 'DatasetParams::Show',
-        'DatasetParams::Records'
+        'Datasets::Records', 'Datasets::CountRecords', 'DatasetParams::Index',
+        'DatasetParams::Create', 'DatasetParams::Update',
+        'DatasetParams::Show', 'DatasetParams::Records',
+        'DatasetParams::CountRecords'
       ]
     end
 
@@ -75,6 +78,13 @@ module CouplerAPI
         'offset' => req.params['offset']
       })
       @records.run(params)
+    end
+
+    def count_records(req, res)
+      params = @count_records_params.process({
+        'id' => req['dataset_id']
+      })
+      @count_records.run(params)
     end
   end
 end
