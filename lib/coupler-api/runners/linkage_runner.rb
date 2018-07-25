@@ -43,18 +43,18 @@ module CouplerAPI
       result_set = ::Linkage::ResultSet['database'].new(linkage_result.uri)
 
       # create linkage datasets
-      dataset_1 = ::Linkage::Dataset.new(dataset_1.uri, dataset_1.table_name)
-      dataset_2 = nil
+      ds_1 = ::Linkage::Dataset.new(dataset_1.uri, dataset_1.table_name)
+      ds_2 = nil
       if linkage.dataset_1_id != linkage.dataset_2_id
-        dataset_2 = ::Linkage::Dataset.new(dataset_2.uri, dataset_2.table_name)
+        ds_2 = ::Linkage::Dataset.new(dataset_2.uri, dataset_2.table_name)
       end
 
       # create configuration
       config =
-        if dataset_2
-          ::Linkage::Configuration.new(dataset_1, dataset_2, result_set)
+        if ds_2
+          ::Linkage::Configuration.new(ds_1, ds_2, result_set)
         else
-          ::Linkage::Configuration.new(dataset_1, result_set)
+          ::Linkage::Configuration.new(ds_1, result_set)
         end
 
       # add comparators
