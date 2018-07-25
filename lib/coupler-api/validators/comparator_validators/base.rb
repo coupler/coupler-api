@@ -93,8 +93,10 @@ module CouplerAPI
           end
 
           if data[:options].is_a?(Hash)
-            if data[:options]['value'].nil? || data[:options]['value'].empty?
+            if data[:options]['value'].nil?
               errors.push('options.value must be present')
+            elsif !data[:options]['value'].is_a?(Numeric)
+              errors.push('options.value must be a number')
             end
           end
         end
