@@ -6,7 +6,11 @@ module CouplerAPI
       end
 
       def self.valid_keys
-        @@valid_keys ||= %w{name type host database_name username password table_name}
+        @valid_keys ||= %w{name type host database_name username password table_name}
+      end
+
+      def valid_keys
+        self.class.valid_keys
       end
 
       def process(data)
@@ -15,7 +19,7 @@ module CouplerAPI
         end
 
         result = {}
-        self.class.valid_keys.each do |key|
+        valid_keys.each do |key|
           if data.include?(key)
             result[key.to_sym] = data[key]
           end

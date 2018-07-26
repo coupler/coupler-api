@@ -2,7 +2,7 @@ module CouplerAPI
   module DatasetParams
     class Records < Base
       def self.valid_keys
-        @@valid_keys ||= %w{id limit offset}
+        @valid_keys ||= %w{id limit offset}
       end
 
       def process(data)
