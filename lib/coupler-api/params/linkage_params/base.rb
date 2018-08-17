@@ -12,7 +12,7 @@ module CouplerAPI
 
         result = {}
         data.each_pair do |key, value|
-          if %w{name description dataset_1_id dataset_2_id}.include?(key)
+          if %w{name description threshold dataset_1_id dataset_2_id}.include?(key)
             result[key.to_sym] = value
           end
         end

@@ -57,6 +57,10 @@ module CouplerAPI
           ::Linkage::Configuration.new(ds_1, result_set)
         end
 
+      if linkage.threshold
+        config.threshold = linkage.threshold
+      end
+
       # add comparators
       comparators.each do |comparator|
         case comparator.kind

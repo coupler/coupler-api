@@ -3,6 +3,7 @@ module CouplerAPI
     :id,
     :name,
     :description,
+    :threshold,
     :dataset_1_id,
     :dataset_2_id,
   ]) do

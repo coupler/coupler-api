@@ -16,6 +16,14 @@ module CouplerAPI
           errors.push("name must be present")
         end
 
+        if !data[:threshold].nil?
+          if !data[:threshold].is_a?(Numeric)
+            errors.push("threshold must be a number")
+          elsif data[:threshold] < 0 || data[:threshold] > 1
+            errors.push("threshold must be in the range [0, 1]")
+          end
+        end
+
         if data[:dataset_1_id].nil?
           errors.push("dataset_1_id must be present")
         elsif !data[:dataset_1_id].is_a?(Integer)
