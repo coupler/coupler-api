@@ -1,15 +1,18 @@
 module CouplerAPI
   class MigrationController < Controller
-    def initialize(create, show, create_params, show_params)
+    def initialize(create, show, index, create_params, show_params, index_params)
       @create = create
       @show = show
+      @index = index
       @create_params = create_params
       @show_params = show_params
+      @index_params = index_params
     end
 
     def self.dependencies
-      [ 'Migrations::Create', 'Migrations::Show', 'MigrationParams::Create',
-        'MigrationParams::Show' ]
+      [ 'Migrations::Create', 'Migrations::Show', 'Migrations::Index',
+        'MigrationParams::Create', 'MigrationParams::Show',
+        'MigrationParams::Index' ]
     end
 
     def create(req, res)
@@ -22,6 +25,11 @@ module CouplerAPI
       data = { 'id' => req['migration_id'] }
       params = @show_params.process(data)
       @show.run(params)
+    end
+
+    def index(req, res)
+      params = @index_params.process({})
+      @index.run(params)
     end
   end
 end
