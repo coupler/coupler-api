@@ -94,6 +94,7 @@ module CouplerAPI
 
   # runners
   autoload :LinkageRunner, "coupler-api/runners/linkage_runner"
+  autoload :MigrationRunner, "coupler-api/runners/migration_runner"
 
   # supervisors
   autoload :SpawnSupervisor, "coupler-api/supervisors/spawn_supervisor"

@@ -144,6 +144,7 @@ module CouplerAPI
 
       injector.register_service('Runner', Runner)
       injector.register_service('LinkageRunner', LinkageRunner)
+      injector.register_service('MigrationRunner', MigrationRunner)
 
       injector.register_service('CSVImporter', CSVImporter)
 

@@ -23,6 +23,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rack-cors", "~> 0.4.0"
   spec.add_dependency "hashery", "~> 2.1.1"
   spec.add_dependency "sequel"
+  spec.add_dependency "ethel"
+  spec.add_dependency "ethel-sequel"
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rack-test", "~> 0.6.3"
