@@ -136,6 +136,7 @@ module CouplerAPI
       injector.register_service('CsvImportValidators::Show', CsvImportValidators::Show)
 
       injector.register_service('MigrationRepository', MigrationRepository)
+      injector.register_service('MigrationCombiner', MigrationCombiner)
       injector.register_service('MigrationRouter', MigrationRouter)
       injector.register_service('MigrationController', MigrationController)
       injector.register_service('Migrations::Create', Migrations::Create)
