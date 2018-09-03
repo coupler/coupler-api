@@ -141,6 +141,9 @@ module CouplerAPI
       injector.register_service('Migrations::Create', Migrations::Create)
       injector.register_service('MigrationParams::Create', MigrationParams::Create)
       injector.register_service('MigrationValidators::Create', MigrationValidators::Create)
+      injector.register_service('Migrations::Show', Migrations::Show)
+      injector.register_service('MigrationParams::Show', MigrationParams::Show)
+      injector.register_service('MigrationValidators::Show', MigrationValidators::Show)
 
       injector.register_service('Runner', Runner)
       injector.register_service('LinkageRunner', LinkageRunner)

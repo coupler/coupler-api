@@ -21,6 +21,12 @@ module CouplerAPI
           #req['migration_id'] = $1.to_i
           #action = @controller.build_action(:run)
         end
+      when 'GET'
+        case path
+        when %r{/(\d+)$}
+          req['migration_id'] = $1.to_i
+          action = @controller.build_action(:show)
+        end
       when 'OPTIONS'
         result = ''
       end
