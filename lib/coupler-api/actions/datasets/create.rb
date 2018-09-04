@@ -45,7 +45,7 @@ module CouplerAPI
         end
 
         # check for connectivity
-        if dataset.can_connect?
+        if dataset.table_exists?
           if dataset.has_primary_key?
             @dataset_repo.save(dataset)
             { 'id' => dataset.id }

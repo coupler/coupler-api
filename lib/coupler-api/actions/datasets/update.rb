@@ -28,7 +28,7 @@ module CouplerAPI
         dataset.update(params)
         # check for connectivity
         dataset = Dataset.new(params)
-        if dataset.can_connect?
+        if dataset.table_exists?
           if dataset.has_primary_key?
             @repo.save(dataset)
             { 'id' => dataset.id }

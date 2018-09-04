@@ -46,6 +46,18 @@ module CouplerAPI
 
     def can_connect?
       begin
+        result = false
+        adapter do |adapter|
+          result = true
+        end
+        result
+      rescue Exception
+        false
+      end
+    end
+
+    def table_exists?
+      begin
         !schema.nil?
       rescue Exception
         false
