@@ -1,12 +1,13 @@
 module CouplerAPI
   class MigrationRunner
-    def initialize(migration_combiner, job_repo)
-      @migration_combiner = migration_combiner
+    def initialize(job_repo, migration_combiner, dataset_repo)
       @job_repo = job_repo
+      @migration_combiner = migration_combiner
+      @dataset_repo = dataset_repo
     end
 
     def self.dependencies
-      [ 'JobRepository', 'MigrationCombiner' ]
+      [ 'JobRepository', 'MigrationCombiner', 'DatasetRepository' ]
     end
 
     def run(job)
@@ -27,15 +28,15 @@ module CouplerAPI
       input_dataset = migration.input_dataset
       output_dataset = migration.output_dataset
 
-      reader = ::Ethel::Reader['sql'].new({
+      reader = ::Ethel::Reader['sequel'].new({
         connect_options: input_dataset.uri,
         table_name: input_dataset.table_name
       })
-      writer = ::Ethel::Writer['sql'].new({
-        connect_options: input_dataset.uri,
-        table_name: input_dataset.table_name
+      writer = ::Ethel::Writer['sequel'].new({
+        connect_options: output_dataset.uri,
+        table_name: output_dataset.table_name
       })
-      m = Migration.new(reader, writer)
+      m = ::Ethel::Migration.new(reader, writer)
 
       # add operations
       migration.operations.each do |config|
@@ -57,6 +58,7 @@ module CouplerAPI
             # this should only happen when someone manually edits the database
             raise "invalid operation: #{config.inspect}"
           end
+
         m.add_operation(op)
       end
 
@@ -67,6 +69,9 @@ module CouplerAPI
         job.status = "finished"
         job.ended_at = Time.now
         @job_repo.save(job)
+
+        output_dataset.pending = false
+        @dataset_repo.save(output_dataset)
 
         { 'success' => true }
       rescue Exception => e
@@ -84,11 +89,11 @@ module CouplerAPI
     private
 
     def create_operation_add_field(config)
-      ::Ethel::Operation['add_field'].new(config['field_name'], config['type'])
+      ::Ethel::Operation['add_field'].new(config['field_name'], config['type'].to_sym)
     end
 
     def create_operation_cast(config)
-      ::Ethel::Operation['cast'].new(config['field_name'], config['new_type'])
+      ::Ethel::Operation['cast'].new(config['field_name'], config['new_type'].to_sym)
     end
 
     def create_operation_merge(config)

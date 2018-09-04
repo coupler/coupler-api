@@ -9,7 +9,9 @@ module CouplerAPI
     :database_name,
     :database_path,
     :table_name,
-    :csv_import_id
+    :csv_import_id,
+    :migration_id,
+    :pending
   ]) do
     def uri
       case type

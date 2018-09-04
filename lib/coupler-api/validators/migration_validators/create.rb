@@ -22,9 +22,9 @@ module CouplerAPI
         errors = []
 
         if data.has_key?(:description)
-          if !data.is_a?(String)
+          if !data[:description].is_a?(String)
             errors.push("description must be a string")
-          elsif data.empty?
+          elsif data[:description].empty?
             errors.push("description must not be empty")
           end
         end
@@ -82,9 +82,61 @@ module CouplerAPI
           errors.push("input_dataset_id is not valid")
         end
 
-        if data.has_key?(:output_dataset_id)
-          if !data[:output_dataset_id].is_a?(Integer)
-            errors.push("output_dataset_id is not valid")
+        if data[:output_dataset].nil?
+          errors.push("output_dataset must be present")
+        elsif !data[:output_dataset].is_a?(Hash)
+          errors.push("output_dataset must be a hash")
+        else
+          output_dataset = data[:output_dataset]
+
+          # TODO: DRY up dataset validation
+          if output_dataset[:name].nil?
+            errors.push("output_dataset.name must be present")
+          elsif !output_dataset[:name].is_a?(String)
+            errors.push("output_dataset.name must be a string")
+          elsif output_dataset[:name].empty?
+            errors.push("output_dataset.name must not be empty")
+          end
+
+          if output_dataset[:type].nil?
+            errors.push("output_dataset.type must be present")
+          elsif !%w{mysql}.include?(output_dataset[:type])
+            errors.push("output_dataset.type is not valid (#{output_dataset[:type]})")
+          else
+            case data[:type]
+            when "mysql"
+              if output_dataset[:host].nil?
+                errors.push("output_dataset.host must be present")
+              elsif !output_dataset[:host].is_a?(String)
+                errors.push("output_dataset.host must be a string")
+              elsif output_dataset[:host].empty?
+                errors.push("output_dataset.host must not be empty")
+              end
+
+              if output_dataset[:database_name].nil?
+                errors.push("output_dataset.database_name must be present")
+              elsif !output_dataset[:database_name].is_a?(String)
+                errors.push("output_dataset.database_name must be a string")
+              elsif output_dataset[:database_name].empty?
+                errors.push("output_dataset.database_name must not be empty")
+              end
+
+              if output_dataset[:username].nil?
+                errors.push("output_dataset.username must be present")
+              elsif !output_dataset[:username].is_a?(String)
+                errors.push("output_dataset.username must be a string")
+              elsif output_dataset[:username].empty?
+                errors.push("output_dataset.username must not be empty")
+              end
+
+              if output_dataset[:table_name].nil?
+                errors.push("output_dataset.table_name must be present")
+              elsif !output_dataset[:table_name].is_a?(String)
+                errors.push("output_dataset.table_name must be a string")
+              elsif output_dataset[:table_name].empty?
+                errors.push("output_dataset.table_name must not be empty")
+              end
+            end
           end
         end
 

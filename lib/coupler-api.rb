@@ -5,6 +5,8 @@ require "rack/cors"
 require "sequel"
 require "hashery"
 require "linkage"
+require "ethel"
+require "ethel-sequel"
 
 module CouplerAPI
   autoload :Application, "coupler-api/application"

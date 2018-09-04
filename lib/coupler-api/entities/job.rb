@@ -6,6 +6,7 @@ module CouplerAPI
     :error,
     :linkage_id,
     :linkage_result_id,
+    :migration_id,
     :started_at,
     :ended_at
   ]) do

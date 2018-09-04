@@ -12,7 +12,7 @@ module CouplerAPI
 
         result = {}
         data.each_pair do |key, value|
-          if %w{kind linkage_id}.include?(key)
+          if %w{kind linkage_id migration_id}.include?(key)
             result[key.to_sym] = value
           end
         end

@@ -25,9 +25,6 @@ module CouplerAPI
         case path
         when '', '/'
           action = @controller.build_action(:create)
-        #when %r{/(\d+)/run$}
-          #req['migration_id'] = $1.to_i
-          #action = @controller.build_action(:run)
         end
       when 'OPTIONS'
         result = ''
