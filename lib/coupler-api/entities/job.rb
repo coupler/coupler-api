@@ -14,7 +14,13 @@ module CouplerAPI
 
     def to_h
       result = super
-      result['linkage_result'] = linkage_result.to_h if linkage_result
+      if result[:started_at].is_a?(Time)
+        result[:started_at] = result[:started_at].iso8601
+      end
+      if result[:ended_at].is_a?(Time)
+        result[:ended_at] = result[:ended_at].iso8601
+      end
+      result[:linkage_result] = linkage_result.to_h if linkage_result
       result
     end
   end

@@ -9,8 +9,19 @@ module CouplerAPI
     :created_at,
     :dataset_id
   ]) do
+    def to_h
+      result = super
+      if result[:created_at].is_a?(Time)
+        result[:created_at] = result[:created_at].iso8601
+      end
+      result
+    end
+
     def to_sanitized_hash
-      result = super()
+      result = super
+      if result[:created_at].is_a?(Time)
+        result[:created_at] = result[:created_at].iso8601
+      end
       result.delete(:file_path)
       result
     end
