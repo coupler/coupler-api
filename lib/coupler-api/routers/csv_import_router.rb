@@ -20,6 +20,9 @@ module CouplerAPI
         when %r{/(\d+)$}
           req['id'] = $1.to_i
           action = @controller.build_action(:show)
+        when %r{/(\d+)/download$}
+          req['id'] = $1.to_i
+          action = @controller.build_action(:download)
         end
       when 'POST'
         case path
