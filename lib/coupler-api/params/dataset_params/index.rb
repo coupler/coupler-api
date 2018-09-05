@@ -12,7 +12,8 @@ module CouplerAPI
 
         result = {}
         data.each_pair do |key, value|
-          if key == 'include_fields'
+          case key
+          when 'include_fields', 'include_pending'
             value =
               case value
               when "true" then true
@@ -20,7 +21,7 @@ module CouplerAPI
               else
                 value
               end
-            result[:include_fields] = value
+            result[key.to_sym] = value
           end
         end
         result

@@ -35,6 +35,9 @@ module CouplerAPI
       if req.params.has_key?('include_fields')
         data['include_fields'] = req.params['include_fields']
       end
+      if req.params.has_key?('include_pending')
+        data['include_pending'] = req.params['include_pending']
+      end
       params = @index_params.process(data)
       @index.run(params)
     end

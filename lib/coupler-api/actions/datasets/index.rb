@@ -17,7 +17,14 @@ module CouplerAPI
           if params.has_key?(:include_fields)
             include_fields = params[:include_fields]
           end
-          @repo.find.collect { |ds| ds.to_h(include_fields) }
+
+          include_pending = false
+          if params.has_key?(:include_pending)
+            include_pending = params[:include_pending]
+          end
+
+          conditions = { pending: include_pending }
+          @repo.find(conditions).collect { |ds| ds.to_h(include_fields) }
         else
           { 'errors' => errors }
         end

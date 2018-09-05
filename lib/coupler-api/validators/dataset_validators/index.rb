@@ -12,9 +12,10 @@ module CouplerAPI
 
         errors = []
 
-        key = :include_fields
-        if data.has_key?(key) && data[key] != false && data[key] != true
-          errors.push("include_fields must be true or false")
+        [:include_fields, :include_pending].each do |key|
+          if data.has_key?(key) && data[key] != false && data[key] != true
+            errors.push("#{key} must be true or false")
+          end
         end
 
         errors
