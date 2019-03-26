@@ -1,14 +1,14 @@
 require 'test_helper'
 
-class CouplerAPI::IntegrationTests::LinkageTest < Minitest::Test
-  include CouplerAPI::IntegrationTest
+class Coupler::API::IntegrationTests::LinkageTest < Minitest::Test
+  include Coupler::API::IntegrationTest
 
   attr_reader :app
 
   def setup
     @tempfile = Tempfile.new('coupler_api')
     @db = Sequel.connect(database_uri)
-    @builder = CouplerAPI::Builder.new({ "database_uri" => database_uri })
+    @builder = Coupler::API::Builder.new({ "database_uri" => database_uri })
     @app = @builder.app
   end
 

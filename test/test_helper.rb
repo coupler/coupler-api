@@ -14,30 +14,32 @@ require 'minitest/autorun'
 require 'minitest/mock'
 require 'mocha/minitest'
 
-module CouplerAPI
-  module UnitTests
-  end
-
-  module IntegrationTests
-  end
-
-  module IntegrationTest
-    include Rack::Test::Methods
-
-    def post_json(uri, params)
-      post(uri, JSON.generate(params), { "Content-Type" => "application/json" })
+module Coupler
+  module API
+    module UnitTests
     end
 
-    def put_json(uri, params)
-      put(uri, JSON.generate(params), { "Content-Type" => "application/json" })
+    module IntegrationTests
     end
 
-    def last_response_body
-      JSON.parse(last_response.body)
-    end
+    module IntegrationTest
+      include Rack::Test::Methods
 
-    def config
-      @config ||= YAML.load_file(File.join(__dir__, "config.yml"))
+      def post_json(uri, params)
+        post(uri, JSON.generate(params), { "Content-Type" => "application/json" })
+      end
+
+      def put_json(uri, params)
+        put(uri, JSON.generate(params), { "Content-Type" => "application/json" })
+      end
+
+      def last_response_body
+        JSON.parse(last_response.body)
+      end
+
+      def config
+        @config ||= YAML.load_file(File.join(__dir__, "config.yml"))
+      end
     end
   end
 end

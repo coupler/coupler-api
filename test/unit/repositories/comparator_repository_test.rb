@@ -1,9 +1,9 @@
 require 'test_helper'
 
-class CouplerAPI::UnitTests::ComparatorRepositoryTest < Minitest::Test
+class Coupler::API::UnitTests::ComparatorRepositoryTest < Minitest::Test
   def setup
     @adapter = stub('adapter')
-    @repo = CouplerAPI::ComparatorRepository.new(@adapter)
+    @repo = Coupler::API::ComparatorRepository.new(@adapter)
   end
 
   def test_unserialize
@@ -17,7 +17,7 @@ class CouplerAPI::UnitTests::ComparatorRepositoryTest < Minitest::Test
   end
 
   def test_serialize
-    comparator = CouplerAPI::Comparator.new({
+    comparator = Coupler::API::Comparator.new({
       set_1: [1, 2, 3], set_2: [4, 5, 6], options: { "foo" => "bar" }
     })
     @adapter.expects(:create).with(:comparators, {

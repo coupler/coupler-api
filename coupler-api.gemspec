@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'coupler-api/version'
+require 'coupler/api/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "coupler-api"
-  spec.version       = CouplerAPI::VERSION
+  spec.version       = Coupler::API::VERSION
   spec.authors       = ["Jeremy Stephens"]
   spec.email         = ["jeremy.f.stephens@vanderbilt.edu"]
 

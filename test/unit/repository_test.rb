@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
+class Coupler::API::UnitTests::RepositoryTest < Minitest::Test
   def setup
     @entity_klass = Class.new do
       attr_reader :attribs
@@ -13,7 +13,7 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
       end
     end
 
-    @repo_klass = Class.new(CouplerAPI::Repository)
+    @repo_klass = Class.new(Coupler::API::Repository)
     @repo_klass.class_eval(<<-EOF)
       def initialize(*args)
         super
@@ -28,7 +28,7 @@ class CouplerAPI::UnitTests::RepositoryTest < Minitest::Test
   end
 
   def test_dependencies
-    assert_equal ['adapter'], CouplerAPI::Repository.dependencies
+    assert_equal ['adapter'], Coupler::API::Repository.dependencies
   end
 
   def test_find

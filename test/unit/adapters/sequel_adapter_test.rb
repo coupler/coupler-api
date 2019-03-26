@@ -1,11 +1,11 @@
 require 'test_helper'
 
-class CouplerAPI::UnitTests::SequelAdapterTest < Minitest::Test
+class Coupler::API::UnitTests::SequelAdapterTest < Minitest::Test
   def setup
     @relation = stub('relation')
     @db = stub('db')
     @options = { foo: 'bar' }
-    @adapter = CouplerAPI::SequelAdapter.new(@options)
+    @adapter = Coupler::API::SequelAdapter.new(@options)
     Sequel.stubs(:connect).returns(@db)
   end
 
