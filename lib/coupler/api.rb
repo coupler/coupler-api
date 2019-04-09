@@ -89,6 +89,7 @@ module Coupler
 
     # combiners
     autoload :LinkageCombiner, "coupler/api/combiners/linkage_combiner"
+    autoload :LinkageResultCombiner, "coupler/api/combiners/linkage_result_combiner"
     autoload :JobCombiner, "coupler/api/combiners/job_combiner"
     autoload :MigrationCombiner, "coupler/api/combiners/migration_combiner"
 

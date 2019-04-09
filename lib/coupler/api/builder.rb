@@ -77,6 +77,7 @@ module Coupler::API
       injector.register_service('Linkages::Show', Linkages::Show)
       injector.register_service('Linkages::Delete', Linkages::Delete)
       injector.register_service('Linkages::Comparators', Linkages::Comparators)
+      injector.register_service('Linkages::Results', Linkages::Results)
       injector.register_service('LinkageParams::Create', LinkageParams::Create)
       injector.register_service('LinkageParams::Update', LinkageParams::Update)
       injector.register_service('LinkageParams::Show', LinkageParams::Show)
@@ -112,6 +113,7 @@ module Coupler::API
       injector.register_service('JobValidators::Show', JobValidators::Show)
 
       injector.register_service('LinkageResultRepository', LinkageResultRepository)
+      injector.register_service('LinkageResultCombiner', LinkageResultCombiner)
       injector.register_service('LinkageResultRouter', LinkageResultRouter)
       injector.register_service('LinkageResultController', LinkageResultController)
       injector.register_service('LinkageResults::Show', LinkageResults::Show)

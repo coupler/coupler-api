@@ -1,12 +1,14 @@
 module Coupler::API
   class LinkageController < Controller
-    def initialize(index, create, update, show, delete, comparators, create_params, update_params, show_params)
+    def initialize(index, create, update, show, delete, comparators, results,
+                   create_params, update_params, show_params)
       @index = index
       @create = create
       @update = update
       @show = show
       @delete = delete
       @comparators = comparators
+      @results = results
       @create_params = create_params
       @update_params = update_params
       @show_params = show_params
@@ -16,7 +18,8 @@ module Coupler::API
       [
         'Linkages::Index', 'Linkages::Create', 'Linkages::Update',
         'Linkages::Show', 'Linkages::Delete', 'Linkages::Comparators',
-        'LinkageParams::Create', 'LinkageParams::Update', 'LinkageParams::Show'
+        'Linkages::Results', 'LinkageParams::Create', 'LinkageParams::Update',
+        'LinkageParams::Show'
       ]
     end
 
@@ -50,6 +53,11 @@ module Coupler::API
     def comparators(req, res)
       params = @show_params.process({ 'id' => req['linkage_id'] })
       @comparators.run(params)
+    end
+
+    def results(req, res)
+      params = @show_params.process({ 'id' => req['linkage_id'] })
+      @results.run(params)
     end
   end
 end

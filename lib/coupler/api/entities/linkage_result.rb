@@ -6,6 +6,8 @@ module Coupler::API
     :linkage_id,
     :match_count
   ]) do
+    attr_accessor :job
+
     def uri
       if RUBY_PLATFORM == "java"
         "jdbc:sqlite:#{database_path}"
@@ -25,6 +27,12 @@ module Coupler::API
       adapter do |adapter|
         result = adapter.find(:matches, nil, limit, offset)
       end
+      result
+    end
+
+    def to_h
+      result = super
+      result[:job] = job.to_h if job
       result
     end
 

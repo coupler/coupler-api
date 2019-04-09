@@ -6,5 +6,6 @@ module Coupler::API
     autoload :Show, "coupler/api/actions/linkages/show"
     autoload :Delete, "coupler/api/actions/linkages/delete"
     autoload :Comparators, "coupler/api/actions/linkages/comparators"
+    autoload :Results, "coupler/api/actions/linkages/results"
   end
 end

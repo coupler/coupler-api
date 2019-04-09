@@ -23,6 +23,9 @@ module Coupler::API
         when %r{/(\d+)/comparators$}
           req['linkage_id'] = $1.to_i
           action = @controller.build_action(:comparators)
+        when %r{/(\d+)/results$}
+          req['linkage_id'] = $1.to_i
+          action = @controller.build_action(:results)
         end
       when 'POST'
         case path
