@@ -12,8 +12,8 @@ module Coupler
           @linkage_result_repo = Minitest::Mock.new
 
           args = [
-            @linkage_repo, @dataset_repo, @comparator_repo, @job_repo,
-            @linkage_result_repo
+            @linkage_repo, @dataset_repo, @comparator_repo, @linkage_result_repo,
+            @job_repo
           ]
           @combiner = LinkageCombiner.new(*args)
         end
@@ -30,15 +30,15 @@ module Coupler
           comparators = []
           @comparator_repo.expect(:find, comparators, [{ :linkage_id => 123 }])
 
-          jobs = []
-          @job_repo.expect(:find, jobs, [{ :linkage_id => 123 }])
+          linkage_results = []
+          @linkage_result_repo.expect(:find, linkage_results, [{ :linkage_id => 123 }])
 
           result = @combiner.find(:id => 123)
           assert_same(linkage, result)
           assert_same(dataset_1, linkage.dataset_1)
           assert_same(dataset_2, linkage.dataset_2)
           assert_same(comparators, linkage.comparators)
-          assert_same(jobs, linkage.jobs)
+          assert_same(linkage_results, linkage.linkage_results)
         end
       end
     end
