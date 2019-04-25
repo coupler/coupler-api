@@ -3,16 +3,16 @@ module Coupler::API
     def self.dependencies
       [
         'LinkageRepository', 'DatasetRepository', 'ComparatorRepository',
-        'JobRepository', 'LinkageResultRepository'
+        'LinkageResultRepository', 'JobRepository'
       ]
     end
 
-    def initialize(linkage_repo, dataset_repo, comparator_repo, job_repo, linkage_result_repo)
+    def initialize(linkage_repo, dataset_repo, comparator_repo, linkage_result_repo, job_repo)
       @linkage_repo = linkage_repo
       @dataset_repo = dataset_repo
       @comparator_repo = comparator_repo
-      @job_repo = job_repo
       @linkage_result_repo = linkage_result_repo
+      @job_repo = job_repo
     end
 
     def find(conditions, which = :all)
@@ -44,14 +44,14 @@ module Coupler::API
         linkage.comparators = comparators
       end
 
-      if which == :all || which.include?(:jobs)
-        jobs = @job_repo.find({ :linkage_id => linkage.id })
-        jobs.each do |job|
-          if job.linkage_result_id
-            job.linkage_result = @linkage_result_repo.first({ :id => job.linkage_result_id })
+      if which == :all || which.include?(:linkage_results)
+        linkage_results = @linkage_result_repo.find({ :linkage_id => linkage.id })
+        linkage_results.each do |linkage_result|
+          if linkage_result.job_id
+            linkage_result.job = @job_repo.first({ :id => linkage_result.job_id })
           end
         end
-        linkage.jobs = jobs
+        linkage.linkage_results = linkage_results
       end
 
       linkage
