@@ -142,14 +142,14 @@ module Coupler
           end
 
           def test_validate_within_requires_set_1_length
-            @data.update(:kind => 'within', :options => { 'value' => 'foo' })
+            @data.update(:kind => 'within', :options => { 'value' => 1 })
             @data[:set_1] = ['foo', 'bar']
             errors = @validator.validate(@data)
             assert_equal ['set_1 is not valid'], errors
           end
 
           def test_validate_within_requires_set_2_length
-            @data.update(:kind => 'within', :options => { 'value' => 'foo' })
+            @data.update(:kind => 'within', :options => { 'value' => 1 })
             @data[:set_2] = ['foo', 'bar']
             errors = @validator.validate(@data)
             assert_equal ['set_2 is not valid'], errors
