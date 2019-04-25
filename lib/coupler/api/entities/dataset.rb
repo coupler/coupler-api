@@ -61,7 +61,7 @@ module Coupler::API
     def table_exists?
       begin
         !schema.nil?
-      rescue Exception
+      rescue Exception => e
         false
       end
     end
