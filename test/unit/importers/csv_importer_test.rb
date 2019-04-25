@@ -56,8 +56,10 @@ module Coupler
             { 'name' => 'junk', 'kind' => 'text' }
           ]
 
-          expected = File.join(@storage_path, 'foo.db')
-          database_path = @importer.create_database('foo', fields, f.path)
+          prefix = File.basename(f.path, '.csv');
+          timestamp = Time.now.utc.strftime("%Y%m%d%H%M")
+          expected = File.join(@storage_path, "#{prefix}-#{timestamp}.db")
+          database_path = @importer.create_database(f.path, 'foo', fields)
           assert_equal expected, database_path
 
           connect_args =
