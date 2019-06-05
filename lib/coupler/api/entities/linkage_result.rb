@@ -6,7 +6,7 @@ module Coupler::API
     :linkage_id,
     :match_count
   ]) do
-    attr_accessor :job
+    attr_accessor :job, :linkage
 
     def uri
       if RUBY_PLATFORM == "java"
@@ -33,6 +33,7 @@ module Coupler::API
     def to_h
       result = super
       result[:job] = job.to_h if job
+      result[:linkage] = linkage.to_h if linkage
       result
     end
 
