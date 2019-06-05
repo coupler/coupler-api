@@ -11,6 +11,7 @@ module Coupler::API
     :table_name,
     :csv_import_id,
     :migration_id,
+    :linkage_result_id,
     :pending
   ]) do
     def uri
