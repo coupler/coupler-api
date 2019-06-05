@@ -40,6 +40,10 @@ module Coupler::API
       end
     end
 
+    def primary_key
+      fields.find { |f| f['primary_key'] }
+    end
+
     def to_h(include_fields = false)
       result = super()
       result['fields'] = fields if include_fields
