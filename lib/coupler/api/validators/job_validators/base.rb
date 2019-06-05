@@ -1,7 +1,7 @@
 module Coupler::API
   module JobValidators
     class Base
-      VALID_KINDS = %w{linkage migration}
+      VALID_KINDS = %w{linkage migration linkage_result_export}
 
       def self.dependencies
         []
@@ -37,6 +37,22 @@ module Coupler::API
 
           if !data[:linkage_id].nil?
             errors.push("linkage_id must not be present when kind is 'migration'")
+          end
+          if !data[:linkage_result_id].nil?
+            errors.push("linkage_result_id must not be present when kind is 'migration'")
+          end
+        elsif data[:kind] == 'linkage_result_export'
+          if data[:linkage_result_id].nil?
+            errors.push("linkage_result_id must be present when kind is 'linkage_result_export'")
+          elsif !data[:linkage_result_id].is_a?(Integer)
+            errors.push("linkage_result_id is not valid")
+          end
+
+          if !data[:linkage_id].nil?
+            errors.push("linkage_id must not be present when kind is 'linkage_result_export'")
+          end
+          if !data[:migration_id].nil?
+            errors.push("migration_id must not be present when kind is 'linkage_result_export'")
           end
         end
 
