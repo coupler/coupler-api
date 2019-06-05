@@ -7,6 +7,7 @@ module Coupler::API
     :linkage_id,
     :linkage_result_id,
     :migration_id,
+    :dataset_id,
     :started_at,
     :ended_at
   ]) do
