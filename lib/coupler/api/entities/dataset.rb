@@ -33,7 +33,7 @@ module Coupler::API
 
     def fields
       schema.collect do |(name, info)|
-        field = { 'name' => name, 'kind' => info[:type].to_s }
+        field = { 'name' => name.to_s, 'kind' => info[:type].to_s }
         if info[:primary_key]
           field['primary_key'] = info[:primary_key]
         end

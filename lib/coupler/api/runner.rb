@@ -1,13 +1,14 @@
 module Coupler::API
   class Runner
-    def initialize(job_repo, linkage_runner, migration_runner)
+    def initialize(job_repo, linkage_runner, migration_runner, linkage_result_export_runner)
       @job_repo = job_repo
       @linkage_runner = linkage_runner
       @migration_runner = migration_runner
+      @linkage_result_export_runner = linkage_result_export_runner
     end
 
     def self.dependencies
-      ['JobRepository', 'LinkageRunner', 'MigrationRunner']
+      ['JobRepository', 'LinkageRunner', 'MigrationRunner', 'LinkageResultExportRunner']
     end
 
     def run(job_id)
@@ -16,8 +17,12 @@ module Coupler::API
 
       runner =
         case job.kind
-        when 'linkage'   then @linkage_runner
-        when 'migration' then @migration_runner
+        when 'linkage'
+          @linkage_runner
+        when 'migration'
+          @migration_runner
+        when 'linkage_result_export'
+          @linkage_result_export_runner
         end
 
       if runner.nil?

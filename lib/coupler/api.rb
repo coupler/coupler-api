@@ -99,6 +99,7 @@ module Coupler
     # runners
     autoload :LinkageRunner, "coupler/api/runners/linkage_runner"
     autoload :MigrationRunner, "coupler/api/runners/migration_runner"
+    autoload :LinkageResultExportRunner, "coupler/api/runners/linkage_result_export_runner"
 
     # supervisors
     autoload :SpawnSupervisor, "coupler/api/supervisors/spawn_supervisor"
