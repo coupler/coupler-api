@@ -39,9 +39,9 @@ module Coupler::API
         if primary_key_1.nil?
           raise "can't get primary key for dataset 1"
         end
-        record_1 = linkage.dataset_1.fetch_records(primary_key_1['name'] => match[:id_1]).first
+        record_1 = linkage.dataset_1.fetch_records(primary_key_1['name'].to_sym => match[:id_1]).first
         if record_1.nil?
-          raise "can't find record #{match.id_1} in dataset 1"
+          raise "can't find record #{match[:id_1]} in dataset 1"
         end
 
         fields_2 = linkage.dataset_2.fields
@@ -49,9 +49,9 @@ module Coupler::API
         if primary_key_2.nil?
           raise "can't get primary key for dataset 2"
         end
-        record_2 = linkage.dataset_2.fetch_records(primary_key_2['name'] => match[:id_2]).first
+        record_2 = linkage.dataset_2.fetch_records(primary_key_2['name'].to_sym => match[:id_2]).first
         if record_2.nil?
-          raise "can't find record #{match.id_2} in dataset 2"
+          raise "can't find record #{match[:id_2]} in dataset 2"
         end
 
         { 'record_1' => record_1, 'record_2' => record_2, 'score' => match[:score] }
