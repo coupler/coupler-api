@@ -43,6 +43,10 @@ module Coupler::API
         end
       end
 
+      if linkage_result.job_id
+        linkage_result.job = @job_repo.first({ :id => linkage_result.job_id })
+      end
+
       linkage_result
     end
   end
