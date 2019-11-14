@@ -25,10 +25,12 @@ module Coupler::API
 
         return { 'errors' => ['linkage_result not found'] }
       end
+      linkage = linkage_result.linkage
 
       # setup output dataset
       output_dataset = Dataset.new({
-        linkage_result_id: linkage_result.id, type: 'sqlite3',
+        linkage_result_id: linkage_result.id, name: "#{linkage.name} result",
+        type: 'sqlite3',
         database_path: File.join(@storage_path, "linkage-result-export-#{job.id}.sqlite"),
         table_name: 'linkage_result_export', pending: true
       })
@@ -41,12 +43,10 @@ module Coupler::API
       linkage = linkage_result.linkage
       dataset_1 = linkage.dataset_1
       dataset_2 = linkage.dataset_2
-      puts "Reader URI: #{dataset_1.uri}"
       reader = ::Ethel::Reader['sequel'].new({
         connect_options: dataset_1.uri,
         table_name: dataset_1.table_name
       })
-      puts "Writer URI: #{output_dataset.uri}"
       writer = ::Ethel::Writer['sequel'].new({
         connect_options: output_dataset.uri,
         table_name: output_dataset.table_name
@@ -54,12 +54,10 @@ module Coupler::API
       migration = ::Ethel::Migration.new(reader, writer)
 
       # create join operation
-      puts "Target URI: #{dataset_2.uri}"
       target_reader = ::Ethel::Reader['sequel'].new({
         connect_options: dataset_2.uri,
         table_name: dataset_2.table_name
       })
-      puts "Join URI: #{linkage_result.uri}"
       join_reader = ::Ethel::Reader['sequel'].new({
         connect_options: linkage_result.uri,
         table_name: "matches"
@@ -89,6 +87,7 @@ module Coupler::API
         job.ended_at = Time.now
         job.error = e.to_s
         @job_repo.save(job)
+        @dataset_repo.delete(output_dataset)
 
         { 'errors' => [e.to_s] }
       end
