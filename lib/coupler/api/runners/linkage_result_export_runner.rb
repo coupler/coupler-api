@@ -74,6 +74,7 @@ module Coupler::API
 
         job.status = "finished"
         job.ended_at = Time.now
+        job.dataset_id = output_dataset.id
         @job_repo.save(job)
 
         output_dataset.pending = false
