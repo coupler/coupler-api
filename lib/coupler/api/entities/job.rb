@@ -8,6 +8,8 @@ module Coupler::API
     :linkage_result_id,
     :migration_id,
     :dataset_id,
+    :dataset_export_kind,
+    :dataset_export_path,
     :started_at,
     :ended_at
   ]) do

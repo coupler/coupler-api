@@ -1,7 +1,21 @@
 module Coupler::API
   module JobValidators
     class Base
-      VALID_KINDS = %w{linkage migration linkage_result_export}
+      # Hash for valid kinds and which additional fields are required for each.
+      KINDS = {
+        'linkage' => [
+          :linkage_id
+        ],
+        'migration' => [
+          :migration_id
+        ],
+        'linkage_result_export' => [
+          :linkage_result_id
+        ],
+        'dataset_export' => [
+          :dataset_id, :dataset_export_kind
+        ]
+      }
 
       def self.dependencies
         []
@@ -16,43 +30,55 @@ module Coupler::API
 
         if data[:kind].nil? || data[:kind].empty?
           errors.push("kind must be present")
-        elsif !VALID_KINDS.include?(data[:kind])
+          return errors
+        end
+
+        kind = data[:kind]
+        if !KINDS.has_key?(kind)
           errors.push("kind is not valid")
-        elsif data[:kind] == 'linkage'
-          if data[:linkage_id].nil?
-            errors.push("linkage_id must be present when kind is 'linkage'")
-          elsif !data[:linkage_id].is_a?(Integer)
+          return errors
+        end
+
+        # check for presence of required keys and absence of other keys
+        required_keys = KINDS[kind]
+        required_keys.each do |key|
+          if data[key].nil?
+            errors.push("#{key.to_s} must be present when kind is '#{kind}'")
+          end
+        end
+        (data.keys - required_keys).each do |key|
+          next if key == :kind
+          if !data[key].nil?
+            errors.push("#{key.to_s} must not be present when kind is '#{kind}'")
+          end
+        end
+        if !errors.empty?
+          return errors
+        end
+
+        case kind
+        when 'linkage'
+          if !data[:linkage_id].is_a?(Integer)
             errors.push("linkage_id is not valid")
           end
 
-          if !data[:migration_id].nil?
-            errors.push("migration_id must not be present when kind is 'linkage'")
-          end
-        elsif data[:kind] == 'migration'
-          if data[:migration_id].nil?
-            errors.push("migration_id must be present when kind is 'migration'")
-          elsif !data[:migration_id].is_a?(Integer)
+        when 'migration'
+          if !data[:migration_id].is_a?(Integer)
             errors.push("migration_id is not valid")
           end
 
-          if !data[:linkage_id].nil?
-            errors.push("linkage_id must not be present when kind is 'migration'")
-          end
-          if !data[:linkage_result_id].nil?
-            errors.push("linkage_result_id must not be present when kind is 'migration'")
-          end
-        elsif data[:kind] == 'linkage_result_export'
-          if data[:linkage_result_id].nil?
-            errors.push("linkage_result_id must be present when kind is 'linkage_result_export'")
-          elsif !data[:linkage_result_id].is_a?(Integer)
+        when 'linkage_result_export'
+          if !data[:linkage_result_id].is_a?(Integer)
             errors.push("linkage_result_id is not valid")
           end
 
-          if !data[:linkage_id].nil?
-            errors.push("linkage_id must not be present when kind is 'linkage_result_export'")
+        when 'dataset_export'
+          if !data[:dataset_id].is_a?(Integer)
+            errors.push("dataset_id is not valid")
           end
-          if !data[:migration_id].nil?
-            errors.push("migration_id must not be present when kind is 'linkage_result_export'")
+
+          if !%w{sqlite3 csv}.include?(data[:dataset_export_kind])
+            errors.push("dataset_export_kind is not valid")
           end
         end
 
