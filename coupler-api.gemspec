@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "linkage", "~> 0.1.0"
   spec.add_dependency "rack", "~> 1.6.0"
   spec.add_dependency "thor", "~> 0.19.0"
-  spec.add_dependency "rack-cors", "~> 0.4.0"
+  spec.add_dependency "rack-cors", ">= 1.0.4"
   spec.add_dependency "hashery", "~> 2.1.1"
   spec.add_dependency "sequel"
   spec.add_dependency "ethel"

@@ -8,7 +8,7 @@ gem "ethel", :git => "https://github.com/coupler/ethel.git", :branch => 'master'
 gem "ethel-sequel", :git => "https://github.com/coupler/ethel-sequel.git", :branch => 'master'
 gem "rack", "~> 1.6.0"
 gem "thor", "~> 0.19.0"
-gem "rack-cors", "~> 0.4.0"
+gem "rack-cors", ">= 1.0.4"
 gem "hashery", "~> 2.1.1"
 gem "sequel"
 gem "coupler-api", :path => "."
