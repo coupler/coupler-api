@@ -9,7 +9,7 @@ module Coupler::API
     :migration_id,
     :dataset_id,
     :dataset_export_kind,
-    :dataset_export_path,
+    :dataset_export_id,
     :started_at,
     :ended_at
   ]) do

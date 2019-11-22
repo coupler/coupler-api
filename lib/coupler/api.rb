@@ -34,6 +34,7 @@ module Coupler
     autoload :LinkageRepository, "coupler/api/repositories/linkage_repository"
     autoload :LinkageResultRepository, "coupler/api/repositories/linkage_result_repository"
     autoload :MigrationRepository, "coupler/api/repositories/migration_repository"
+    autoload :DatasetExportRepository, "coupler/api/repositories/dataset_export_repository"
 
     # actions
     autoload :Comparators, "coupler/api/actions/comparators"
@@ -43,6 +44,7 @@ module Coupler
     autoload :LinkageResults, "coupler/api/actions/linkage_results"
     autoload :Linkages, "coupler/api/actions/linkages"
     autoload :Migrations, "coupler/api/actions/migrations"
+    autoload :DatasetExports, "coupler/api/actions/dataset_exports"
 
     # routers
     autoload :ComparatorRouter, "coupler/api/routers/comparator_router"
@@ -52,6 +54,7 @@ module Coupler
     autoload :LinkageResultRouter, "coupler/api/routers/linkage_result_router"
     autoload :LinkageRouter, "coupler/api/routers/linkage_router"
     autoload :MigrationRouter, "coupler/api/routers/migration_router"
+    autoload :DatasetExportRouter, "coupler/api/routers/dataset_export_router"
 
     # controllers
     autoload :ComparatorController, "coupler/api/controllers/comparator_controller"
@@ -61,6 +64,7 @@ module Coupler
     autoload :LinkageController, "coupler/api/controllers/linkage_controller"
     autoload :LinkageResultController, "coupler/api/controllers/linkage_result_controller"
     autoload :MigrationController, "coupler/api/controllers/migration_controller"
+    autoload :DatasetExportController, "coupler/api/controllers/dataset_export_controller"
 
     # params
     autoload :ComparatorParams, "coupler/api/params/comparator_params"
@@ -70,6 +74,7 @@ module Coupler
     autoload :LinkageParams, "coupler/api/params/linkage_params"
     autoload :LinkageResultParams, "coupler/api/params/linkage_result_params"
     autoload :MigrationParams, "coupler/api/params/migration_params"
+    autoload :DatasetExportParams, "coupler/api/params/dataset_export_params"
 
     # validators
     autoload :ComparatorValidators, "coupler/api/validators/comparator_validators"
@@ -79,6 +84,7 @@ module Coupler
     autoload :LinkageResultValidators, "coupler/api/validators/linkage_result_validators"
     autoload :LinkageValidators, "coupler/api/validators/linkage_validators"
     autoload :MigrationValidators, "coupler/api/validators/migration_validators"
+    autoload :DatasetExportValidators, "coupler/api/validators/dataset_export_validators"
 
     # entities
     autoload :Comparator, "coupler/api/entities/comparator"
@@ -88,6 +94,7 @@ module Coupler
     autoload :Linkage, "coupler/api/entities/linkage"
     autoload :LinkageResult, "coupler/api/entities/linkage_result"
     autoload :Migration, "coupler/api/entities/migration"
+    autoload :DatasetExport, "coupler/api/entities/dataset_export"
 
     # combiners
     autoload :LinkageCombiner, "coupler/api/combiners/linkage_combiner"

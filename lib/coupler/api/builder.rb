@@ -154,6 +154,16 @@ module Coupler::API
       injector.register_service('MigrationParams::Index', MigrationParams::Index)
       injector.register_service('MigrationValidators::Index', MigrationValidators::Index)
 
+      injector.register_service('DatasetExportRepository', DatasetExportRepository)
+      injector.register_service('DatasetExportRouter', DatasetExportRouter)
+      injector.register_service('DatasetExportController', DatasetExportController)
+      injector.register_service('DatasetExports::Show', DatasetExports::Show)
+      injector.register_service('DatasetExportParams::Show', DatasetExportParams::Show)
+      injector.register_service('DatasetExportValidators::Show', DatasetExportValidators::Show)
+      injector.register_service('DatasetExports::Download', DatasetExports::Download)
+      injector.register_service('DatasetExportParams::Download', DatasetExportParams::Download)
+      injector.register_service('DatasetExportValidators::Download', DatasetExportValidators::Download)
+
       injector.register_service('Runner', Runner)
       injector.register_service('LinkageRunner', LinkageRunner)
       injector.register_service('MigrationRunner', MigrationRunner)

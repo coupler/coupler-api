@@ -2,7 +2,7 @@ module Coupler::API
   class Application
     def initialize(dataset_router, linkage_router, comparator_router,
                    job_router, linkage_result_router, csv_import_router,
-                   migration_router)
+                   migration_router, dataset_export_router)
       @routes = [
         { path: %r{^/datasets(?=/)?}, router: dataset_router },
         { path: %r{^/linkages(?=/)?}, router: linkage_router },
@@ -11,13 +11,15 @@ module Coupler::API
         { path: %r{^/linkage_results(?=/)?}, router: linkage_result_router },
         { path: %r{^/csv_imports(?=/)?}, router: csv_import_router },
         { path: %r{^/migrations(?=/)?}, router: migration_router },
+        { path: %r{^/dataset_exports(?=/)?}, router: dataset_export_router },
       ]
     end
 
     def self.dependencies
       [
         'DatasetRouter', 'LinkageRouter', 'ComparatorRouter', 'JobRouter',
-        'LinkageResultRouter', 'CsvImportRouter', 'MigrationRouter'
+        'LinkageResultRouter', 'CsvImportRouter', 'MigrationRouter',
+        'DatasetExportRouter'
       ]
     end
 

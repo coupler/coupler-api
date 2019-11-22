@@ -1,13 +1,15 @@
 module Coupler::API
   class DatasetExportRunner
-    def initialize(job_repo, dataset_repo, storage_path)
+    def initialize(job_repo, dataset_repo, dataset_export_repo, storage_path)
       @job_repo = job_repo
       @dataset_repo = dataset_repo
+      @dataset_export_repo = dataset_export_repo
       @storage_path = storage_path
     end
 
     def self.dependencies
-      [ 'JobRepository', 'DatasetRepository', 'storage_path' ]
+      [ 'JobRepository', 'DatasetRepository', 'DatasetExportRepository',
+        'storage_path' ]
     end
 
     def run(job)
@@ -15,6 +17,7 @@ module Coupler::API
       job.started_at = Time.now
       @job_repo.save(job)
 
+      # find input dataset
       input_dataset = @dataset_repo.first(id: job.dataset_id)
       if input_dataset.nil?
         job.status = "failed"
@@ -25,16 +28,25 @@ module Coupler::API
         return { 'errors' => ['dataset not found'] }
       end
 
+      # setup ethel reader
       reader = ::Ethel::Reader['sequel'].new({
         connect_options: input_dataset.uri,
         table_name: input_dataset.table_name
       })
 
+      # determine output path
+      export_kind = job.dataset_export_kind
       slug = input_dataset.name.gsub(/\W+/, '-')
-      output_path = File.join(@storage_path, "#{slug}_#{Date.today}")
-      case job.dataset_export_kind
+      output_path = File.join(@storage_path, "#{slug}_#{Date.today}.#{export_kind}")
+      output_path_index = 1
+      while File.exist?(output_path)
+        output_path_index += 1
+        output_path = File.join(@storage_path, "#{slug}_#{Date.today}_#{output_path_index}.#{export_kind}")
+      end
+
+      # setup ethel writer
+      case export_kind
       when 'sqlite3'
-        output_path += '.sqlite3'
         writer_type = 'sequel'
         connect_options =
           if RUBY_PLATFORM == "java"
@@ -47,22 +59,27 @@ module Coupler::API
           table_name: input_dataset.table_name
         }
       when 'csv'
-        output_path += '.csv'
         writer_type = 'csv'
         writer_opts = { file: output_path }
       else
-        raise "invalid dataset export kind: #{job.dataset_export_kind}"
+        raise "invalid dataset export kind: #{export_kind}"
       end
       writer = ::Ethel::Writer[writer_type].new(writer_opts)
-      m = ::Ethel::Migration.new(reader, writer)
 
+      m = ::Ethel::Migration.new(reader, writer)
       begin
         # run migration
         m.run
 
+        dataset_export = DatasetExport.new({
+          dataset_id: input_dataset.id, job_id: job.id,
+          kind: export_kind, path: output_path, pending: false
+        })
+        @dataset_export_repo.save(dataset_export)
+
+        job.dataset_export_id = dataset_export.id
         job.status = "finished"
         job.ended_at = Time.now
-        job.dataset_export_path = output_path
         @job_repo.save(job)
 
         { 'success' => true }
