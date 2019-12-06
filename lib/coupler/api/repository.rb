@@ -19,6 +19,10 @@ module Coupler::API
       @constructor.new(unserialize(hsh)) unless hsh.nil?
     end
 
+    def count(conditions = nil)
+      @adapter.count(@name, conditions)
+    end
+
     def save(obj)
       hsh = serialize(obj.attributes)
       if hsh[:id].nil?

@@ -2,16 +2,11 @@ module Coupler::API
   module DatasetValidators
     class Base
       def self.dependencies
-        []
+        ['DatasetRepository']
       end
 
-      def self.valid_types
-        # csv is only valid on create
-        @@valid_types ||= %w{mysql sqlite3}
-      end
-
-      def valid_types
-        self.class.valid_types
+      def initialize(dataset_repo)
+        @dataset_repo = dataset_repo
       end
 
       def validate(data)
@@ -22,36 +17,18 @@ module Coupler::API
 
         if data[:name].nil? || data[:name].empty?
           errors.push("name must be present")
-        end
-
-        if !valid_types.include?(data[:type])
-          errors.push("type must be one of the following: #{valid_types.inspect}")
         else
-          case data[:type]
-          when "mysql"
-            if data[:host].nil? || data[:host].empty?
-              errors.push("host must be present")
-            end
-
-            if data[:database_name].nil? || data[:database_name].empty?
-              errors.push("database_name must be present")
-            end
-
-            if data[:username].nil? || data[:username].empty?
-              errors.push("username must be present")
-            end
-
-            if data[:table_name].nil? || data[:table_name].empty?
-              errors.push("table_name must be present")
-            end
-          when "sqlite3"
-            if data[:database_path].nil? || data[:database_path].empty?
-              errors.push("database_path must be present")
-            end
-
-            if data[:table_name].nil? || data[:table_name].empty?
-              errors.push("table_name must be present")
-            end
+          # check name uniqueness
+          #
+          # FIXME: this needs to be abstracted inside an expression creation
+          # class so that we're not relying specifically on Sequel, in case a
+          # different adapter than SequelAdapter is in use!
+          conditions = Sequel[name: data[:name]]
+          if data[:id].is_a?(Integer)
+            conditions = conditions & Sequel.~(id: data[:id])
+          end
+          if @dataset_repo.count(conditions) > 0
+            errors.push("name is already taken")
           end
         end
 
